@@ -93,8 +93,30 @@ void LinkList::view() {
 	}
 	node* newnode = first;
 	do {
-		printf("price = %.2e, creation time = %.2e, status = %d\n", newnode->object.getPrice(), newnode->object.getCreationTime(), newnode->object.getStatus());
+		printf("price = %.2f, creation time = %.2f, status = %d\n", newnode->object.getPrice(), newnode->object.getCreationTime(), newnode->object.getStatus());
 		newnode = newnode->next;
 	} while(newnode != NULL);
 	printf("End of the list\n");
+}
+
+int LinkList::findPositionForObject(Object object) {
+	if(first == NULL) {return -1;}
+	
+	if(first->object >= object) {return 1;}
+
+	int pos = 1;
+	bool brk = 0;
+
+	node* newnode = first;
+	while(newnode->next != NULL) {
+		if((newnode->object <= object) && (object <= newnode->next->object)) {brk = 1; pos++; break;}
+		newnode = newnode->next;
+		pos++;
+	} 
+
+	if(brk == 0) {
+		return ++pos;
+	}
+
+	return pos;
 }

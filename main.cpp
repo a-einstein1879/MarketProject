@@ -9,7 +9,7 @@ int main() {
 
 	Object object;
 	for(int i = 0; i < 15; i++) {
-		object.setObject(rand()%15, 0, rand()%2);
+		object.setObject(rand()%15, i, rand()%2);
 		dataBase->pushToDataBase(object);
 	}
 

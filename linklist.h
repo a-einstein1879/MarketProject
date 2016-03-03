@@ -26,6 +26,9 @@ public:
     Object pop(int pos = 1);
     void clean();
     void view();
+	
+	/* We can find position for the object with use of this function. It uses <= and >= from Object.h to define where to place object */
+	int findPositionForObject(Object object);
 }; 
 
 #endif

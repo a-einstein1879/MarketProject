@@ -14,15 +14,22 @@ DataBase* DataBase::getDataBase() {
 	return p_DataBase;
 }
 
-int DataBase::findPositionForObject(Object object) {return 0;}
+int DataBase::findPositionForObject(Object object) {
+	if(object.getStatus() == FORSALE) {
+		return objectsForSale.findPositionForObject(object);
+	} else {
+		return objectsBought.findPositionForObject(object);
+	}
+	return -1;
+}
 
 int DataBase::pushToDataBase(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
 		numberOfObjectsForSale++;
-		objectsForSale.push(newObject);
+		objectsForSale.push(newObject, findPositionForObject(newObject));
 	} else {
 		numberOfObjectsBought++;
-		objectsBought.push(newObject);
+		objectsBought.push(newObject, findPositionForObject(newObject));
 	}
 	return 0;
 }

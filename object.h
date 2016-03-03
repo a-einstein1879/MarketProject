@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 /*
-Operators > and < are defined to find cheaper or more expensive objects not comparing objects statuses.
+Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
 */
 
 class Object {
