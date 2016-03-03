@@ -61,6 +61,7 @@ Object LinkList::pop(int pos) {
 		returnValue = temp->object;
 		if(temp == first) {
 			first = temp->next;
+			temp->next->prev = NULL;
 		} else {
 			temp->prev->next = temp->next;
 			if(temp->next != NULL) {

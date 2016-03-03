@@ -4,7 +4,7 @@
 Market* Market::p_Market = 0;
 
 Market::Market() {
-	timer = 0;
+	timer = 1;
 	resetSellingTimer();
 	resetBuyingTimer();
 	dataBase = dataBase->getDataBase();
@@ -21,8 +21,8 @@ void Market::tick() {
 	switchTimers();
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
-	if(timeToPrintDb())		{printDb();}
 //	while (dealPossible())	{runDeal();}
+	if(timeToPrintDb())		{printDb();}
 }
 
 void Market::switchTimers() {
@@ -39,7 +39,7 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintDb() {
-	return (timer % 2 == 0) ? true : false;
+	return (timer % 1 == 0) ? true : false;
 }
 
 bool Market::dealPossible() {
@@ -77,7 +77,7 @@ double Market::formBuyingPrice() {
 }
 
 void Market::resetSellingTimer() {
-	timeLeftBeforeNewSellingObject = 3;
+	timeLeftBeforeNewSellingObject = 1;
 }
 
 void Market::resetBuyingTimer() {

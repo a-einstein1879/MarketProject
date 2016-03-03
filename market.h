@@ -20,13 +20,13 @@ public:
 
 	bool timeToAddSeller();
 	bool timeToAddBuyer();
-	bool timeToPrintDb();
 	bool dealPossible();
+	bool timeToPrintDb();
 
 	int addSeller();
 	int addBuyer();
-	void printDb();
 	void runDeal();
+	void printDb();
 
 	double formSellingPrice();
 	double formBuyingPrice();

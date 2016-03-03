@@ -26,17 +26,16 @@ int DataBase::findPositionForObject(Object object) {
 int DataBase::pushToDataBase(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
 		objectsForSale.push(newObject, findPositionForObject(newObject));
-		if((lowestSellingPrice == -1) || newObject.getPrice() < lowestSellingPrice) {lowestSellingPrice = newObject.getPrice();}
 	} else {
 		objectsBought.push(newObject, findPositionForObject(newObject));
-		if((highestBuyingPrice == -1) || newObject.getPrice() > highestBuyingPrice) {highestBuyingPrice = newObject.getPrice();}
 	}
+	refreshPrices();
 	return 0;
 }
 
 #include <stdio.h>
 void DataBase::viewDataBase() {
-	if(lowestSellingPrice != -1) {
+	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
 		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
 		objectsForSale.view();
@@ -44,14 +43,13 @@ void DataBase::viewDataBase() {
 		printf("Noone is selling anything\n");
 	}
 	
-	if(highestBuyingPrice != -1) {
+	if(objectsBought.getNumberOfObjects() != 0) {
 		printf("The highest buying price is %.2f\n", highestBuyingPrice);
 		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
 		objectsBought.view();
 	} else {
 		printf("Noone is buying anything\n");
 	}
-
 
 	printf("End of database\n\n");
 }
@@ -61,5 +59,32 @@ bool DataBase::dealPossible() {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+Object DataBase::popHighestBuyer() {
+	Object object;
+	return object;
+}
+
+Object DataBase::popLowestSeller() {
+	Object object;
+	return object;
+}
+
+#include <stdlib.h>
+void DataBase::refreshPrices() {
+	Object object;
+
+	if(objectsForSale.getNumberOfObjects() != 0) {
+		object = objectsForSale.pop(1);
+		lowestSellingPrice = object.getPrice();
+		objectsForSale.push(object, 1);
+	}
+	
+	if(objectsBought.getNumberOfObjects() != 0) {
+		object = objectsBought.pop(objectsBought.getNumberOfObjects());
+		highestBuyingPrice = object.getPrice();
+		objectsBought.push(object, findPositionForObject(object));
 	}
 }

@@ -22,6 +22,9 @@ public:
 	void viewDataBase();
 
 	bool dealPossible();
+	Object popHighestBuyer();
+	Object popLowestSeller();
+	void refreshPrices();
 };
 
 #endif
