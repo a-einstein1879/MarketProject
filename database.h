@@ -20,6 +20,8 @@ public:
 	static DataBase* getDataBase();
 	int pushToDataBase(Object newObject);
 	void viewDataBase();
+
+	bool dealPossible();
 };
 
 #endif

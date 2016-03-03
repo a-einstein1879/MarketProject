@@ -16,6 +16,7 @@ New elements are added at the beginning of the list by default.
 If position exceeds the number of elements in list, element will be added in the end.
 Pop is done from the beginning of the list by default
 */
+
 class LinkList { 
 private: 
     node* first;
