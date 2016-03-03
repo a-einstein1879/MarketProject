@@ -36,13 +36,24 @@ int DataBase::pushToDataBase(Object newObject) {
 
 #include <stdio.h>
 void DataBase::viewDataBase() {
-	printf("The lowest selling price is %.2f\n", lowestSellingPrice);
-	printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
-	objectsForSale.view();
+	if(lowestSellingPrice != -1) {
+		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
+		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
+		objectsForSale.view();
+	} else {
+		printf("Noone is selling anything\n");
+	}
+	
+	if(highestBuyingPrice != -1) {
+		printf("The highest buying price is %.2f\n", highestBuyingPrice);
+		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
+		objectsBought.view();
+	} else {
+		printf("Noone is buying anything\n");
+	}
 
-	printf("The highest buying price is %.2f\n", highestBuyingPrice);
-	printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
-	objectsBought.view();
+
+	printf("End of database\n\n");
 }
 
 bool DataBase::dealPossible() {
