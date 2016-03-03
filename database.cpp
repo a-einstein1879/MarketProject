@@ -41,13 +41,17 @@ bool DataBase::dealPossible() {
 	}
 }
 
-Object DataBase::popHighestBuyer() {
+Object DataBase::popLowestSeller() {
 	Object object;
+	object = objectsForSale.pop(1);
+	refreshPrices();
 	return object;
 }
 
-Object DataBase::popLowestSeller() {
+Object DataBase::popHighestBuyer() {
 	Object object;
+	object = objectsBought.pop(objectsBought.getNumberOfObjects());
+	refreshPrices();
 	return object;
 }
 

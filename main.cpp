@@ -1,7 +1,9 @@
 #include "market.h"
 #include <stdlib.h>
+#include <ctime>
 
 int main() {
+	srand(time(0));
 	Market *market;
 	market = market->getMarket();
 

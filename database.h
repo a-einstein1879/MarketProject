@@ -21,8 +21,8 @@ public:
 	int pushToDataBase(Object newObject);
 
 	bool dealPossible();
-	Object popHighestBuyer();
 	Object popLowestSeller();
+	Object popHighestBuyer();
 	void refreshPrices();
 
 	void viewDataBase();
