@@ -3,8 +3,8 @@
 DataBase* DataBase::p_DataBase = 0;
 
 DataBase::DataBase() {
-	numberOfObjectsForSale = 0;
-	numberOfObjectsBought  = 0;
+	lowestSellingPrice = -1;
+	highestBuyingPrice = -1;
 };
 
 DataBase* DataBase::getDataBase() {
@@ -25,10 +25,8 @@ int DataBase::findPositionForObject(Object object) {
 
 int DataBase::pushToDataBase(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
-		numberOfObjectsForSale++;
 		objectsForSale.push(newObject, findPositionForObject(newObject));
 	} else {
-		numberOfObjectsBought++;
 		objectsBought.push(newObject, findPositionForObject(newObject));
 	}
 	return 0;
@@ -36,8 +34,8 @@ int DataBase::pushToDataBase(Object newObject) {
 
 #include <stdio.h>
 void DataBase::viewDataBase() {
-	printf("Number of objects for sale is %d:\n", numberOfObjectsForSale);
+	printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
 	objectsForSale.view();
-	printf("Number of objects bought is %d:\n", numberOfObjectsBought);
+	printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
 	objectsBought.view();
 }

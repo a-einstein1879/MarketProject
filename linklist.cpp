@@ -4,10 +4,10 @@
 
 LinkList::LinkList() {
 	first = NULL;
+	numberOfObjects = 0;
 }
 
 void LinkList::push(Object object, int pos) {
-	/* TODO: Push at the end of the list will be a problem */
 	node* newNode = new node;
 	newNode->object = object;
 
@@ -41,6 +41,7 @@ void LinkList::push(Object object, int pos) {
 		newNode->prev = NULL;
 		first = newNode;
 	}
+	numberOfObjects++;
 }
  
 Object LinkList::pop(int pos) {
@@ -73,6 +74,7 @@ Object LinkList::pop(int pos) {
 		delete first;
 		first = NULL;
 	}
+	numberOfObjects--;
 	return returnValue;
 } 
  
@@ -93,7 +95,7 @@ void LinkList::view() {
 	}
 	node* newnode = first;
 	do {
-		printf("price = %.2f, creation time = %.2f, status = %d\n", newnode->object.getPrice(), newnode->object.getCreationTime(), newnode->object.getStatus());
+		newnode->object.printObject();
 		newnode = newnode->next;
 	} while(newnode != NULL);
 	printf("End of the list\n");
@@ -119,4 +121,8 @@ int LinkList::findPositionForObject(Object object) {
 	}
 
 	return pos;
+}
+
+int LinkList::getNumberOfObjects() {
+	return numberOfObjects;
 }

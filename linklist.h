@@ -19,6 +19,7 @@ Pop is done from the beginning of the list by default
 class LinkList { 
 private: 
     node* first;
+	int numberOfObjects;
 public: 
     LinkList();
  
@@ -29,6 +30,7 @@ public:
 	
 	/* We can find position for the object with use of this function. It uses <= and >= from Object.h to define where to place object */
 	int findPositionForObject(Object object);
+	int getNumberOfObjects();
 }; 
 
 #endif

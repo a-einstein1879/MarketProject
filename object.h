@@ -5,6 +5,9 @@
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
 */
 
+#define FORSALE 1
+#define BOUGHT  0
+
 class Object {
 private:
 	double price;
@@ -14,6 +17,7 @@ public:
 	Object();
 	Object(double Price, double CreationTime, bool Status);
 	void setObject(double Price, double CreationTime, bool Status);
+	void printObject();
 	double getPrice();
 	double getCreationTime();
 	bool   getStatus();

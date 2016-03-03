@@ -14,12 +14,14 @@
     <ClCompile Include="database.cpp" />
     <ClCompile Include="linklist.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="market.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database.h" />
     <ClInclude Include="linklist.h" />
+    <ClInclude Include="market.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

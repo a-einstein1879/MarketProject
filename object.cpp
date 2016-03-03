@@ -1,4 +1,5 @@
 #include "object.h"
+#include <stdio.h>
 
 Object::Object() {
 	price		 = 0;
@@ -16,6 +17,10 @@ void Object::setObject(double Price, double CreationTime, bool Status) {
 	price		 = Price;
 	creationTime = CreationTime;
 	status		 = Status;
+}
+
+void Object::printObject() {
+	printf("price = %.2f, creation time = %.2f, status = \"%s\"\n", getPrice(), getCreationTime(), getStatus()?"For sale":"Bought");
 }
 
 double Object::getPrice() {
