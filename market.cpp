@@ -5,8 +5,9 @@ Market* Market::p_Market = 0;
 
 Market::Market() {
 	timer = 0;
-	timeLeftBeforeNewSellingObject = 3;
-	timeLeftBeforeNewObjectBought = 5;
+	resetSellingTimer();
+	resetBuyingTimer();
+	dataBase = dataBase->getDataBase();
 }
 
 Market* Market::getMarket() {
@@ -16,27 +17,18 @@ Market* Market::getMarket() {
 	return p_Market;
 }
 
-#include <stdlib.h>
-void Market::run() {
-	dataBase = dataBase->getDataBase();
-
-/*	Object object;
-	for(int i = 0; i < 15; i++) {
-		object.setObject(rand()%15, i, rand()%2);
-		dataBase->pushToDataBase(object);
-	}
-	dataBase->viewDataBase();*/
-}
-
-#include <stdio.h>
 void Market::tick() {
-	timer++;
-	timeLeftBeforeNewSellingObject--;
-	timeLeftBeforeNewObjectBought--;
-
+	switchTimers();
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
 	if(timeToPrintDb())		{printDb();}
+//	while (dealPossible())	{runDeal();}
+}
+
+void Market::switchTimers() {
+	timer++;
+	timeLeftBeforeNewSellingObject--;
+	timeLeftBeforeNewObjectBought--;
 }
 
 bool Market::timeToAddSeller() {
@@ -50,9 +42,13 @@ bool Market::timeToPrintDb() {
 	return (timer % 2 == 0) ? true : false;
 }
 
+bool Market::dealPossible() {
+	return dataBase->dealPossible();
+}
+
 int Market::addSeller() {
 	Object object;
-	object.setObject(rand()%15, timer, FORSALE);
+	object.setObject(formSellingPrice(), timer, FORSALE);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
@@ -60,15 +56,24 @@ int Market::addSeller() {
 
 int Market::addBuyer() {
 	Object object;
-	object.setObject(rand()%15, timer, BOUGHT);
+	object.setObject(formBuyingPrice(), timer, BOUGHT);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;
 }
 
-void Market::printDb() {
-	printf("Timer = %d\n", timer);
-	dataBase->viewDataBase();
+void Market::runDeal() {}
+
+/**********************************************************************
+							Statistical part
+**********************************************************************/
+#include <stdlib.h>
+double Market::formSellingPrice() {
+	return rand()%15;
+}
+
+double Market::formBuyingPrice() {
+	return rand()%15;
 }
 
 void Market::resetSellingTimer() {
@@ -77,4 +82,13 @@ void Market::resetSellingTimer() {
 
 void Market::resetBuyingTimer() {
 	timeLeftBeforeNewObjectBought = 5;
+}
+/**********************************************************************
+						End of statistical part
+**********************************************************************/
+
+#include <stdio.h>
+void Market::printDb() {
+	printf("Timer = %d\n", timer);
+	dataBase->viewDataBase();
 }

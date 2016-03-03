@@ -15,16 +15,21 @@ private:
 public:
 	static Market* getMarket();
 
-	void run();
 	void tick();
+	void switchTimers();
+
 	bool timeToAddSeller();
 	bool timeToAddBuyer();
 	bool timeToPrintDb();
+	bool dealPossible();
 
 	int addSeller();
 	int addBuyer();
 	void printDb();
+	void runDeal();
 
+	double formSellingPrice();
+	double formBuyingPrice();
 	void resetSellingTimer();
 	void resetBuyingTimer();
 };
