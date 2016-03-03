@@ -2,6 +2,10 @@
 #define MARKET_H
 
 #include "database.h"
+struct Deal {
+	double price;
+	double time;
+};
 
 class Market {
 private:
@@ -26,6 +30,7 @@ public:
 	int addSeller();
 	int addBuyer();
 	void runDeal();
+	void printDeal(Deal deal);
 	void printDb();
 
 	double formSellingPrice();

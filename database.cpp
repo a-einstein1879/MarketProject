@@ -34,6 +34,7 @@ int DataBase::pushToDataBase(Object newObject) {
 }
 
 bool DataBase::dealPossible() {
+	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return false;}
 	if(highestBuyingPrice >= lowestSellingPrice) {
 		return true;
 	} else {

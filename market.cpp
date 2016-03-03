@@ -21,7 +21,7 @@ void Market::tick() {
 	switchTimers();
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
-//	while (dealPossible())	{runDeal();}
+	while (dealPossible())	{runDeal();}
 	if(timeToPrintDb())		{printDb();}
 }
 
@@ -62,7 +62,16 @@ int Market::addBuyer() {
 	return 0;
 }
 
-void Market::runDeal() {}
+#define module(a, b) (a > b ? a - b : b - a)
+void Market::runDeal() {
+	Object seller, buyer;
+	buyer = dataBase->popHighestBuyer();
+	seller = dataBase->popLowestSeller();
+	Deal deal;
+	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
+	deal.time = module(buyer.getCreationTime(), seller.getCreationTime());
+	printDeal(deal);
+}
 
 /**********************************************************************
 							Statistical part
@@ -91,4 +100,8 @@ void Market::resetBuyingTimer() {
 void Market::printDb() {
 	printf("Timer = %d\n", timer);
 	dataBase->viewDataBase();
+}
+
+void Market::printDeal(Deal deal) {
+	printf("Deal price = %.2f, deal time = %.2f\n", deal.price, deal.time);
 }
