@@ -39,7 +39,7 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintDb() {
-	return (timer % 1 == 0) ? true : false;
+	return (timer % 2 == 0) ? true : false;
 }
 
 bool Market::dealPossible() {
@@ -77,7 +77,7 @@ double Market::formBuyingPrice() {
 }
 
 void Market::resetSellingTimer() {
-	timeLeftBeforeNewSellingObject = 1;
+	timeLeftBeforeNewSellingObject = 3;
 }
 
 void Market::resetBuyingTimer() {
