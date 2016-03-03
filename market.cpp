@@ -69,7 +69,7 @@ void Market::runDeal() {}
 **********************************************************************/
 #include <stdlib.h>
 double Market::formSellingPrice() {
-	return rand()%15;
+	return 10 + rand()%15;
 }
 
 double Market::formBuyingPrice() {

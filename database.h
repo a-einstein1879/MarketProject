@@ -19,12 +19,13 @@ private:
 public:
 	static DataBase* getDataBase();
 	int pushToDataBase(Object newObject);
-	void viewDataBase();
 
 	bool dealPossible();
 	Object popHighestBuyer();
 	Object popLowestSeller();
 	void refreshPrices();
+
+	void viewDataBase();
 };
 
 #endif

@@ -33,27 +33,6 @@ int DataBase::pushToDataBase(Object newObject) {
 	return 0;
 }
 
-#include <stdio.h>
-void DataBase::viewDataBase() {
-	if(objectsForSale.getNumberOfObjects() != 0) {
-		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
-		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
-		objectsForSale.view();
-	} else {
-		printf("Noone is selling anything\n");
-	}
-	
-	if(objectsBought.getNumberOfObjects() != 0) {
-		printf("The highest buying price is %.2f\n", highestBuyingPrice);
-		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
-		objectsBought.view();
-	} else {
-		printf("Noone is buying anything\n");
-	}
-
-	printf("End of database\n\n");
-}
-
 bool DataBase::dealPossible() {
 	if(highestBuyingPrice >= lowestSellingPrice) {
 		return true;
@@ -80,11 +59,36 @@ void DataBase::refreshPrices() {
 		object = objectsForSale.pop(1);
 		lowestSellingPrice = object.getPrice();
 		objectsForSale.push(object, 1);
+	} else {
+		lowestSellingPrice = -1;
 	}
 	
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.pop(objectsBought.getNumberOfObjects());
 		highestBuyingPrice = object.getPrice();
 		objectsBought.push(object, findPositionForObject(object));
+	} else {
+		highestBuyingPrice = -1;
 	}
+}
+
+#include <stdio.h>
+void DataBase::viewDataBase() {
+	if(objectsForSale.getNumberOfObjects() != 0) {
+		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
+		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
+		objectsForSale.view();
+	} else {
+		printf("Noone is selling anything\n");
+	}
+	
+	if(objectsBought.getNumberOfObjects() != 0) {
+		printf("The highest buying price is %.2f\n", highestBuyingPrice);
+		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
+		objectsBought.view();
+	} else {
+		printf("Noone is buying anything\n");
+	}
+
+	printf("End of database\n\n");
 }
