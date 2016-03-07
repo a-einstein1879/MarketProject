@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include <ctime>
 
+#include "interface.h"
+
 int main() {
-	srand(time(0));
+	interfaceFunction();
+
+/*	srand(time(0));
 	Market *market;
 	market = market->getMarket();
 
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 30000; i++) {
 		market->tick();
-	}
+	}*/
 
-	system("pause");
-	return 0;
+//	system("pause");
+//	return 0;
 };

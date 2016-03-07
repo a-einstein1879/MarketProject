@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="interface.cpp" />
     <ClCompile Include="linklist.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="market.cpp" />
@@ -20,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database.h" />
+    <ClInclude Include="interface.h" />
     <ClInclude Include="linklist.h" />
     <ClInclude Include="market.h" />
     <ClInclude Include="object.h" />
