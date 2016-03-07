@@ -8,6 +8,17 @@ Market::Market() {
 	resetSellingTimer();
 	resetBuyingTimer();
 	dataBase = dataBase->getDataBase();
+
+	char *fname = "output.txt";
+	file = fopen(fname, "w");
+	if(file == NULL) {
+		printf("File '%s' can`t be open ", fname);
+	}
+	fprintf(file, "Deal price\tDeal time\n");
+}
+
+Market::~Market() {
+	fclose(file);
 }
 
 Market* Market::getMarket() {
@@ -39,7 +50,8 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintDb() {
-	return (timer % 2 == 0) ? true : false;
+	return false;
+	//return (timer % 15 == 0) ? true : false;
 }
 
 bool Market::dealPossible() {
@@ -82,7 +94,7 @@ double Market::formSellingPrice() {
 }
 
 double Market::formBuyingPrice() {
-	return rand()%15;
+	return 5 + rand()%10;
 }
 
 void Market::resetSellingTimer() {
@@ -90,7 +102,7 @@ void Market::resetSellingTimer() {
 }
 
 void Market::resetBuyingTimer() {
-	timeLeftBeforeNewObjectBought = 5;
+	timeLeftBeforeNewObjectBought = 1;
 }
 /**********************************************************************
 						End of statistical part
@@ -103,5 +115,5 @@ void Market::printDb() {
 }
 
 void Market::printDeal(Deal deal) {
-	printf("Deal price = %.2f, deal time = %.2f\n", deal.price, deal.time);
+	fprintf(file, "%.2f\t%.2f\n", deal.price, deal.time);
 }

@@ -2,6 +2,8 @@
 #define MARKET_H
 
 #include "database.h"
+#include <stdio.h>
+
 struct Deal {
 	double price;
 	double time;
@@ -10,16 +12,14 @@ struct Deal {
 class Market {
 private:
 	Market();
+	~Market();
 	static Market *p_Market;
 	
 	DataBase *dataBase;
 	int timer;
 	int timeLeftBeforeNewSellingObject;
 	int timeLeftBeforeNewObjectBought;
-public:
-	static Market* getMarket();
 
-	void tick();
 	void switchTimers();
 
 	bool timeToAddSeller();
@@ -30,13 +30,22 @@ public:
 	int addSeller();
 	int addBuyer();
 	void runDeal();
+
+	FILE *file;
 	void printDeal(Deal deal);
-	void printDb();
+public:
+	static Market* getMarket();
+
+	void tick();
+
 
 	double formSellingPrice();
 	double formBuyingPrice();
 	void resetSellingTimer();
 	void resetBuyingTimer();
+
+	
+	void printDb();
 };
 
 #endif
