@@ -5,7 +5,9 @@
 #include "interface.h"
 
 int main() {
-	interfaceFunction();
+	OpenGLInterface *ui;
+	ui = ui->getOpenGLInterface();
+	ui->interfaceFunction();
 
 /*	srand(time(0));
 	Market *market;
