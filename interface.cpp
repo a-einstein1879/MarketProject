@@ -26,57 +26,41 @@ int OpenGLInterface::interfaceFunction() {
 	MSG  msg;              // Структура для хранения сообщения Windows
 	BOOL  done = false;            // Логическая переменная для выхода из цикла
 
-	if( !CreateGLWindow( L"NeHe OpenGL окно", 1024, 768, 32, fullscreen ) )
-  {
-    return 0;              // Выйти, если окно не может быть создано
-  }
+	if( !CreateGLWindow( L"NeHe OpenGL окно", 1024, 768, 32, fullscreen ) ) {
+		return 0;
+	}
 	
-	while( !done )                // Цикл продолжается, пока done не равно true
-  {
-	  if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) )    // Есть ли в очереди какое-нибудь сообщение?
-    {
-		if( msg.message == WM_QUIT )        // Мы поучили сообщение о выходе?
-      {
-        done = true;          // Если так, done=true
-      }
-      else              // Если нет, обрабатывает сообщения
-      {
-		  TranslateMessage( &msg );        // Переводим сообщение
-		  DispatchMessage( &msg );        // Отсылаем сообщение
-      }
-    }
-    else                // Если нет сообщений
-    {
-		// Прорисовываем сцену.
-      if( active )          // Активна ли программа?
-      {
-        if(keys[VK_ESCAPE])        // Было ли нажата клавиша ESC?
-        {
-          done = true;      // ESC говорит об останове выполнения программы
-        }
-        else            // Не время для выхода, обновим экран.
-        {
-			DrawGLScene();        // Рисуем сцену
-			SwapBuffers( hDC );    // Меняем буфер (двойная буферизация)
-        }
-      }
-	        if( keys[VK_F1] )          // Была ли нажата F1?
-      {
-        keys[VK_F1] = false;        // Если так, меняем значение ячейки массива на false
-        KillGLWindow();          // Разрушаем текущее окно
-//        fullscreen = !fullscreen;      // Переключаем режим
-        // Пересоздаём наше OpenGL окно
-        if( !CreateGLWindow( _T("NeHe OpenGL структура"), 1024, 768, 32, fullscreen ) )
-        {
-          return 0;        // Выходим, если это невозможно
-        }
-      }
-    }
-  }
-	
-  // Shutdown
-  KillGLWindow();                // Разрушаем окно
-  return ( msg.wParam );              // Выходим из программы
+	while( !done ) {
+		if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
+			if( msg.message == WM_QUIT ) {
+				done = true;
+			} else {
+				TranslateMessage( &msg );        // Переводим сообщение
+				DispatchMessage( &msg );        // Отсылаем сообщение
+			}
+		} else {
+			if( active ) {
+/*				if(keys[VK_ESCAPE]) {
+					done = true;      // ESC говорит об останове выполнения программы
+				} else {*/
+					DrawGLScene();
+					SwapBuffers( hDC );
+//				}
+			}
+/*			if( keys[VK_F1] ) {
+				keys[VK_F1] = false;
+				KillGLWindow();
+				fullscreen = !fullscreen;
+				// Пересоздаём наше OpenGL окно
+				if( !CreateGLWindow( _T("NeHe OpenGL структура"), 1024, 768, 32, fullscreen ) ) {
+					return 0;        // Выходим, если это невозможно
+				}
+			}*/
+		}
+	}
+	// Shutdown
+	KillGLWindow();                // Разрушаем окно
+	return ( msg.wParam );              // Выходим из программы
 }
 
 int OpenGLInterface::InitGL(GLvoid) {
@@ -131,6 +115,7 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
 			}
 		}
 	}
+
 	if(fullscreen) {
 		dwExStyle  =   WS_EX_APPWINDOW;          // Расширенный стиль окна
 		dwStyle    =   WS_POPUP;            // Обычный стиль окна
@@ -261,6 +246,13 @@ GLvoid OpenGLInterface::KillGLWindow( GLvoid ) {
 int OpenGLInterface::DrawGLScene( GLvoid ) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glBegin(GL_QUADS);
+	glVertex3f(-1.0f, 1.0f, 0.0f);  // Слева вверху
+	glVertex3f( 1.0f, 1.0f, 0.0f);  // Справа вверху
+	glVertex3f( 1.0f,-1.0f, 0.0f);  // Справа внизу
+	glVertex3f(-1.0f,-1.0f, 0.0f);  // Слева внизу
+	glEnd();
 	return true;
 }
 
