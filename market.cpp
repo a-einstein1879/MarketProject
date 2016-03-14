@@ -28,8 +28,8 @@ int Market::tick() {
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
 	while (dealPossible())	{runDeal();}
-	if(timeToPrintDb())		{printDb();}
-	if(timeToFinish())		{return 0;}
+	if(timeToPrintTimer())	{printTimer();}
+	if(timeToFinish())		{finish(); return 0;}
 	return 1;
 }
 
@@ -46,7 +46,7 @@ bool Market::timeToAddBuyer() {
 	return (timeLeftBeforeNewObjectBought < 1) ? true : false;
 }
 
-bool Market::timeToPrintDb() {
+bool Market::timeToPrintTimer() {
 	return (timer % TIMERPRINTINGFREQUENCY == 0) ? true : false;
 }
 
@@ -127,7 +127,7 @@ double Market::getExponentiallyDistributedValue(double lambda) {
 **********************************************************************/
 
 #include <stdio.h>
-void Market::printDb() {
+void Market::printTimer() {
 	printf("Timer = %d\n", timer);
 #ifndef SILENTMODE
 	dataBase->viewDataBase();
