@@ -37,8 +37,10 @@ private:
 	double formBuyingPrice();
 	void resetSellingTimer();
 	void resetBuyingTimer();
-
+	
+public:
 	double getNormallyDistributedValue(double mean, double dispersion);
+	double getExponentiallyDistributedValue(double lambda);
 	/* end of statistics*/
 
 	int addSeller();

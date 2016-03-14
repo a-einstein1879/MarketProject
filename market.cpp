@@ -113,6 +113,11 @@ double Market::getNormallyDistributedValue(double mean, double dispersion) {
 	return u * s * dispersion + mean;
 }
 
+double Market::getExponentiallyDistributedValue(double lambda) {
+	double val = -1 * log(1 - double(rand()%ACCURACY) / ACCURACY) / lambda;
+	return val;
+}
+
 /**********************************************************************
 						End of statistical part
 **********************************************************************/
