@@ -23,12 +23,14 @@ Market* Market::getMarket() {
 	return p_Market;
 }
 
-void Market::tick() {
+int Market::tick() {
 	switchTimers();
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
 	while (dealPossible())	{runDeal();}
 	if(timeToPrintDb())		{printDb();}
+	if(timeToFinish())		{return 0;}
+	return 1;
 }
 
 void Market::switchTimers() {
@@ -45,7 +47,11 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintDb() {
-	return (timer % 1000 == 0) ? true : false;
+	return (timer % TIMERPRINTINGFREQUENCY == 0) ? true : false;
+}
+
+bool Market::timeToFinish() {
+	return (timer < MODELINGTIME) ? false : true;
 }
 
 bool Market::dealPossible() {
@@ -85,22 +91,20 @@ void Market::runDeal() {
 #include <cmath>
 
 double Market::formSellingPrice() {
-	return 10 + rand()%15;
+	return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE);
 }
 
 double Market::formBuyingPrice() {
-	return 5 + rand()%10;
+	return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE);
 }
 
 void Market::resetSellingTimer() {
-	timeLeftBeforeNewSellingObject = 3;
+	timeLeftBeforeNewSellingObject = getExponentiallyDistributedValue(0.2);
 }
 
 void Market::resetBuyingTimer() {
-	timeLeftBeforeNewObjectBought = 1;
+	timeLeftBeforeNewObjectBought = getExponentiallyDistributedValue(0.6);
 }
-
-#define ACCURACY 100
 
 double Market::getNormallyDistributedValue(double mean, double dispersion) {
 	double u, v, s;
@@ -144,23 +148,24 @@ void Market::openFiles() {
 	if(dealFile == NULL) {
 		printf("File '%s' can`t be open ", DEALFILE);
 	}
-	fprintf(dealFile, "Deal price\n");
 	
 	sellersFile = fopen(SELLERSFILE, "w");
 	if(sellersFile == NULL) {
 		printf("File '%s' can`t be open ", SELLERSFILE);
 	}
-	fprintf(sellersFile, "Deal time\n");
 	
 	buyersFile = fopen(BUYERSFILE, "w");
+
 	if(buyersFile == NULL) {
 		printf("File '%s' can`t be open ", BUYERSFILE);
 	}
-	fprintf(buyersFile, "Deal time\n");
 }
 
 void Market::closeFiles() {
 	fclose(dealFile);
 	fclose(sellersFile);
 	fclose(buyersFile);
+}
+
+void Market::finish() {
 }

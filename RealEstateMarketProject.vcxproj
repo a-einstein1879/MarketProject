@@ -20,6 +20,7 @@
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cmn_defines.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="linklist.h" />

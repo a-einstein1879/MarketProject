@@ -2,12 +2,8 @@
 #define MARKET_H
 
 #include "database.h"
+#include "cmn_defines.h"
 #include <stdio.h>
-
-#define DEALFILE		"output/dealsOutput.txt"
-#define SELLERSFILE		"output/sellersOutput.txt"
-#define BUYERSFILE		"output/buyersOutput.txt"
-#define SILENTMODE
 
 struct Deal {
 	double price;
@@ -31,6 +27,7 @@ private:
 	bool timeToAddBuyer();
 	bool dealPossible();
 	bool timeToPrintDb();
+	bool timeToFinish();
 	
 	/* Statistics */
 	double formSellingPrice();
@@ -38,10 +35,9 @@ private:
 	void resetSellingTimer();
 	void resetBuyingTimer();
 	
-public:
 	double getNormallyDistributedValue(double mean, double dispersion);
 	double getExponentiallyDistributedValue(double lambda);
-	/* end of statistics*/
+	/* End of statistics*/
 
 	int addSeller();
 	int addBuyer();
@@ -50,13 +46,13 @@ public:
 	FILE *dealFile, *sellersFile, *buyersFile;
 	void openFiles();
 	void closeFiles();
+	void printDb();
 	void printDeal(Deal deal);
 public:
 	static Market* getMarket();
 
-	void tick();
-	
-	void printDb();
+	int tick();
+	void finish();
 };
 
 #endif

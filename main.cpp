@@ -13,9 +13,7 @@ int main() {
 	Market *market;
 	market = market->getMarket();
 
-	for(int i = 0; i < 5000; i++) {
-		market->tick();
-	}
+	while(market->tick()) {}
 
 	system("pause");
 	return 0;
