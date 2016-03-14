@@ -9,16 +9,11 @@ Market::Market() {
 	resetBuyingTimer();
 	dataBase = dataBase->getDataBase();
 
-	char *fname = "output.txt";
-	file = fopen(fname, "w");
-	if(file == NULL) {
-		printf("File '%s' can`t be open ", fname);
-	}
-	fprintf(file, "Deal price\tDeal time\n");
+	openFiles();
 }
 
 Market::~Market() {
-	fclose(file);
+	closeFiles();
 }
 
 Market* Market::getMarket() {
@@ -50,8 +45,7 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintDb() {
-	return false;
-	//return (timer % 15 == 0) ? true : false;
+	return (timer % 1000 == 0) ? true : false;
 }
 
 bool Market::dealPossible() {
@@ -74,14 +68,13 @@ int Market::addBuyer() {
 	return 0;
 }
 
-#define module(a, b) (a > b ? a - b : b - a)
 void Market::runDeal() {
 	Object seller, buyer;
 	buyer = dataBase->popHighestBuyer();
 	seller = dataBase->popLowestSeller();
 	Deal deal;
 	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
-	deal.time = module(buyer.getCreationTime(), seller.getCreationTime());
+	deal.time = buyer.getCreationTime() - seller.getCreationTime();
 	printDeal(deal);
 }
 
@@ -89,6 +82,8 @@ void Market::runDeal() {
 							Statistical part
 **********************************************************************/
 #include <stdlib.h>
+#include <cmath>
+
 double Market::formSellingPrice() {
 	return 10 + rand()%15;
 }
@@ -104,6 +99,20 @@ void Market::resetSellingTimer() {
 void Market::resetBuyingTimer() {
 	timeLeftBeforeNewObjectBought = 1;
 }
+
+#define ACCURACY 100
+
+double Market::getNormallyDistributedValue(double mean, double dispersion) {
+	double u, v, s;
+	do {
+		u = 2 * double(rand()%ACCURACY) / ACCURACY - 1;
+		v = 2 * double(rand()%ACCURACY) / ACCURACY - 1;
+		s = u * u + v * v;
+	} while(s > 1);
+	s = sqrt(-2 * log(s) / s);
+	return u * s * dispersion + mean;
+}
+
 /**********************************************************************
 						End of statistical part
 **********************************************************************/
@@ -111,9 +120,42 @@ void Market::resetBuyingTimer() {
 #include <stdio.h>
 void Market::printDb() {
 	printf("Timer = %d\n", timer);
+#ifndef SILENTMODE
 	dataBase->viewDataBase();
+#endif
 }
 
 void Market::printDeal(Deal deal) {
-	fprintf(file, "%.2f\t%.2f\n", deal.price, deal.time);
+	fprintf(dealFile, "%.2f\n", deal.price);
+	if(deal.time >= 0) {
+		fprintf(sellersFile, "%.2f\n", deal.time);
+	} else {
+		fprintf(buyersFile, "%.2f\n", - deal.time);
+	}
+}
+
+void Market::openFiles() {
+	dealFile = fopen(DEALFILE, "w");
+	if(dealFile == NULL) {
+		printf("File '%s' can`t be open ", DEALFILE);
+	}
+	fprintf(dealFile, "Deal price\n");
+	
+	sellersFile = fopen(SELLERSFILE, "w");
+	if(sellersFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFILE);
+	}
+	fprintf(sellersFile, "Deal time\n");
+	
+	buyersFile = fopen(BUYERSFILE, "w");
+	if(buyersFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFILE);
+	}
+	fprintf(buyersFile, "Deal time\n");
+}
+
+void Market::closeFiles() {
+	fclose(dealFile);
+	fclose(sellersFile);
+	fclose(buyersFile);
 }
