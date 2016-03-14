@@ -26,7 +26,7 @@ private:
 	bool timeToAddSeller();
 	bool timeToAddBuyer();
 	bool dealPossible();
-	bool timeToPrintDb();
+	bool timeToPrintTimer();
 	bool timeToFinish();
 	
 	/* Statistics */
@@ -46,7 +46,7 @@ private:
 	FILE *dealFile, *sellersFile, *buyersFile;
 	void openFiles();
 	void closeFiles();
-	void printDb();
+	void printTimer();
 	void printDeal(Deal deal);
 public:
 	static Market* getMarket();
