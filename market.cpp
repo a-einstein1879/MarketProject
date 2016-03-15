@@ -77,7 +77,9 @@ int Market::addBuyer() {
 void Market::runDeal() {
 	Object seller, buyer;
 	buyer = dataBase->popHighestBuyer();
+	if(buyer.getCreationTime() == -1) {return;}
 	seller = dataBase->popLowestSeller();
+	if(seller.getCreationTime() == -1) {dataBase->pushToDataBase(buyer); return;}
 	Deal deal;
 	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
 	deal.time = buyer.getCreationTime() - seller.getCreationTime();
@@ -99,11 +101,11 @@ double Market::formBuyingPrice() {
 }
 
 void Market::resetSellingTimer() {
-	timeLeftBeforeNewSellingObject = getExponentiallyDistributedValue(0.2);
+	timeLeftBeforeNewSellingObject = getExponentiallyDistributedValue(SELLERSLAMBDA);
 }
 
 void Market::resetBuyingTimer() {
-	timeLeftBeforeNewObjectBought = getExponentiallyDistributedValue(0.6);
+	timeLeftBeforeNewObjectBought = getExponentiallyDistributedValue(BUYERSLAMBDA);
 }
 
 double Market::getNormallyDistributedValue(double mean, double dispersion) {

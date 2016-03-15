@@ -25,6 +25,9 @@
 #define MINIMUMBUYINGPRICE	5
 #define MAXIMUMBUYINGPRICE	15
 
+#define SELLERSLAMBDA		0.2
+#define BUYERSLAMBDA		0.6
+
 
 /* Accuracy of random in forming of distributions */
 #define ACCURACY 100

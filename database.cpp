@@ -43,17 +43,27 @@ bool DataBase::dealPossible() {
 }
 
 Object DataBase::popLowestSeller() {
-	Object object;
-	object = objectsForSale.pop(1);
-	refreshPrices();
-	return object;
+	if(objectsForSale.getNumberOfObjects() > 0) {
+		Object object;
+		object = objectsForSale.pop(1);
+		refreshPrices();
+		return object;
+	} else {
+		Object object;
+		return object;
+	}
 }
 
 Object DataBase::popHighestBuyer() {
-	Object object;
-	object = objectsBought.pop(objectsBought.getNumberOfObjects());
-	refreshPrices();
-	return object;
+	if(objectsBought.getNumberOfObjects() > 0) {
+		Object object;
+		object = objectsBought.pop(objectsBought.getNumberOfObjects());
+		refreshPrices();
+		return object;
+	} else {
+		Object object;
+		return object;
+	}
 }
 
 #include <stdlib.h>
