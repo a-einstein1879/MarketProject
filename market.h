@@ -43,7 +43,7 @@ private:
 	int addBuyer();
 	void runDeal();
 
-	FILE *dealFile, *sellersFile, *buyersFile;
+	FILE *dealFile, *sellersFile, *buyersFile, *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
 	void openFiles();
 	void closeFiles();
 	void printTimer();

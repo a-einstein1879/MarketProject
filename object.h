@@ -1,6 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <stdio.h>
+
 /*
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
 */
@@ -13,14 +15,23 @@ private:
 	double price;
 	double creationTime;
 	bool status;
+	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
 public:
 	Object();
 	Object(double Price, double CreationTime, bool Status);
 	void setObject(double Price, double CreationTime, bool Status);
+	void setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile);
 	void printObject();
+	void printObjectToFinalFiles();
+
 	double getPrice();
 	double getCreationTime();
 	bool   getStatus();
+	FILE* getBuyersFinalPricesFile();
+	FILE* getBuyersFinalTimersFile();
+	FILE* getSellersFinalPricesFile();
+	FILE* getSellersFinalTimersFile();
+
 	Object& operator=(Object &object);
 	bool operator<=(Object &object);
 	bool operator>=(Object &object);

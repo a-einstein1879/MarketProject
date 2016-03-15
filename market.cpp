@@ -59,16 +59,16 @@ bool Market::dealPossible() {
 }
 
 int Market::addSeller() {
-	Object object;
-	object.setObject(formSellingPrice(), timer, FORSALE);
+	Object object(formSellingPrice(), timer, FORSALE);
+	object.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
 }
 
 int Market::addBuyer() {
-	Object object;
-	object.setObject(formBuyingPrice(), timer, BOUGHT);
+	Object object(formBuyingPrice(), timer, BOUGHT);
+	object.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;
@@ -93,11 +93,11 @@ void Market::runDeal() {
 #include <cmath>
 
 double Market::formSellingPrice() {
-	return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE);
+	return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE + 1);
 }
 
 double Market::formBuyingPrice() {
-	return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE);
+	return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE + 1);
 }
 
 void Market::resetSellingTimer() {
@@ -157,9 +157,28 @@ void Market::openFiles() {
 	}
 	
 	buyersFile = fopen(BUYERSFILE, "w");
-
 	if(buyersFile == NULL) {
 		printf("File '%s' can`t be open ", BUYERSFILE);
+	}
+	
+	buyersFinalPricesFile = fopen(BUYERSFINALPRICESFILE, "w");
+	if(buyersFinalPricesFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFINALPRICESFILE);
+	}
+
+	buyersFinalTimersFile = fopen(BUYERSFINALTIMERSFILE, "w");
+	if(buyersFinalTimersFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFINALTIMERSFILE);
+	}
+
+	sellersFinalPricesFile = fopen(SELLERSFINALPRICESFILE, "w");
+	if(sellersFinalPricesFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFINALPRICESFILE);
+	}
+
+	sellersFinalTimersFile = fopen(SELLERSFINALTIMERSFILE, "w");
+	if(sellersFinalTimersFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFINALTIMERSFILE);
 	}
 }
 
@@ -167,7 +186,23 @@ void Market::closeFiles() {
 	fclose(dealFile);
 	fclose(sellersFile);
 	fclose(buyersFile);
+	fclose(buyersFinalPricesFile);
+	fclose(buyersFinalTimersFile);
+	fclose(sellersFinalPricesFile);
+	fclose(sellersFinalTimersFile);
 }
 
 void Market::finish() {
+	Object object;
+	while(1) {
+		object = dataBase->popLowestSeller();
+		if(object.getCreationTime() == -1)	{break;}
+		else								{object.printObjectToFinalFiles(); continue;}
+	}
+
+	while(1) {
+		object = dataBase->popHighestBuyer();
+		if(object.getCreationTime() == -1)	{break;}
+		else								{object.printObjectToFinalFiles(); continue;}
+	}
 }
