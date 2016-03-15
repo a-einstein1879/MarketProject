@@ -35,7 +35,7 @@ private:
 	void resetSellingTimer();
 	void resetBuyingTimer();
 	
-	double getNormallyDistributedValue(double mean, double dispersion);
+	double getNormallyDistributedValue(double mean, double standartDeviation);
 	double getExponentiallyDistributedValue(double lambda);
 	/* End of statistics*/
 

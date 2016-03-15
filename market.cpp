@@ -93,11 +93,13 @@ void Market::runDeal() {
 #include <cmath>
 
 double Market::formSellingPrice() {
-	return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE + 1);
+	//return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE + 1);
+	return getNormallyDistributedValue(15, 3);
 }
 
 double Market::formBuyingPrice() {
-	return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE + 1);
+	//return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE + 1);
+	return getNormallyDistributedValue(10, 3);
 }
 
 void Market::resetSellingTimer() {
@@ -108,7 +110,7 @@ void Market::resetBuyingTimer() {
 	timeLeftBeforeNewObjectBought = getExponentiallyDistributedValue(BUYERSLAMBDA);
 }
 
-double Market::getNormallyDistributedValue(double mean, double dispersion) {
+double Market::getNormallyDistributedValue(double mean, double standartDeviation) {
 	double u, v, s;
 	do {
 		u = 2 * double(rand()%ACCURACY) / ACCURACY - 1;
@@ -116,7 +118,7 @@ double Market::getNormallyDistributedValue(double mean, double dispersion) {
 		s = u * u + v * v;
 	} while(s > 1);
 	s = sqrt(-2 * log(s) / s);
-	return u * s * dispersion + mean;
+	return u * s * standartDeviation + mean;
 }
 
 double Market::getExponentiallyDistributedValue(double lambda) {
