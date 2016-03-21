@@ -17,6 +17,7 @@ private:
 	static Market *p_Market;
 	
 	DataBase *dataBase;
+	Cmn_Defines *cmn_defines;
 	int timer;
 	int timeLeftBeforeNewSellingObject;
 	int timeLeftBeforeNewObjectBought;

@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmn_defines.cpp" />
     <ClCompile Include="database.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="linklist.cpp" />

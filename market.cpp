@@ -5,9 +5,11 @@ Market* Market::p_Market = 0;
 
 Market::Market() {
 	timer = 1;
+	dataBase = dataBase->getDataBase();
+	cmn_defines = cmn_defines->getCmn_Defines();
+	cmn_defines->printConfiguration();
 	resetSellingTimer();
 	resetBuyingTimer();
-	dataBase = dataBase->getDataBase();
 
 	openFiles();
 }
@@ -51,7 +53,7 @@ bool Market::timeToPrintTimer() {
 }
 
 bool Market::timeToFinish() {
-	return (timer < MODELINGTIME) ? false : true;
+	return (timer < cmn_defines->getModelingTime()) ? false : true;
 }
 
 bool Market::dealPossible() {
@@ -93,21 +95,45 @@ void Market::runDeal() {
 #include <cmath>
 
 double Market::formSellingPrice() {
-	//return MINIMUMSELLINGPRICE + rand()%(MAXIMUMSELLINGPRICE - MINIMUMSELLINGPRICE + 1);
-	return getNormallyDistributedValue(15, 3);
+	switch(cmn_defines->getSellerPricesMode()) {
+		case 1:
+			return getNormallyDistributedValue(cmn_defines->getSellersMean(), cmn_defines->getSellersStandartDeviation());
+		case 0:
+			return cmn_defines->getMinimumSellersPrice() + rand()%int(cmn_defines->getMaximumSellersPrice() - cmn_defines->getMinimumSellersPrice() + 1);
+	}
+	return -1;
 }
 
 double Market::formBuyingPrice() {
-	//return MINIMUMBUYINGPRICE + rand()%(MAXIMUMBUYINGPRICE - MINIMUMBUYINGPRICE + 1);
-	return getNormallyDistributedValue(10, 3);
+	switch(cmn_defines->getBuyerPricesMode()) {
+		case 1:
+			return getNormallyDistributedValue(cmn_defines->getBuyersMean(), cmn_defines->getBuyersStandartDeviation());
+		case 0:
+			return cmn_defines->getMinimumBuyersPrice() + rand()%int(cmn_defines->getMaximumBuyersPrice() - cmn_defines->getMinimumBuyersPrice() + 1);
+	}
+	return -1;
 }
 
 void Market::resetSellingTimer() {
-	timeLeftBeforeNewSellingObject = getExponentiallyDistributedValue(SELLERSLAMBDA);
+	switch(cmn_defines->getBuyerPricesMode()) {
+		case 1:
+			timeLeftBeforeNewSellingObject = int(getExponentiallyDistributedValue(cmn_defines->getSellersLambda()));
+			return;
+		case 0:
+			timeLeftBeforeNewSellingObject = cmn_defines->getSellersFrequency();
+			return;
+	}
 }
 
 void Market::resetBuyingTimer() {
-	timeLeftBeforeNewObjectBought = getExponentiallyDistributedValue(BUYERSLAMBDA);
+	switch(cmn_defines->getBuyerPricesMode()) {
+		case 1:
+			timeLeftBeforeNewObjectBought = int(getExponentiallyDistributedValue(cmn_defines->getBuyersLambda()));
+			return;
+		case 0:
+			timeLeftBeforeNewObjectBought = cmn_defines->getBuyersFrequency();
+			return;
+	}
 }
 
 double Market::getNormallyDistributedValue(double mean, double standartDeviation) {
