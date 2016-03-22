@@ -6,8 +6,8 @@
 struct node 
 {
     Object object;
-    node* next;
-    node* prev;
+    node* nextPrice;
+    node* prevPrice;
 }; 
 
 /*
@@ -19,15 +19,16 @@ Pop is done from the beginning of the list by default
 
 class LinkList { 
 private: 
-    node* first;
+    node* firstPrice;
 	int numberOfObjects;
 public: 
     LinkList();
  
-    void push(Object object, int pos = -1);
+    void push(Object object, int pricePosition = -1, int timerPosition = -1);
     Object pop(int pos = 1);
     void clean();
-    void view();
+    void viewPrice();
+    void viewTimers();
 	
 	/* We can find position for the object with use of this function. It uses <= and >= from Object.h to define where to place object */
 	int findPositionForObject(Object object);

@@ -83,7 +83,7 @@ void DataBase::viewDataBase() {
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
 		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
-		objectsForSale.view();
+		objectsForSale.viewPrice();
 	} else {
 		printf("Noone is selling anything\n");
 	}
@@ -91,7 +91,7 @@ void DataBase::viewDataBase() {
 	if(objectsBought.getNumberOfObjects() != 0) {
 		printf("The highest buying price is %.2f\n", highestBuyingPrice);
 		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
-		objectsBought.view();
+		objectsBought.viewPrice();
 	} else {
 		printf("Noone is buying anything\n");
 	}
