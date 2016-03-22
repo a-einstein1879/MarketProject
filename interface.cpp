@@ -83,7 +83,7 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
 	fullscreen = fullscreenflag;              // Устанавливаем значение глобальной переменной fullscreen
 	hInstance    = GetModuleHandle(NULL);        // Считаем дескриптор нашего приложения
 	wc.style    = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;      // Перерисуем при перемещении и создаём скрытый DC
-	wc.lpfnWndProc    = &OpenGLInterface::StaticWndProc;          // Процедура обработки сообщений
+	wc.lpfnWndProc    = &OpenGLInterface::InitialWndProc;          // Процедура обработки сообщений
 	wc.cbClsExtra    = 0;              // Нет дополнительной информации для окна
 	wc.cbWndExtra    = 0;              // Нет дополнительной информации для окна
 	wc.hInstance    = hInstance;            // Устанавливаем дескриптор
@@ -97,6 +97,7 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
     MessageBox( NULL, L"Failed To Register The Window Class.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
     return false;                // Выход и возвращение функцией значения false
 	}
+
 	if( fullscreen ) {
 		DEVMODE dmScreenSettings;            // Режим устройства
 		memset( &dmScreenSettings, 0, sizeof( dmScreenSettings ) );    // Очистка для хранения установок
@@ -138,7 +139,7 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
           NULL,            // Нет родительского
           NULL,            // Нет меню
           hInstance,          // Дескриптор приложения
-          NULL ) ) ) {          // Не передаём ничего до WM_CREATE (???)
+          this ) ) ) {          // Не передаём ничего до WM_CREATE (???)
 			  KillGLWindow();                // Восстановить экран
 			  MessageBox( NULL, L"Window Creation Error.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
 			  return false;                // Вернуть false
@@ -320,8 +321,25 @@ LRESULT OpenGLInterface::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	return DefWindowProc( hWnd, uMsg, wParam, lParam );
 }
 
+
+LRESULT CALLBACK OpenGLInterface::InitialWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
+      if (Msg == WM_NCCREATE) {
+        LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
+        void *lpCreateParam = create_struct->lpCreateParams;
+        OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface *>(lpCreateParam);
+        SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this_window));
+        SetWindowLongPtr(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&OpenGLInterface::StaticWndProc));
+        return this_window->WndProc(hWnd, Msg, wParam, lParam);
+      }
+      return DefWindowProc(hWnd, Msg, wParam, lParam);
+}
+
 LRESULT CALLBACK OpenGLInterface::StaticWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
-      if (LONG_PTR user_data = GetWindowLongPtr(hWnd, GWLP_USERDATA)) {
+      LONG_PTR user_data = GetWindowLongPtr(hWnd, GWLP_USERDATA);
+      OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface *>(user_data);
+      return this_window->WndProc(hWnd, Msg, wParam, lParam);
+
+      /*if (LONG_PTR user_data = GetWindowLongPtr(hWnd, GWLP_USERDATA)) {
         OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface *>(user_data);
         return this_window->WndProc(hWnd, Msg, wParam, lParam);
       }
@@ -332,5 +350,5 @@ LRESULT CALLBACK OpenGLInterface::StaticWndProc(HWND hWnd, UINT Msg, WPARAM wPar
         SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this_window));
         return this_window->WndProc(hWnd, Msg, wParam, lParam);
       }
-      return DefWindowProc(hWnd, Msg, wParam, lParam);
+      return DefWindowProc(hWnd, Msg, wParam, lParam);*/
 }

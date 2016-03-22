@@ -5,15 +5,15 @@
 #include "interface.h"
 
 int main() {
-/*	OpenGLInterface *ui;
+	OpenGLInterface *ui;
 	ui = ui->getOpenGLInterface();
-	ui->interfaceFunction();*/
+	ui->interfaceFunction();
 
-	srand(time(0));
+	/*srand(time(0));
 	Market *market;
 	market = market->getMarket();
 
-	while(market->tick()) {}
+	while(market->tick()) {}*/
 
 	system("pause");
 	return 0;
