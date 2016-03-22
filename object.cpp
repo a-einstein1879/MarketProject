@@ -26,7 +26,7 @@ void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, 
 }
 
 void Object::printObject() {
-	printf("price = %.2f, creation time = %.2f, status = \"%s\"\n", getPrice(), getCreationTime(), getStatus()?"For sale":"Bought");
+	printf("price = %.2f,\tcreation time = %.2f,\tstatus = \"%s\"\n", getPrice(), getCreationTime(), getStatus()?"For sale":"Bought");
 }
 
 /* TODO: there is a problem with timers files. We will have creation times there instead of time spent on market. Don`t want to add timer as an argument, because objects don`t need to know anything about timers */

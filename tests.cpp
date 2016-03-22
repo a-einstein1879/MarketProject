@@ -19,20 +19,25 @@ Push/pop test for linklist
 	Object object3(1, 7, FORSALE);
 	LinkList list1;
 	list1.push(object1);
-	list1.view();
+	list1.viewPrice();
+	list1.viewTimers();
 	list1.push(object2);
-	list1.view();
+	list1.viewPrice();
+	list1.viewTimers();
 	list1.push(object3, 2);
-	list1.view();
+	list1.viewPrice();
+	list1.viewTimers();
 
 	
-	object1 = list1.pop();
-	printf("Main: price = %.2e, creation time = %.2e, status = %d\n", object1.getPrice(), object1.getCreationTime(), object1.getStatus());
-	object1 = list1.pop();
-	printf("Main: price = %.2e, creation time = %.2e, status = %d\n", object1.getPrice(), object1.getCreationTime(), object1.getStatus());
-	object1 = list1.pop();
-	printf("Main: price = %.2e, creation time = %.2e, status = %d\n", object1.getPrice(), object1.getCreationTime(), object1.getStatus());
-	list1.view();
+	object1 = list1.pricePop();
+	object1.printObject();
+	object1 = list1.pricePop();
+	object1.printObject();
+	object1 = list1.pricePop();
+	object1.printObject();
+
+	list1.viewPrice();
+	list1.viewTimers();
 */
 
 /*

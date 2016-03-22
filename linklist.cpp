@@ -104,20 +104,70 @@ Object LinkList::pricePop(int pos) {
 				temp->nextPrice->prevPrice = temp->prevPrice;
 			}
 		}
+		if(temp == firstTimer) {
+			firstTimer = temp->nextTimer;
+			temp->nextTimer->prevTimer = NULL;
+		} else {
+			temp->prevTimer->nextTimer = temp->nextTimer;
+			if(temp->nextTimer != NULL) {
+				temp->nextTimer->prevTimer = temp->prevTimer;
+			}
+		}
 		delete temp;
 	}
 	else {
 		returnValue = firstPrice->object; 
 		delete firstPrice;
 		firstPrice = NULL;
+		firstTimer = NULL;
 	}
 	numberOfObjects--;
 	return returnValue;
 } 
 
-Object timerPop(int pos = 1) {
-	Object null;
-	return null;
+Object LinkList::timerPop(int pos) {
+	if(numberOfObjects == 0) {
+		Object null;
+		return null;
+	}
+
+	Object returnValue;
+	if(firstTimer->nextTimer != NULL) { /* if the element is not the only element */
+		node* temp = firstTimer;
+		for (int i = 1; i < pos; i++) {
+			if(temp->nextTimer != NULL) {
+				temp = temp->nextTimer;
+			}
+		}
+		returnValue = temp->object;
+		if(temp == firstPrice) {
+			firstPrice = temp->nextPrice;
+			temp->nextPrice->prevPrice = NULL;
+		} else {
+			temp->prevPrice->nextPrice = temp->nextPrice;
+			if(temp->nextPrice != NULL) {
+				temp->nextPrice->prevPrice = temp->prevPrice;
+			}
+		}
+		if(temp == firstTimer) {
+			firstTimer = temp->nextTimer;
+			temp->nextTimer->prevTimer = NULL;
+		} else {
+			temp->prevTimer->nextTimer = temp->nextTimer;
+			if(temp->nextTimer != NULL) {
+				temp->nextTimer->prevTimer = temp->prevTimer;
+			}
+		}
+		delete temp;
+	}
+	else {
+		returnValue = firstTimer->object; 
+		delete firstTimer;
+		firstPrice = NULL;
+		firstTimer = NULL;
+	}
+	numberOfObjects--;
+	return returnValue;
 }
  
 void LinkList::clean() {
@@ -137,6 +187,7 @@ void LinkList::viewPrice() {
 		return;
 	}
 	node* newnode = firstPrice;
+	printf("Number of objects is %d\n", numberOfObjects);
 	do {
 		newnode->object.printObject();
 		newnode = newnode->nextPrice;
@@ -150,6 +201,7 @@ void LinkList::viewTimers() {
 		return;
 	}
 	node* newnode = firstTimer;
+	printf("Number of objects is %d\n", numberOfObjects);
 	do {
 		newnode->object.printObject();
 		newnode = newnode->nextTimer;
@@ -196,7 +248,6 @@ int LinkList::findTimerPositionForObject(Object object) {
 		newnode = newnode->nextTimer;
 		pos++;
 	}
-	printf("%d\n", pos);
 
 	if(brk == 0) {
 		return ++pos;
