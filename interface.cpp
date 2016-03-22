@@ -29,7 +29,7 @@ int OpenGLInterface::interfaceFunction() {
 	if( !CreateGLWindow( L"NeHe OpenGL окно", 1024, 768, 32, fullscreen ) ) {
 		return 0;
 	}
-	
+
 	while( !done ) {
 		if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
 			if( msg.message == WM_QUIT ) {
@@ -247,12 +247,12 @@ GLvoid OpenGLInterface::KillGLWindow( GLvoid ) {
 int OpenGLInterface::DrawGLScene( GLvoid ) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glTranslatef(0.0f, 0.0f, -10.0f);
 	glBegin(GL_QUADS);
-	glVertex3f(-1.0f, 1.0f, 0.0f);  // Слева вверху
-	glVertex3f( 1.0f, 1.0f, 0.0f);  // Справа вверху
-	glVertex3f( 1.0f,-1.0f, 0.0f);  // Справа внизу
-	glVertex3f(-1.0f,-1.0f, 0.0f);  // Слева внизу
+		glVertex3f(-1.0f, 1.0f, 0.0f);
+		glVertex3f( 1.0f, 1.0f, 0.0f);
+		glVertex3f( 1.0f,-1.0f, 0.0f);
+		glVertex3f(-1.0f,-1.0f, 0.0f);
 	glEnd();
 	return true;
 }
