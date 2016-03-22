@@ -108,11 +108,19 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 16:
 		modelingTime = int(value);
 		break;
+	case 17:
+		timerPrintingFrequency = int(value);
+		break;
+	case 18:
+		accuracy = int(value);
+		break;
 	}
 }
 
 void Cmn_Defines::printConfiguration() {
 	std::cout << "Modeling time\t" << modelingTime << std::endl;
+	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
+	std::cout << "Accuracy\t" << accuracy << std::endl;
 
 	std::cout << "Seller prices mode\t" << sellerPricesMode << std::endl;
 	std::cout << "Maximum seller price\t" << maximumSellersPrice << std::endl;
@@ -146,6 +154,14 @@ Cmn_Defines* Cmn_Defines::getCmn_Defines() {
 
 int Cmn_Defines::getModelingTime() {
 	return modelingTime;
+}
+
+int Cmn_Defines::getTimerPrintingFrequency() {
+	return timerPrintingFrequency;
+}
+
+int Cmn_Defines::getAccuracy() {
+	return accuracy;
 }
 
 int Cmn_Defines::getSellerPricesMode() {

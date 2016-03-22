@@ -64,7 +64,7 @@ void DataBase::refreshPrices() {
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.pricePop(1);
 		lowestSellingPrice = object.getPrice();
-		objectsForSale.push(object, 1);
+		objectsForSale.push(object);
 	} else {
 		lowestSellingPrice = -1;
 	}

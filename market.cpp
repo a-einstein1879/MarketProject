@@ -49,7 +49,7 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintTimer() {
-	return (timer % TIMERPRINTINGFREQUENCY == 0) ? true : false;
+	return (timer % cmn_defines->getTimerPrintingFrequency() == 0) ? true : false;
 }
 
 bool Market::timeToFinish() {
@@ -138,9 +138,10 @@ void Market::resetBuyingTimer() {
 
 double Market::getNormallyDistributedValue(double mean, double standartDeviation) {
 	double u, v, s;
+	int accuracy = cmn_defines->getAccuracy();
 	do {
-		u = 2 * double(rand()%ACCURACY) / ACCURACY - 1;
-		v = 2 * double(rand()%ACCURACY) / ACCURACY - 1;
+		u = 2 * double(rand()%accuracy) / accuracy - 1;
+		v = 2 * double(rand()%accuracy) / accuracy - 1;
 		s = u * u + v * v;
 	} while(s > 1);
 	s = sqrt(-2 * log(s) / s);
@@ -148,7 +149,8 @@ double Market::getNormallyDistributedValue(double mean, double standartDeviation
 }
 
 double Market::getExponentiallyDistributedValue(double lambda) {
-	double val = -1 * log(1 - double(rand()%ACCURACY) / ACCURACY) / lambda;
+	int accuracy = cmn_defines->getAccuracy();
+	double val = -1 * log(1 - double(rand()%accuracy) / accuracy) / lambda;
 	return val;
 }
 

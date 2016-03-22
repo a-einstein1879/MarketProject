@@ -8,11 +8,13 @@
 #define CONFIGURATIONFILE "configuration.txt"
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
-"Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time"
+"Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy"
 
 class Cmn_Defines {
 private:
 	int modelingTime;
+	int timerPrintingFrequency;
+	int accuracy;
 
 	/* 0 - uniform, 1 - normal distribution */
 	int sellerPricesMode;
@@ -51,6 +53,9 @@ public:
 	void printConfiguration();
 
 	int getModelingTime();
+	int getTimerPrintingFrequency();
+	int getAccuracy();
+
 	int getSellerPricesMode();
 	double getMaximumSellersPrice();
 	double getMinimumSellersPrice();
@@ -91,30 +96,6 @@ public:
 #define SELLERSFINALTIMERSFILE	"output/sellersFinalTimers.txt"
 #define SILENTMODE
 
-#define TIMERPRINTINGFREQUENCY 1000
-
 /***********************************************************
 						END OF THE OUTPUT
 ***********************************************************/
-
-/**********************************************************************
-							Market forming
-**********************************************************************/
-
-#define MODELINGTIME			10
-
-#define MINIMUMSELLINGPRICE		10
-#define MAXIMUMSELLINGPRICE		25
-
-#define MINIMUMBUYINGPRICE		5
-#define MAXIMUMBUYINGPRICE		15
-
-#define SELLERSLAMBDA			0.2
-#define BUYERSLAMBDA			0.6
-
-/* Accuracy of random in forming of distributions */
-#define ACCURACY 100
-
-/**********************************************************************
-						End of market forming
-**********************************************************************/
