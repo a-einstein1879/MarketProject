@@ -14,8 +14,6 @@ private:
 
 	double highestBuyingPrice;
 	LinkList objectsBought;
-
-	int findPositionForObject(Object object);
 public:
 	static DataBase* getDataBase();
 	int pushToDataBase(Object newObject);

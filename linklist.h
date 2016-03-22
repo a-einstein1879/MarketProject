@@ -12,7 +12,7 @@ struct node
 
 /*
 This is doubly linked list. The first elemtn previous and the last element next is pointing at NULL.
-New elements are added at the beginning of the list by default.
+New elements are added with use of findPositionForObject by default.
 If position exceeds the number of elements in list, element will be added in the end.
 Pop is done from the beginning of the list by default
 */
@@ -24,7 +24,7 @@ private:
 public: 
     LinkList();
  
-    void push(Object object, int pos = 1);
+    void push(Object object, int pos = -1);
     Object pop(int pos = 1);
     void clean();
     void view();

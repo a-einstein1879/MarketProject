@@ -8,6 +8,7 @@ LinkList::LinkList() {
 }
 
 void LinkList::push(Object object, int pos) {
+	if(pos == -1) {pos = findPositionForObject(object);}
 	node* newNode = new node;
 	newNode->object = object;
 

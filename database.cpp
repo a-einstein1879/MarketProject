@@ -14,20 +14,11 @@ DataBase* DataBase::getDataBase() {
 	return p_DataBase;
 }
 
-int DataBase::findPositionForObject(Object object) {
-	if(object.getStatus() == FORSALE) {
-		return objectsForSale.findPositionForObject(object);
-	} else {
-		return objectsBought.findPositionForObject(object);
-	}
-	return -1;
-}
-
 int DataBase::pushToDataBase(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
-		objectsForSale.push(newObject, findPositionForObject(newObject));
+		objectsForSale.push(newObject);
 	} else {
-		objectsBought.push(newObject, findPositionForObject(newObject));
+		objectsBought.push(newObject);
 	}
 	refreshPrices();
 	return 0;
@@ -81,7 +72,7 @@ void DataBase::refreshPrices() {
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.pop(objectsBought.getNumberOfObjects());
 		highestBuyingPrice = object.getPrice();
-		objectsBought.push(object, findPositionForObject(object));
+		objectsBought.push(object);
 	} else {
 		highestBuyingPrice = -1;
 	}
