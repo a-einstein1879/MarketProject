@@ -36,7 +36,7 @@ bool DataBase::dealPossible() {
 Object DataBase::popLowestSeller() {
 	if(objectsForSale.getNumberOfObjects() > 0) {
 		Object object;
-		object = objectsForSale.pop(1);
+		object = objectsForSale.pricePop(1);
 		refreshPrices();
 		return object;
 	} else {
@@ -48,7 +48,7 @@ Object DataBase::popLowestSeller() {
 Object DataBase::popHighestBuyer() {
 	if(objectsBought.getNumberOfObjects() > 0) {
 		Object object;
-		object = objectsBought.pop(objectsBought.getNumberOfObjects());
+		object = objectsBought.pricePop(objectsBought.getNumberOfObjects());
 		refreshPrices();
 		return object;
 	} else {
@@ -62,7 +62,7 @@ void DataBase::refreshPrices() {
 	Object object;
 
 	if(objectsForSale.getNumberOfObjects() != 0) {
-		object = objectsForSale.pop(1);
+		object = objectsForSale.pricePop(1);
 		lowestSellingPrice = object.getPrice();
 		objectsForSale.push(object, 1);
 	} else {
@@ -70,7 +70,7 @@ void DataBase::refreshPrices() {
 	}
 	
 	if(objectsBought.getNumberOfObjects() != 0) {
-		object = objectsBought.pop(objectsBought.getNumberOfObjects());
+		object = objectsBought.pricePop(objectsBought.getNumberOfObjects());
 		highestBuyingPrice = object.getPrice();
 		objectsBought.push(object);
 	} else {

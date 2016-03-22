@@ -5,6 +5,7 @@
 
 /*
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
+Operators > and < are defined to find younger or older objects not comparing objects statuses.
 */
 
 #define FORSALE 1
@@ -35,6 +36,8 @@ public:
 	Object& operator=(Object &object);
 	bool operator<=(Object &object);
 	bool operator>=(Object &object);
+	bool operator<(Object &object);
+	bool operator>(Object &object);
 };
 
 #endif

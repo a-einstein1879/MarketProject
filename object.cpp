@@ -93,3 +93,19 @@ bool Object::operator>=(Object &object) {
 		return false;
 	}
 }
+
+bool Object::operator<(Object &object) {
+	if(creationTime <= object.getCreationTime()) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool Object::operator>(Object &object) {
+	if(creationTime >= object.getCreationTime()) {
+		return true;
+	} else {
+		return false;
+	}
+}
