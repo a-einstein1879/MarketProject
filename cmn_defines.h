@@ -8,14 +8,12 @@
 #define CONFIGURATIONFILE "configuration.txt"
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
-"Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time"
+"Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets"
 
 class Cmn_Defines {
 private:
 	int modelingTime;
 	int timerPrintingFrequency;
-	int pictureRefreshFrequency;
-	int pictureDelayTime;
 	int accuracy;
 
 	/* 0 - uniform, 1 - normal distribution */
@@ -42,6 +40,11 @@ private:
 	int buyersFrequency;
 	double buyersLambda;
 
+	/* Picture */
+	int pictureRefreshFrequency;
+	int pictureDelayTime;
+	int numberOfPockets;
+
 	Cmn_Defines();
 	~Cmn_Defines();
 	static Cmn_Defines *p_Cmn_Defines;
@@ -56,8 +59,6 @@ public:
 
 	int getModelingTime();
 	int getTimerPrintingFrequency();
-	int getPictureRefreshFrequency();
-	int getPictureDelayTime();
 	int getAccuracy();
 
 	int getSellerPricesMode();
@@ -81,6 +82,10 @@ public:
 	int getBuyerTimersMode();
 	int getBuyersFrequency();
 	double getBuyersLambda();
+
+	int getPictureRefreshFrequency();
+	int getPictureDelayTime();
+	int getNumberOfPockets();
 };
 
 #endif

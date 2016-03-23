@@ -109,6 +109,10 @@ void DataBase::viewDataBase() {
 void DataBase::refreshPicture() {
 #ifdef VISUALMODE
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
+	OpenGLInterface *ui;
+	ui = ui->getOpenGLInterface();
+	Cmn_Defines *cmn_defines;
+	cmn_defines = cmn_defines->getCmn_Defines();
 
 	Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
 	double maxArgument = object.getPrice();
@@ -118,7 +122,7 @@ void DataBase::refreshPicture() {
 	objectsBought.push(object);
 	refreshPrices();
 
-	Histogram histogram(3, 30, minArgument, maxArgument);
+	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
 
 	histogram.setTmpIndex(0);
 	objectsForSale.feelHistogram(histogram);
@@ -127,11 +131,7 @@ void DataBase::refreshPicture() {
 	histogram.setTmpIndex(2);
 	objectsBought.feelHistogram(histogram);
 	
-	OpenGLInterface *ui;
-	ui = ui->getOpenGLInterface();
 	ui->printHistogram(histogram);
-	Cmn_Defines *cmn_defines;
-	cmn_defines = cmn_defines->getCmn_Defines();
 	Sleep(cmn_defines->getPictureDelayTime());
 #endif
 }

@@ -120,14 +120,15 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 20:
 		pictureDelayTime = int(value);
 		break;
+	case 21:
+		numberOfPockets = int(value);
+		break;
 	}
 }
 
 void Cmn_Defines::printConfiguration() {
 	std::cout << "Modeling time\t\t\t" << modelingTime << std::endl;
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
-	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
-	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
 	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;
 
 	std::cout << std::endl;
@@ -151,6 +152,12 @@ void Cmn_Defines::printConfiguration() {
 	std::cout << "Buyer timer mode\t\t" << buyerTimersMode << std::endl;
 	std::cout << "Buyer frequency\t\t\t" << buyersFrequency << std::endl;
 	std::cout << "Buyer lambda\t\t\t" << buyersLambda << std::endl;
+
+	std::cout << std::endl;
+	
+	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
+	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
+	std::cout << "Number of pockets\t\t" << numberOfPockets << std::endl;
 }
 
 /* END OF BAD PART */
@@ -176,6 +183,10 @@ int Cmn_Defines::getPictureRefreshFrequency() {
 
 int Cmn_Defines::getPictureDelayTime() {
 	return pictureDelayTime;
+}
+
+int Cmn_Defines::getNumberOfPockets() {
+	return numberOfPockets;
 }
 
 int Cmn_Defines::getAccuracy() {
