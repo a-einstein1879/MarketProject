@@ -13,6 +13,8 @@ OpenGLInterface::OpenGLInterface() {
 
 	active = true;
 	fullscreen = false;
+	
+	CreateGLWindow(L"OpenGL window", 1024, 768, 32, fullscreen);
 }
 
 OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
@@ -23,44 +25,22 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 }
 
 int OpenGLInterface::interfaceFunction() {
-	MSG  msg;              // Структура для хранения сообщения Windows
-	BOOL  done = false;            // Логическая переменная для выхода из цикла
+	DrawGLScene();
+	SwapBuffers( hDC );
+	return 0;
+}
 
-	if( !CreateGLWindow( L"NeHe OpenGL окно", 1024, 768, 32, fullscreen ) ) {
-		return 0;
-	}
-
-	while( !done ) {
-		if( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
-			if( msg.message == WM_QUIT ) {
-				done = true;
-			} else {
-				TranslateMessage( &msg );        // Переводим сообщение
-				DispatchMessage( &msg );        // Отсылаем сообщение
-			}
-		} else {
-			if( active ) {
-/*				if(keys[VK_ESCAPE]) {
-					done = true;      // ESC говорит об останове выполнения программы
-				} else {*/
-					DrawGLScene();
-					SwapBuffers( hDC );
-//				}
-			}
-/*			if( keys[VK_F1] ) {
-				keys[VK_F1] = false;
-				KillGLWindow();
-				fullscreen = !fullscreen;
-				// Пересоздаём наше OpenGL окно
-				if( !CreateGLWindow( _T("NeHe OpenGL структура"), 1024, 768, 32, fullscreen ) ) {
-					return 0;        // Выходим, если это невозможно
-				}
-			}*/
-		}
-	}
-	// Shutdown
-	KillGLWindow();                // Разрушаем окно
-	return ( msg.wParam );              // Выходим из программы
+int OpenGLInterface::DrawGLScene( GLvoid ) {
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glLoadIdentity();
+	glTranslatef(0.0f, 0.0f, -10.0f);
+	glBegin(GL_QUADS);
+		glVertex3f(-1.0f, 1.0f, 0.0f);
+		glVertex3f( 1.0f, 1.0f, 0.0f);
+		glVertex3f( 1.0f,-1.0f, 0.0f);
+		glVertex3f(-1.0f,-1.0f, 0.0f);
+	glEnd();
+	return true;
 }
 
 int OpenGLInterface::InitGL(GLvoid) {
@@ -242,19 +222,6 @@ GLvoid OpenGLInterface::KillGLWindow( GLvoid ) {
 		MessageBox( NULL, L"Could Not Unregister Class.", L"SHUTDOWN ERROR", MB_OK | MB_ICONINFORMATION);
 		hInstance = NULL; 
 	}
-}
-
-int OpenGLInterface::DrawGLScene( GLvoid ) {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -10.0f);
-	glBegin(GL_QUADS);
-		glVertex3f(-1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f,-1.0f, 0.0f);
-		glVertex3f(-1.0f,-1.0f, 0.0f);
-	glEnd();
-	return true;
 }
 
 GLvoid OpenGLInterface::ReSizeGLScene(GLsizei width, GLsizei height) {
