@@ -8,6 +8,7 @@
 // Include tchar to define _T
 #include <tchar.h>
 #include "histogram.h"
+#include "interfaceClasses.h"
 
 class OpenGLInterface {
 private:
@@ -24,9 +25,9 @@ private:
 public:
 	OpenGLInterface();
 	static OpenGLInterface* getOpenGLInterface();
-	
-	int interfaceFunction();
-	void printHistogram(Histogram histogram);
+
+	void printHistogram(Histogram &histogram);
+	int DrawRectangle(FigureRectangle rectangle);
 	
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK InitialWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -35,7 +36,6 @@ public:
 	int InitGL(GLvoid);
 	BOOL CreateGLWindow(LPCWSTR title, int width, int height, int bits, bool fullscreenflag);
 	GLvoid KillGLWindow(GLvoid);
-	int DrawRectangle(GLvoid);
 	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
 };
 

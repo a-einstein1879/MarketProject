@@ -15,6 +15,7 @@
     <ClCompile Include="database.cpp" />
     <ClCompile Include="histogram.cpp" />
     <ClCompile Include="interface.cpp" />
+    <ClCompile Include="interfaceClasses.cpp" />
     <ClCompile Include="linklist.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="market.cpp" />
@@ -26,6 +27,7 @@
     <ClInclude Include="database.h" />
     <ClInclude Include="histogram.h" />
     <ClInclude Include="interface.h" />
+    <ClInclude Include="interfaceClasses.h" />
     <ClInclude Include="linklist.h" />
     <ClInclude Include="market.h" />
     <ClInclude Include="object.h" />

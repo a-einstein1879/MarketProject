@@ -24,25 +24,45 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
-int OpenGLInterface::interfaceFunction() {
-	DrawRectangle();
-	SwapBuffers( hDC );
-	return 0;
-}
+#define SIDEGAP 0.05
 
-void OpenGLInterface::printHistogram(Histogram histogram) {
-}
-
-int OpenGLInterface::DrawRectangle( GLvoid ) {
+/* TODO: understand why it doesn`t work without & */
+void OpenGLInterface::printHistogram(Histogram &histogram) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	int numberOfBins = histogram.getNumberOfBins();
+	int numberOfCharts = histogram.getNumberOfCharts();
+	double binWidth = 1 / double(numberOfBins);
+	double colorBinWidth = 1 / double(numberOfCharts + 1);
+
+	for(int j = 0; j < numberOfCharts; j++) {
+		FigureRectangle rectangle;
+		Color color = histogram.getColor(j);
+		rectangle.setColor(color);
+	
+		for(int i = 0; i < numberOfBins; i++) {
+			rectangle.setFigure(-1 + i * binWidth, histogram.getValue(j, i) / histogram.getMaxValue(), -1 + (i + 1) * binWidth - binWidth * SIDEGAP, 0);
+			DrawRectangle(rectangle);
+		}
+	}
+	SwapBuffers(hDC);
+
+	histogram.printHistogram();
+}
+
+int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {
 	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -10.0f);
+	Color color = rectangle.getColor();
+	glColor3f(color.getRed(), color.getGreen(), color.getBlue());
+	glTranslatef(rectangle.getMiddleX(), rectangle.getMiddleY(), 0.0);
+	double sizeX = rectangle.getSizeX();
+	double sizeY = rectangle.getSizeY();
 	glBegin(GL_QUADS);
-		glVertex3f(-1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f, 1.0f, 0.0f);
-		glVertex3f( 1.0f,-1.0f, 0.0f);
-		glVertex3f(-1.0f,-1.0f, 0.0f);
+		glVertex3f(-sizeX, sizeY, 0.0);
+		glVertex3f(sizeX,  sizeY, 0.0);
+		glVertex3f(sizeX, -sizeY, 0.0);
+		glVertex3f(-sizeX,-sizeY, 0.0);
 	glEnd();
+	
 	return true;
 }
 
@@ -232,12 +252,12 @@ GLvoid OpenGLInterface::ReSizeGLScene(GLsizei width, GLsizei height) {
 		height = 1;
 	}
 	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
+	/*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     gluPerspective( 45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 100.0f );
 
-    glMatrixMode( GL_MODELVIEW );
+    glMatrixMode( GL_MODELVIEW );*/
     glLoadIdentity();
 }
 
@@ -308,17 +328,4 @@ LRESULT CALLBACK OpenGLInterface::StaticWndProc(HWND hWnd, UINT Msg, WPARAM wPar
       LONG_PTR user_data = GetWindowLongPtr(hWnd, GWLP_USERDATA);
       OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface *>(user_data);
       return this_window->WndProc(hWnd, Msg, wParam, lParam);
-
-      /*if (LONG_PTR user_data = GetWindowLongPtr(hWnd, GWLP_USERDATA)) {
-        OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface *>(user_data);
-        return this_window->WndProc(hWnd, Msg, wParam, lParam);
-      }
-      if (Msg == WM_NCCREATE) {
-        LPCREATESTRUCT create_struct = reinterpret_cast<LPCREATESTRUCT>(lParam);
-        void *lpCreateParam = create_struct->lpCreateParams;
-        OpenGLInterface *this_window = reinterpret_cast<OpenGLInterface*>(lpCreateParam);
-        SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this_window));
-        return this_window->WndProc(hWnd, Msg, wParam, lParam);
-      }
-      return DefWindowProc(hWnd, Msg, wParam, lParam);*/
 }
