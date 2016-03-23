@@ -122,6 +122,9 @@ void DataBase::refreshPicture() {
 	objectsBought.push(object);
 	refreshPrices();
 
+	/* TODO: this is workaround. Has to be removed after solution to -1.#J problem is found */
+	maxArgument = 25;
+	/* End of workaround */
 	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
 
 	histogram.setTmpIndex(0);
