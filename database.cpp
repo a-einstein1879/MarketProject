@@ -123,6 +123,7 @@ void DataBase::refreshPicture() {
 	refreshPrices();
 
 	/* TODO: this is workaround. Has to be removed after solution to -1.#J problem is found */
+	minArgument = 0;
 	maxArgument = 25;
 	/* End of workaround */
 	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
