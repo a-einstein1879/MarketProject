@@ -5,6 +5,7 @@ DataBase* DataBase::p_DataBase = 0;
 DataBase::DataBase() {
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
+	cmn_defines = cmn_defines->getCmn_Defines();
 };
 
 DataBase* DataBase::getDataBase() {
@@ -107,12 +108,11 @@ void DataBase::viewDataBase() {
 
 #include "interface.h"
 void DataBase::refreshPicture() {
+	if(!(cmn_defines->getGraphicalMode())) {return;}
 #ifdef VISUALMODE
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	OpenGLInterface *ui;
 	ui = ui->getOpenGLInterface();
-	Cmn_Defines *cmn_defines;
-	cmn_defines = cmn_defines->getCmn_Defines();
 
 	Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
 	double maxArgument = object.getPrice();

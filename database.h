@@ -17,6 +17,7 @@ private:
 	LinkList objectsBought;
 
 	LinkList deals;
+	Cmn_Defines *cmn_defines;
 public:
 	static DataBase* getDataBase();
 	int pushToDataBase(Object newObject);

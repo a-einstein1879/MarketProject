@@ -123,6 +123,9 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 21:
 		numberOfPockets = int(value);
 		break;
+	case 22:
+		graphicalMode = int(value);
+		break;
 	}
 }
 
@@ -155,6 +158,7 @@ void Cmn_Defines::printConfiguration() {
 
 	std::cout << std::endl;
 	
+	std::cout << "Graphical mode\t\t\t" << ((graphicalMode == 1)?"On":"Off") << std::endl;
 	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
 	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
 	std::cout << "Number of pockets\t\t" << numberOfPockets << std::endl;
@@ -175,6 +179,10 @@ int Cmn_Defines::getModelingTime() {
 
 int Cmn_Defines::getTimerPrintingFrequency() {
 	return timerPrintingFrequency;
+}
+
+int Cmn_Defines::getGraphicalMode() {
+	return graphicalMode;
 }
 
 int Cmn_Defines::getPictureRefreshFrequency() {
