@@ -25,12 +25,15 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 }
 
 int OpenGLInterface::interfaceFunction() {
-	DrawGLScene();
+	DrawRectangle();
 	SwapBuffers( hDC );
 	return 0;
 }
 
-int OpenGLInterface::DrawGLScene( GLvoid ) {
+void OpenGLInterface::printHistogram(Histogram histogram) {
+}
+
+int OpenGLInterface::DrawRectangle( GLvoid ) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -10.0f);

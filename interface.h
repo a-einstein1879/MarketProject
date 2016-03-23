@@ -1,4 +1,4 @@
-#ifndef INTERFACE_H
+﻿#ifndef INTERFACE_H
 #define INTERFACE_H
 
 #include <windows.h>
@@ -7,6 +7,7 @@
 #include <stdlib.h>
 // Include tchar to define _T
 #include <tchar.h>
+#include "histogram.h"
 
 class OpenGLInterface {
 private:
@@ -25,6 +26,7 @@ public:
 	static OpenGLInterface* getOpenGLInterface();
 	
 	int interfaceFunction();
+	void printHistogram(Histogram histogram);
 	
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK InitialWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -33,7 +35,7 @@ public:
 	int InitGL(GLvoid);
 	BOOL CreateGLWindow(LPCWSTR title, int width, int height, int bits, bool fullscreenflag);
 	GLvoid KillGLWindow(GLvoid);
-	int DrawGLScene(GLvoid);
+	int DrawRectangle(GLvoid);
 	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
 };
 

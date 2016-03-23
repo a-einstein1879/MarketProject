@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="cmn_defines.cpp" />
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="histogram.cpp" />
     <ClCompile Include="interface.cpp" />
     <ClCompile Include="linklist.cpp" />
     <ClCompile Include="main.cpp" />
@@ -23,6 +24,7 @@
   <ItemGroup>
     <ClInclude Include="cmn_defines.h" />
     <ClInclude Include="database.h" />
+    <ClInclude Include="histogram.h" />
     <ClInclude Include="interface.h" />
     <ClInclude Include="linklist.h" />
     <ClInclude Include="market.h" />
