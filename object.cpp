@@ -109,3 +109,7 @@ bool Object::operator>(Object &object) {
 		return false;
 	}
 }
+
+void Object::pushToHistogram(Histogram &histogram) {
+	histogram.addValueToTmpIndex(price);
+}

@@ -3,6 +3,7 @@
 
 #include "object.h"
 #include "linklist.h"
+#include "cmn_defines.h"
 
 class DataBase {
 private:
@@ -14,9 +15,12 @@ private:
 
 	double highestBuyingPrice;
 	LinkList objectsBought;
+
+	LinkList deals;
 public:
 	static DataBase* getDataBase();
 	int pushToDataBase(Object newObject);
+	void addDeal(Object newObject);
 
 	bool dealPossible();
 	Object popLowestSeller();

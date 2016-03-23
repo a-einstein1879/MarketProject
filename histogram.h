@@ -10,16 +10,23 @@ private:
 	double minArgument;
 	double maxArgument;
 	double maxValue;
+	double binWidth;
+
 	double **values;
 	Color *colors;
+
 	bool indexesLegal(int chartIndex, int bin);
+	int tmpIndex;
+	void setParameters(int noc, int nob, double mA, double MA);
 public:
 	Histogram();
 	Histogram(int noc, int nob, double mA, double MA);
 	~Histogram();
-	void setParameters(int noc, int nob, double mA, double MA);
-	void setValue(int chartIndex, int bin, double value);
 	void setColor(Color color, int chartIndex);
+
+	void addValue(int chartIndex, double value);
+	void setTmpIndex(int index);
+	void addValueToTmpIndex(double value);
 	
 	int getNumberOfCharts();
 	int getNumberOfBins();

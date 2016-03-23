@@ -259,3 +259,12 @@ int LinkList::findTimerPositionForObject(Object object) {
 int LinkList::getNumberOfObjects() {
 	return numberOfObjects;
 }
+
+void LinkList::feelHistogram(Histogram &histogram) {
+	if(firstPrice == NULL) {return;}
+	node* newnode = firstPrice;
+	do {
+		newnode->object.pushToHistogram(histogram);
+		newnode = newnode->nextPrice;
+	} while(newnode != NULL);
+}

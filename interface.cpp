@@ -31,9 +31,11 @@ void OpenGLInterface::printHistogram(Histogram &histogram) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	int numberOfBins = histogram.getNumberOfBins();
 	int numberOfCharts = histogram.getNumberOfCharts();
-	double binWidth = 1 / double(numberOfBins);
-	double colorBinWidth = 1 / double(numberOfCharts + 1);
-
+	double binWidth = 2 / double(numberOfBins);
+	
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 	for(int j = 0; j < numberOfCharts; j++) {
 		FigureRectangle rectangle;
 		Color color = histogram.getColor(j);
@@ -44,9 +46,8 @@ void OpenGLInterface::printHistogram(Histogram &histogram) {
 			DrawRectangle(rectangle);
 		}
 	}
+	glDisable(GL_BLEND);
 	SwapBuffers(hDC);
-
-	histogram.printHistogram();
 }
 
 int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {

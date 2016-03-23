@@ -39,6 +39,8 @@ public:
 	int findPricePositionForObject(Object object);
 	int findTimerPositionForObject(Object object);
 	int getNumberOfObjects();
+
+	void feelHistogram(Histogram &histogram);
 }; 
 
 #endif

@@ -86,6 +86,9 @@ void Market::runDeal() {
 	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
 	deal.time = buyer.getCreationTime() - seller.getCreationTime();
 	printDeal(deal);
+
+	Object newDeal(deal.price, deal.time, 0);
+	dataBase->addDeal(newDeal);
 }
 
 /**********************************************************************
@@ -161,9 +164,7 @@ double Market::getExponentiallyDistributedValue(double lambda) {
 #include <stdio.h>
 void Market::printTimer() {
 	printf("Timer = %d\n", timer);
-#ifndef SILENTMODE
 	dataBase->viewDataBase();
-#endif
 }
 
 void Market::printDeal(Deal deal) {

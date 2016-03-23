@@ -24,6 +24,10 @@ int DataBase::pushToDataBase(Object newObject) {
 	return 0;
 }
 
+void DataBase::addDeal(Object newObject) {
+	deals.push(newObject);
+}
+
 bool DataBase::dealPossible() {
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return false;}
 	if(highestBuyingPrice >= lowestSellingPrice) {
@@ -79,7 +83,9 @@ void DataBase::refreshPrices() {
 }
 
 #include <stdio.h>
+#include "interface.h"
 void DataBase::viewDataBase() {
+#ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
 		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
@@ -97,4 +103,22 @@ void DataBase::viewDataBase() {
 	}
 
 	printf("End of database\n\n");
+#endif
+
+#ifdef VISUALMODE
+	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
+	Histogram histogram(3, 20, 0, 25);
+
+	histogram.setTmpIndex(0);
+	objectsForSale.feelHistogram(histogram);
+	histogram.setTmpIndex(1);
+	deals.feelHistogram(histogram);
+	histogram.setTmpIndex(2);
+	objectsBought.feelHistogram(histogram);
+	
+	OpenGLInterface *ui;
+	ui = ui->getOpenGLInterface();
+	ui->printHistogram(histogram);
+	//Sleep(20);
+#endif
 }
