@@ -28,6 +28,7 @@ private:
 	bool timeToAddBuyer();
 	bool dealPossible();
 	bool timeToPrintTimer();
+	bool timeToRefreshPicture();
 	bool timeToFinish();
 	
 	/* Statistics */
@@ -48,6 +49,7 @@ private:
 	void openFiles();
 	void closeFiles();
 	void printTimer();
+	void refreshPicture();
 	void printDeal(Deal deal);
 public:
 	static Market* getMarket();

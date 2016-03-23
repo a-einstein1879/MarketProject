@@ -31,6 +31,7 @@ int Market::tick() {
 	if(timeToAddBuyer())	{addBuyer();}
 	while (dealPossible())	{runDeal();}
 	if(timeToPrintTimer())	{printTimer();}
+	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{finish(); return 0;}
 	return 1;
 }
@@ -50,6 +51,10 @@ bool Market::timeToAddBuyer() {
 
 bool Market::timeToPrintTimer() {
 	return (timer % cmn_defines->getTimerPrintingFrequency() == 0) ? true : false;
+}
+
+bool Market::timeToRefreshPicture() {
+	return (timer % cmn_defines->getPictureRefreshFrequency() == 0) ? true : false;
 }
 
 bool Market::timeToFinish() {
@@ -165,6 +170,10 @@ double Market::getExponentiallyDistributedValue(double lambda) {
 void Market::printTimer() {
 	printf("Timer = %d\n", timer);
 	dataBase->viewDataBase();
+}
+
+void Market::refreshPicture() {
+	dataBase->refreshPicture();
 }
 
 void Market::printDeal(Deal deal) {

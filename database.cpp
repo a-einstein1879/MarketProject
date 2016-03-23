@@ -83,7 +83,6 @@ void DataBase::refreshPrices() {
 }
 
 #include <stdio.h>
-#include "interface.h"
 void DataBase::viewDataBase() {
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
@@ -104,7 +103,10 @@ void DataBase::viewDataBase() {
 
 	printf("End of database\n\n");
 #endif
+}
 
+#include "interface.h"
+void DataBase::refreshPicture() {
 #ifdef VISUALMODE
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 
@@ -116,7 +118,7 @@ void DataBase::viewDataBase() {
 	objectsBought.push(object);
 	refreshPrices();
 
-	Histogram histogram(3, 20, minArgument, maxArgument);
+	Histogram histogram(3, 30, minArgument, maxArgument);
 
 	histogram.setTmpIndex(0);
 	objectsForSale.feelHistogram(histogram);
@@ -128,6 +130,8 @@ void DataBase::viewDataBase() {
 	OpenGLInterface *ui;
 	ui = ui->getOpenGLInterface();
 	ui->printHistogram(histogram);
-	//Sleep(20);
+	Cmn_Defines *cmn_defines;
+	cmn_defines = cmn_defines->getCmn_Defines();
+	Sleep(cmn_defines->getPictureDelayTime());
 #endif
 }

@@ -28,6 +28,7 @@ public:
 	void refreshPrices();
 
 	void viewDataBase();
+	void refreshPicture();
 };
 
 #endif

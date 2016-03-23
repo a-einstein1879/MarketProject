@@ -114,33 +114,43 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 18:
 		accuracy = int(value);
 		break;
+	case 19:
+		pictureRefreshFrequency = int(value);
+		break;
+	case 20:
+		pictureDelayTime = int(value);
+		break;
 	}
 }
 
 void Cmn_Defines::printConfiguration() {
-	std::cout << "Modeling time\t" << modelingTime << std::endl;
+	std::cout << "Modeling time\t\t\t" << modelingTime << std::endl;
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
-	std::cout << "Accuracy\t" << accuracy << std::endl;
-
-	std::cout << "Seller prices mode\t" << sellerPricesMode << std::endl;
-	std::cout << "Maximum seller price\t" << maximumSellersPrice << std::endl;
-	std::cout << "Minimum seller price\t" << minimumSellersPrice << std::endl;
-	std::cout << "Seller mean price\t" << sellersMean << std::endl;
-	std::cout << "Seller standart deviation\t" << sellersStandartDeviation << std::endl;
-	std::cout << "Seller timer mode\t" << sellerTimersMode << std::endl;
-	std::cout << "Seller frequency\t" << sellersFrequency << std::endl;
-	std::cout << "Seller lambda\t" << sellersLambda << std::endl;
+	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
+	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
+	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;
 
 	std::cout << std::endl;
 
-	std::cout << "Buyer prices mode\t" << buyerPricesMode << std::endl;
-	std::cout << "Maximum buyer price\t" << maximumBuyersPrice << std::endl;
-	std::cout << "Minimum buyer price\t" << minimumBuyersPrice << std::endl;
-	std::cout << "Buyer mean price\t" << buyersMean << std::endl;
+	std::cout << "Seller prices mode\t\t" << sellerPricesMode << std::endl;
+	std::cout << "Maximum seller price\t\t" << maximumSellersPrice << std::endl;
+	std::cout << "Minimum seller price\t\t" << minimumSellersPrice << std::endl;
+	std::cout << "Seller mean price\t\t" << sellersMean << std::endl;
+	std::cout << "Seller standart deviation\t" << sellersStandartDeviation << std::endl;
+	std::cout << "Seller timer mode\t\t" << sellerTimersMode << std::endl;
+	std::cout << "Seller frequency\t\t" << sellersFrequency << std::endl;
+	std::cout << "Seller lambda\t\t\t" << sellersLambda << std::endl;
+
+	std::cout << std::endl;
+
+	std::cout << "Buyer prices mode\t\t" << buyerPricesMode << std::endl;
+	std::cout << "Maximum buyer price\t\t" << maximumBuyersPrice << std::endl;
+	std::cout << "Minimum buyer price\t\t" << minimumBuyersPrice << std::endl;
+	std::cout << "Buyer mean price\t\t" << buyersMean << std::endl;
 	std::cout << "Buyer standart deviation\t" << buyersStandartDeviation << std::endl;
-	std::cout << "Buyer timer mode\t" << buyerTimersMode << std::endl;
-	std::cout << "Buyer frequency\t" << buyersFrequency << std::endl;
-	std::cout << "Buyer lambda\t" << buyersLambda << std::endl;
+	std::cout << "Buyer timer mode\t\t" << buyerTimersMode << std::endl;
+	std::cout << "Buyer frequency\t\t\t" << buyersFrequency << std::endl;
+	std::cout << "Buyer lambda\t\t\t" << buyersLambda << std::endl;
 }
 
 /* END OF BAD PART */
@@ -158,6 +168,14 @@ int Cmn_Defines::getModelingTime() {
 
 int Cmn_Defines::getTimerPrintingFrequency() {
 	return timerPrintingFrequency;
+}
+
+int Cmn_Defines::getPictureRefreshFrequency() {
+	return pictureRefreshFrequency;
+}
+
+int Cmn_Defines::getPictureDelayTime() {
+	return pictureDelayTime;
 }
 
 int Cmn_Defines::getAccuracy() {
