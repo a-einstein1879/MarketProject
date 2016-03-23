@@ -107,7 +107,16 @@ void DataBase::viewDataBase() {
 
 #ifdef VISUALMODE
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
-	Histogram histogram(3, 20, 0, 25);
+
+	Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
+	double maxArgument = object.getPrice();
+	objectsForSale.push(object);
+	object = objectsBought.pricePop(1);
+	double minArgument = object.getPrice();
+	objectsBought.push(object);
+	refreshPrices();
+
+	Histogram histogram(3, 20, minArgument, maxArgument);
 
 	histogram.setTmpIndex(0);
 	objectsForSale.feelHistogram(histogram);
