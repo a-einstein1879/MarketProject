@@ -29,6 +29,8 @@ public:
 	void printObject();
 	void printObjectToFinalFiles();
 
+	/* Returns 1 if sale is not possible and 0 if it succeeded */
+	bool adaptPrice();
 	double	getPrice();
 	double	getAge();
 	bool	getStatus();
