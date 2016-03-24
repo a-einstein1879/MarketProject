@@ -25,8 +25,10 @@ private:
 public:
 	OpenGLInterface();
 	static OpenGLInterface* getOpenGLInterface();
+	
+	void printPriceChart(Chart &chart);
 
-	void printChart(Chart &chart);
+	void printChart(Chart &chart, FigureRectangle rectangle);
 	int DrawRectangle(FigureRectangle rectangle);
 	
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

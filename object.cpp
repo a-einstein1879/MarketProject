@@ -139,6 +139,6 @@ bool Object::operator>(Object &object) {
 	}
 }
 
-void Object::pushToHistogram(Chart &histogram) {
+void Object::pushPriceToHistogram(Chart &histogram) {
 	histogram.addValueToTmpIndex(price);
 }

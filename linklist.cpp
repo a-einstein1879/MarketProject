@@ -312,7 +312,7 @@ void LinkList::feelHistogram(Chart &histogram) {
 	if(firstPrice == NULL) {return;}
 	node* newnode = firstPrice;
 	do {
-		newnode->object.pushToHistogram(histogram);
+		newnode->object.pushPriceToHistogram(histogram);
 		newnode = newnode->nextPrice;
 	} while(newnode != NULL);
 }

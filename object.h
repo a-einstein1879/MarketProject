@@ -47,7 +47,7 @@ public:
 	bool operator<(Object &object);
 	bool operator>(Object &object);
 
-	void pushToHistogram(Chart &histogram);
+	void pushPriceToHistogram(Chart &histogram);
 };
 
 #endif

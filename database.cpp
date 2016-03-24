@@ -185,6 +185,6 @@ void DataBase::refreshPicture() {
 	chart.setTmpIndex(2);
 	objectsBought.feelHistogram(chart);
 	 
-	ui->printChart(chart);
+	ui->printPriceChart(chart);
 	Sleep(cmn_defines->getPictureDelayTime());
 }

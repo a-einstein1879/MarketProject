@@ -24,11 +24,20 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
+void OpenGLInterface::printPriceChart(Chart &chart) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Color color(1, 0, 0);
+	FigureRectangle rectangle(-1, 0, 0, 1);
+	rectangle.setColor(color);
+	printChart(chart, rectangle);
+//	DrawRectangle(rectangle);
+//	SwapBuffers(hDC);
+}
+
 #define SIDEGAP 0.05
 
 /* TODO: understand why it doesn`t work without & */
-void OpenGLInterface::printChart(Chart &chart) {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+void OpenGLInterface::printChart(Chart &chart, FigureRectangle rectangle) {
 	int numberOfBins = chart.getNumberOfBins();
 	int numberOfCharts = chart.getNumberOfCharts();
 	double binWidth = 2 / double(numberOfBins);
@@ -42,7 +51,7 @@ void OpenGLInterface::printChart(Chart &chart) {
 		rectangle.setColor(color);
 	
 		for(int i = 0; i < numberOfBins; i++) {
-			rectangle.setFigure(-1 + i * binWidth, chart.getValue(j, i) / chart.getMaxValue(), -1 + (i + 1) * binWidth - binWidth * SIDEGAP, 0);
+			rectangle.setFigure(-1 + i * binWidth, 0, -1 + (i + 1) * binWidth - binWidth * SIDEGAP, chart.getValue(j, i) / chart.getMaxValue());
 			DrawRectangle(rectangle);
 		}
 	}
@@ -55,13 +64,13 @@ int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {
 	Color color = rectangle.getColor();
 	glColor3f(color.getRed(), color.getGreen(), color.getBlue());
 	glTranslatef(rectangle.getMiddleX(), rectangle.getMiddleY(), 0.0);
-	double sizeX = rectangle.getSizeX();
-	double sizeY = rectangle.getSizeY();
+	double halfSizeX = rectangle.getSizeX() / 2;
+	double halfSizeY = rectangle.getSizeY() / 2;
 	glBegin(GL_QUADS);
-		glVertex3f(-sizeX, sizeY, 0.0);
-		glVertex3f(sizeX,  sizeY, 0.0);
-		glVertex3f(sizeX, -sizeY, 0.0);
-		glVertex3f(-sizeX,-sizeY, 0.0);
+		glVertex3f(-halfSizeX, halfSizeY, 0.0);
+		glVertex3f(halfSizeX,  halfSizeY, 0.0);
+		glVertex3f(halfSizeX, -halfSizeY, 0.0);
+		glVertex3f(-halfSizeX,-halfSizeY, 0.0);
 	glEnd();
 	
 	return true;

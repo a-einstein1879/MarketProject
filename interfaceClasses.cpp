@@ -28,22 +28,14 @@ Color& Color::operator=(Color &color) {
 FigureRectangle::FigureRectangle() {}
 
 FigureRectangle::FigureRectangle(double lDx, double lDy, double rUx, double rUy) {
-	middleX = (lDx + rUx) / 2;
-	middleY = (lDy + rUy) / 2;
-	sizeX = (rUx - lDx) / 2;
-	sizeY = (rUy - lDy) / 2;
-
-	leftDownX = middleX - lDx;
-	leftDownY = middleY - lDy;
-	rightUpX = rUx - middleX;
-	rightUpY = rUy - middleY;
+	setFigure(lDx, lDy, rUx, rUy);
 }
 
 void FigureRectangle::setFigure(double lDx, double lDy, double rUx, double rUy) {
 	middleX = (lDx + rUx) / 2;
 	middleY = (lDy + rUy) / 2;
-	sizeX = (rUx - lDx) / 2;
-	sizeY = (rUy - lDy) / 2;
+	sizeX = (rUx - lDx);
+	sizeY = (rUy - lDy);
 
 	leftDownX = middleX - lDx;
 	leftDownY = middleY - lDy;
