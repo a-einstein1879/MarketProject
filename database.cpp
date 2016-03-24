@@ -113,19 +113,22 @@ void DataBase::refreshPicture() {
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	OpenGLInterface *ui;
 	ui = ui->getOpenGLInterface();
+	
+	double maxArgument;
+	double minArgument;
+	if(cmn_defines->getConstantBoardersMode() == 0) {
+		minArgument = 0;
+		maxArgument = 25;
+	} else {
+		Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
+		maxArgument = object.getPrice();
+		objectsForSale.push(object);
+		object = objectsBought.pricePop(1);
+		minArgument = object.getPrice();
+		objectsBought.push(object);
+		refreshPrices();
+	}
 
-	Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
-	double maxArgument = object.getPrice();
-	objectsForSale.push(object);
-	object = objectsBought.pricePop(1);
-	double minArgument = object.getPrice();
-	objectsBought.push(object);
-	refreshPrices();
-
-	/* TODO: this is workaround. Has to be removed after solution to -1.#J problem is found */
-	minArgument = 0;
-	maxArgument = 25;
-	/* End of workaround */
 	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
 
 	histogram.setTmpIndex(0);
@@ -134,7 +137,7 @@ void DataBase::refreshPicture() {
 	deals.feelHistogram(histogram);
 	histogram.setTmpIndex(2);
 	objectsBought.feelHistogram(histogram);
-	
+	 
 	ui->printHistogram(histogram);
 	Sleep(cmn_defines->getPictureDelayTime());
 #endif

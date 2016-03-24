@@ -9,7 +9,7 @@
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
-"Graphical mode"
+"Graphical mode", "Constant boarders mode"
 
 class Cmn_Defines {
 private:
@@ -46,6 +46,7 @@ private:
 	int pictureRefreshFrequency;
 	int pictureDelayTime;
 	int numberOfPockets;
+	int constantBoardersMode;
 
 	Cmn_Defines();
 	~Cmn_Defines();
@@ -89,6 +90,7 @@ public:
 	int getPictureRefreshFrequency();
 	int getPictureDelayTime();
 	int getNumberOfPockets();
+	int getConstantBoardersMode();
 };
 
 #endif

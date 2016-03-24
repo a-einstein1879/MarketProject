@@ -38,15 +38,16 @@ void Cmn_Defines::handleConfigurationFileLine(std::string line) {
 double Cmn_Defines::getNumberFromString(std::string line) {
 	bool found = false;
 	bool dot = false;
+	int numberOfDigitsAfterDot = 0;
     double number = 0;
 
     for (std::size_t i = 0; i < line.length(); i++) {
         const char ch = line[i];
         if (ch >= '0' && ch <= '9' || ch == '.') {
-			if(ch == '.') {dot = true; continue;}
+			if(ch == '.') {dot = true; numberOfDigitsAfterDot++; continue;}
             const int digit = ch - '0';
 			if(dot == false)	{number = number * 10 + digit;}
-			else				{number = number + double(digit) / 10;}
+			else				{number = number + double(digit) / pow(10.0, numberOfDigitsAfterDot); numberOfDigitsAfterDot++;}
             found = true;
         }
     }
@@ -126,6 +127,9 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 22:
 		graphicalMode = int(value);
 		break;
+	case 23:
+		constantBoardersMode = int(value);
+		break;
 	}
 }
 
@@ -162,6 +166,9 @@ void Cmn_Defines::printConfiguration() {
 	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
 	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
 	std::cout << "Number of pockets\t\t" << numberOfPockets << std::endl;
+	std::cout << "Constant boarders mode\t\t" << constantBoardersMode << std::endl;
+
+	std::cout << std::endl;
 }
 
 /* END OF BAD PART */
@@ -179,22 +186,6 @@ int Cmn_Defines::getModelingTime() {
 
 int Cmn_Defines::getTimerPrintingFrequency() {
 	return timerPrintingFrequency;
-}
-
-int Cmn_Defines::getGraphicalMode() {
-	return graphicalMode;
-}
-
-int Cmn_Defines::getPictureRefreshFrequency() {
-	return pictureRefreshFrequency;
-}
-
-int Cmn_Defines::getPictureDelayTime() {
-	return pictureDelayTime;
-}
-
-int Cmn_Defines::getNumberOfPockets() {
-	return numberOfPockets;
 }
 
 int Cmn_Defines::getAccuracy() {
@@ -263,4 +254,24 @@ int Cmn_Defines::getBuyersFrequency() {
 
 double Cmn_Defines::getBuyersLambda() {
 	return buyersLambda;
+}
+
+int Cmn_Defines::getGraphicalMode() {
+	return graphicalMode;
+}
+
+int Cmn_Defines::getPictureRefreshFrequency() {
+	return pictureRefreshFrequency;
+}
+
+int Cmn_Defines::getPictureDelayTime() {
+	return pictureDelayTime;
+}
+
+int Cmn_Defines::getNumberOfPockets() {
+	return numberOfPockets;
+}
+
+int Cmn_Defines::getConstantBoardersMode() {
+	return constantBoardersMode;
 }
