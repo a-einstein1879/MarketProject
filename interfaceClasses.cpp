@@ -34,13 +34,13 @@ FigureRectangle::FigureRectangle(double lDx, double lDy, double rUx, double rUy)
 void FigureRectangle::setFigure(double lDx, double lDy, double rUx, double rUy) {
 	middleX = (lDx + rUx) / 2;
 	middleY = (lDy + rUy) / 2;
-	sizeX = (rUx - lDx);
-	sizeY = (rUy - lDy);
+	sizeX = rUx - lDx;
+	sizeY = rUy - lDy;
 
-	leftDownX = middleX - lDx;
-	leftDownY = middleY - lDy;
-	rightUpX = rUx - middleX;
-	rightUpY = rUy - middleY;
+	leftDownX = lDx;
+	leftDownY = lDy;
+	rightUpX = rUx;
+	rightUpY = rUy;
 }
 
 void FigureRectangle::setColor(Color clr) {

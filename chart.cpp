@@ -20,6 +20,7 @@ void Chart::setParameters(int noc, int nob, double mA, double MA, int ChartType)
 	numberOfBins = nob;
 	minArgument = mA;
 	maxArgument = MA;
+	chartType = ChartType;
 	binWidth = (MA - mA) / double(numberOfBins);
 	maxValue = -1;
 	tmpIndex = -1;
