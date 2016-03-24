@@ -46,7 +46,7 @@ public:
 	double getMeanPrice();
 	double getMeanTimer();
 
-	void feelHistogram(Histogram &histogram);
+	void feelHistogram(Chart &histogram);
 }; 
 
 #endif

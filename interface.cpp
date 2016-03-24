@@ -27,10 +27,10 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 #define SIDEGAP 0.05
 
 /* TODO: understand why it doesn`t work without & */
-void OpenGLInterface::printHistogram(Histogram &histogram) {
+void OpenGLInterface::printChart(Chart &chart) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	int numberOfBins = histogram.getNumberOfBins();
-	int numberOfCharts = histogram.getNumberOfCharts();
+	int numberOfBins = chart.getNumberOfBins();
+	int numberOfCharts = chart.getNumberOfCharts();
 	double binWidth = 2 / double(numberOfBins);
 	
 	glEnable(GL_ALPHA_TEST);
@@ -38,11 +38,11 @@ void OpenGLInterface::printHistogram(Histogram &histogram) {
 	glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 	for(int j = 0; j < numberOfCharts; j++) {
 		FigureRectangle rectangle;
-		Color color = histogram.getColor(j);
+		Color color = chart.getColor(j);
 		rectangle.setColor(color);
 	
 		for(int i = 0; i < numberOfBins; i++) {
-			rectangle.setFigure(-1 + i * binWidth, histogram.getValue(j, i) / histogram.getMaxValue(), -1 + (i + 1) * binWidth - binWidth * SIDEGAP, 0);
+			rectangle.setFigure(-1 + i * binWidth, chart.getValue(j, i) / chart.getMaxValue(), -1 + (i + 1) * binWidth - binWidth * SIDEGAP, 0);
 			DrawRectangle(rectangle);
 		}
 	}

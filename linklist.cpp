@@ -308,7 +308,7 @@ double LinkList::getMeanTimer() {
 	return meanTimer;
 }
 
-void LinkList::feelHistogram(Histogram &histogram) {
+void LinkList::feelHistogram(Chart &histogram) {
 	if(firstPrice == NULL) {return;}
 	node* newnode = firstPrice;
 	do {

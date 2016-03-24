@@ -124,6 +124,7 @@ void DataBase::viewDataBase() {
 	/* Info part */
 	printf("Mean prices:\nBuying = %.2f; Deals(For sale / Bought) = %.2f/%.2f; Selling = %.2f\n",
 		objectsBought.getMeanPrice(), dealsForSale.getMeanPrice(), dealsBought.getMeanPrice(), objectsForSale.getMeanPrice());
+	printf("Number of objects. Bought: %d; For sale: %d\n", objectsBought.getNumberOfObjects(), objectsForSale.getNumberOfObjects());
 	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
 		printf("Spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice);
 	}
@@ -174,16 +175,16 @@ void DataBase::refreshPicture() {
 		refreshPrices();
 	}
 
-	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
+	Chart chart(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument, 0);
 
-	histogram.setTmpIndex(0);
-	objectsForSale.feelHistogram(histogram);
-	/*histogram.setTmpIndex(1);
-	dealsForSale.feelHistogram(histogram);
-	dealsBought.feelHistogram(histogram);*/
-	histogram.setTmpIndex(2);
-	objectsBought.feelHistogram(histogram);
+	chart.setTmpIndex(0);
+	objectsForSale.feelHistogram(chart);
+	/*chart.setTmpIndex(1);
+	dealsForSale.feelHistogram(chart);
+	dealsBought.feelHistogram(chart);*/
+	chart.setTmpIndex(2);
+	objectsBought.feelHistogram(chart);
 	 
-	ui->printHistogram(histogram);
+	ui->printChart(chart);
 	Sleep(cmn_defines->getPictureDelayTime());
 }

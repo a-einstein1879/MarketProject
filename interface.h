@@ -7,7 +7,7 @@
 #include <stdlib.h>
 // Include tchar to define _T
 #include <tchar.h>
-#include "histogram.h"
+#include "chart.h"
 #include "interfaceClasses.h"
 
 class OpenGLInterface {
@@ -26,7 +26,7 @@ public:
 	OpenGLInterface();
 	static OpenGLInterface* getOpenGLInterface();
 
-	void printHistogram(Histogram &histogram);
+	void printChart(Chart &chart);
 	int DrawRectangle(FigureRectangle rectangle);
 	
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

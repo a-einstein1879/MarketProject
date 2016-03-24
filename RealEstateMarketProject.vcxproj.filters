@@ -39,10 +39,10 @@
     <ClCompile Include="cmn_defines.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="histogram.cpp">
+    <ClCompile Include="interfaceClasses.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="interfaceClasses.cpp">
+    <ClCompile Include="chart.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,10 +65,10 @@
     <ClInclude Include="cmn_defines.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="histogram.h">
+    <ClInclude Include="interfaceClasses.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="interfaceClasses.h">
+    <ClInclude Include="chart.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

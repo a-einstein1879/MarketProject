@@ -2,7 +2,7 @@
 #define OBJECT_H
 
 #include <stdio.h>
-#include "histogram.h"
+#include "chart.h"
 
 /*
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
@@ -47,7 +47,7 @@ public:
 	bool operator<(Object &object);
 	bool operator>(Object &object);
 
-	void pushToHistogram(Histogram &histogram);
+	void pushToHistogram(Chart &histogram);
 };
 
 #endif

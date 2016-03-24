@@ -3,7 +3,6 @@
 #include "interface.h"
 #include "market.h"
 
-#include "histogram.h"
 #include <stdio.h>
 
 int main() {
