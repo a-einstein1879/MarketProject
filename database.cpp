@@ -31,11 +31,20 @@ void DataBase::checkTimers() {
 	bool ret = true;
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.timerPop(1);
-		if(object.getAge() > 50) {
+		if(object.getAge() > 300) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsForSale.push(object);}
 	}
+
+	if(objectsBought.getNumberOfObjects() != 0) {
+		object = objectsBought.timerPop(1);
+		if(object.getAge() > 300) {
+			if(object.adaptPrice()) {ret = false;}
+		}
+		if(ret) {objectsBought.push(object);}
+	}
+
 	refreshPrices();
 }
 
@@ -138,11 +147,13 @@ void DataBase::viewDataBase() {
 	}
 
 	printf("End of database\n\n");
+	system("pause");
 #endif
 }
 
 #include "interface.h"
 void DataBase::refreshPicture() {
+
 	if(!(cmn_defines->getGraphicalMode())) {return;}
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	OpenGLInterface *ui;
@@ -167,9 +178,9 @@ void DataBase::refreshPicture() {
 
 	histogram.setTmpIndex(0);
 	objectsForSale.feelHistogram(histogram);
-	histogram.setTmpIndex(1);
+	/*histogram.setTmpIndex(1);
 	dealsForSale.feelHistogram(histogram);
-	dealsBought.feelHistogram(histogram);
+	dealsBought.feelHistogram(histogram);*/
 	histogram.setTmpIndex(2);
 	objectsBought.feelHistogram(histogram);
 	 
