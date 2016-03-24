@@ -151,7 +151,7 @@ double Market::getNormallyDistributedValue(double mean, double standartDeviation
 		u = 2 * double(rand()%accuracy) / accuracy - 1;
 		v = 2 * double(rand()%accuracy) / accuracy - 1;
 		s = u * u + v * v;
-	} while(s > 1);
+	} while(s > 1 || s == 0);
 	s = sqrt(-2 * log(s) / s);
 	return u * s * standartDeviation + mean;
 }
