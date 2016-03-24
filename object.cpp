@@ -33,7 +33,7 @@ void Object::tick() {
 }
 
 void Object::printObject() {
-	printf("price = %.2f,\tage = %.2f,\tnumber of price reductions = %d\tstatus = \"%s\"\n", getPrice(), getAge(), getNumberOfPriceReductions(), getStatus()?"For sale":"Bought");
+	printf("price = %.2f, age = %.2f, number of price reductions = %d status = \"%s\"\n", getPrice(), getAge(), getNumberOfPriceReductions(), getStatus()?"For sale":"Bought");
 }
 
 /* TODO: there is a problem with timers files. We will have creation times there instead of time spent on market. Don`t want to add timer as an argument, because objects don`t need to know anything about timers */

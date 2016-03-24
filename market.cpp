@@ -93,7 +93,8 @@ void Market::runDeal() {
 	deal.time = buyer.getAge() - seller.getAge();
 	printDeal(deal);
 
-	Object newDeal(deal.price, deal.time, 0);
+	Object newDeal;
+	newDeal.setObject(deal.price, (deal.time > 0)?deal.time:-deal.time, (deal.time > 0)?FORSALE:BOUGHT);
 	dataBase->addDeal(newDeal);
 }
 
