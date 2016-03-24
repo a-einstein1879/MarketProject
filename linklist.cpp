@@ -94,8 +94,7 @@ void LinkList::push(Object object, int pricePosition, int timerPosition) {
 	
 	if(numberOfObjects != 0) {meanPrice = meanPrice * double(numberOfObjects) / (double(numberOfObjects) + 1) + object.getPrice() / double(numberOfObjects);}
 	else {meanPrice = object.getPrice();}
-	if(numberOfObjects != 0) {meanTimer = meanTimer * double(numberOfObjects) / (double(numberOfObjects) + 1) + object.getAge() / double(numberOfObjects);}
-	else {meanTimer = object.getAge();}
+	//meanTimer = meanTimer * double(numberOfObjects) / (double(numberOfObjects) + 1) + object.getAge() / double(numberOfObjects);
 	numberOfObjects++;
 }
  
@@ -143,8 +142,6 @@ Object LinkList::pricePop(int pos) {
 
 	if(numberOfObjects != 1) {meanPrice = meanPrice * double(numberOfObjects) / (double(numberOfObjects) - 1) - returnValue.getPrice() / (double(numberOfObjects) - 1);}
 	else {meanPrice = 0;}
-	if(numberOfObjects != 1) {meanTimer = meanTimer * double(numberOfObjects) / (double(numberOfObjects) - 1) - returnValue.getAge() / (double(numberOfObjects) - 1);}
-	else {meanTimer = 0;}
 	numberOfObjects--;
 	return returnValue;
 } 
@@ -190,11 +187,6 @@ Object LinkList::timerPop(int pos) {
 		firstPrice = NULL;
 		firstTimer = NULL;
 	}
-
-	if(numberOfObjects != 1) {meanPrice = meanPrice * double(numberOfObjects) / (double(numberOfObjects) - 1) - returnValue.getPrice() / (double(numberOfObjects) - 1);}
-	else {meanPrice = 0;}
-	if(numberOfObjects != 1) {meanTimer = meanTimer * double(numberOfObjects) / (double(numberOfObjects) - 1) - returnValue.getAge() / (double(numberOfObjects) - 1);}
-	else {meanTimer = 0;}
 	numberOfObjects--;
 	return returnValue;
 }

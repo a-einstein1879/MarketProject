@@ -47,17 +47,6 @@ void Object::printObjectToFinalFiles() {
 	}
 }
 
-bool Object::adaptPrice() {
-	if(numberOfPriceReductions++ > 0) {return 1;}
-	if(status == FORSALE) {
-		price = 0.8 * price;
-	} else {
-		price = 1.2 * price;
-	}
-	age = 0;
-	return 0;
-}
-
 double Object::getPrice() {
 	return price;
 }

@@ -10,7 +10,6 @@ private:
 	int timer;
 	DataBase();
 	static DataBase *p_DataBase;
-	Cmn_Defines *cmn_defines;
 	
 	double lowestSellingPrice;
 	LinkList objectsForSale;
@@ -19,9 +18,10 @@ private:
 	LinkList objectsBought;
 
 	LinkList dealsForSale, dealsBought;
-	
-	void checkTimers();
+	Cmn_Defines *cmn_defines;
+
 	void refreshPrices();
+	double meanSpread;
 public:
 	static DataBase* getDataBase();
 	void tick();

@@ -7,6 +7,7 @@ DataBase::DataBase() {
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
 	cmn_defines = cmn_defines->getCmn_Defines();
+	meanSpread = 0;
 };
 
 DataBase* DataBase::getDataBase() {
@@ -20,23 +21,6 @@ void DataBase::tick() {
 	timer++;
 	objectsForSale.tick();
 	objectsBought.tick();
-	checkTimers();
-}
-
-/* TODO: maybe checkTimers should be refactored so that sales will be produced in objects themselves, but it is hard to do it without disabling sales for buyers and for deals
-If new class for storing deals and other data will be done, saling can be enabled in objects */
-void DataBase::checkTimers() {
-	Object object;
-
-	bool ret = true;
-	if(objectsForSale.getNumberOfObjects() != 0) {
-		object = objectsForSale.timerPop(1);
-		if(object.getAge() > 50) {
-			if(object.adaptPrice()) {ret = false;}
-		}
-		if(ret) {objectsForSale.push(object);}
-	}
-	refreshPrices();
 }
 
 int DataBase::pushToDataBase(Object newObject) {
