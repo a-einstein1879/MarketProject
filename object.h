@@ -17,6 +17,7 @@ private:
 	double price;
 	double creationTime;
 	bool status;
+	int numberOfPriceReductions;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
 public:
 	Object();
@@ -26,9 +27,10 @@ public:
 	void printObject();
 	void printObjectToFinalFiles();
 
-	double getPrice();
-	double getCreationTime();
-	bool   getStatus();
+	double	getPrice();
+	double	getCreationTime();
+	bool	getStatus();
+	int		getNumberOfPriceReductions();
 	FILE* getBuyersFinalPricesFile();
 	FILE* getBuyersFinalTimersFile();
 	FILE* getSellersFinalPricesFile();

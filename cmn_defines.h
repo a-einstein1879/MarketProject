@@ -109,7 +109,6 @@ public:
 #define SELLERSFINALPRICESFILE	"output/sellersFinalPrices.txt"
 #define SELLERSFINALTIMERSFILE	"output/sellersFinalTimers.txt"
 #define SILENTMODE
-#define VISUALMODE
 
 /***********************************************************
 						END OF THE OUTPUT

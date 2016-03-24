@@ -4,18 +4,21 @@ Object::Object() {
 	price		 = 0;
 	creationTime = -1;
 	status		 = 0;
+	numberOfPriceReductions = 0;
 }
 
 Object::Object(double Price, double CreationTime, bool Status) {
 	price		 = Price;
 	creationTime = CreationTime;
 	status		 = Status;
+	numberOfPriceReductions = 0;
 }
 
 void Object::setObject(double Price, double CreationTime, bool Status) {
 	price		 = Price;
 	creationTime = CreationTime;
 	status		 = Status;
+	numberOfPriceReductions = 0;
 }
 
 void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile) {
@@ -26,7 +29,7 @@ void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, 
 }
 
 void Object::printObject() {
-	printf("price = %.2f,\tcreation time = %.2f,\tstatus = \"%s\"\n", getPrice(), getCreationTime(), getStatus()?"For sale":"Bought");
+	printf("price = %.2f,\tcreation time = %.2f,\tnumber of price reductions = %d\tstatus = \"%s\"\n", getPrice(), getCreationTime(), getNumberOfPriceReductions(), getStatus()?"For sale":"Bought");
 }
 
 /* TODO: there is a problem with timers files. We will have creation times there instead of time spent on market. Don`t want to add timer as an argument, because objects don`t need to know anything about timers */
@@ -51,6 +54,10 @@ bool Object::getStatus() {
 	return status;
 }
 
+int	Object::getNumberOfPriceReductions() {
+	return numberOfPriceReductions;
+}
+
 FILE* Object::getBuyersFinalPricesFile() {
 	return buyersFinalPricesFile;
 }
@@ -71,6 +78,8 @@ Object& Object::operator=(Object &object) {
 	price		 = object.getPrice();
 	creationTime = object.getCreationTime();
 	status		 = object.getStatus();
+	numberOfPriceReductions = object.getNumberOfPriceReductions();
+
 	buyersFinalPricesFile = object.getBuyersFinalPricesFile();
 	buyersFinalTimersFile = object.getBuyersFinalTimersFile();
 	sellersFinalPricesFile = object.getSellersFinalPricesFile();

@@ -109,7 +109,6 @@ void DataBase::viewDataBase() {
 #include "interface.h"
 void DataBase::refreshPicture() {
 	if(!(cmn_defines->getGraphicalMode())) {return;}
-#ifdef VISUALMODE
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	OpenGLInterface *ui;
 	ui = ui->getOpenGLInterface();
@@ -140,5 +139,4 @@ void DataBase::refreshPicture() {
 	 
 	ui->printHistogram(histogram);
 	Sleep(cmn_defines->getPictureDelayTime());
-#endif
 }
