@@ -1,23 +1,22 @@
 #include "object.h"
 
 Object::Object() {
-	price		 = 0;
-	creationTime = -1;
-	status		 = 0;
+	timer = 1;
+	price = 0;
+	age = -1;
+	status = 0;
 	numberOfPriceReductions = 0;
 }
 
 Object::Object(double Price, double CreationTime, bool Status) {
-	price		 = Price;
-	creationTime = CreationTime;
-	status		 = Status;
-	numberOfPriceReductions = 0;
+	timer = int(CreationTime);
+	setObject(Price, 0, Status);
 }
 
-void Object::setObject(double Price, double CreationTime, bool Status) {
-	price		 = Price;
-	creationTime = CreationTime;
-	status		 = Status;
+void Object::setObject(double Price, double Age, bool Status) {
+	price					= Price;
+	age						= Age;
+	status					= Status;
 	numberOfPriceReductions = 0;
 }
 
@@ -28,26 +27,31 @@ void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, 
 	sellersFinalTimersFile = SellersFinalTimersFile;
 }
 
+void Object::tick() {
+	timer++;
+	age++;
+}
+
 void Object::printObject() {
-	printf("price = %.2f,\tcreation time = %.2f,\tnumber of price reductions = %d\tstatus = \"%s\"\n", getPrice(), getCreationTime(), getNumberOfPriceReductions(), getStatus()?"For sale":"Bought");
+	printf("price = %.2f,\tage = %.2f,\tnumber of price reductions = %d\tstatus = \"%s\"\n", getPrice(), getAge(), getNumberOfPriceReductions(), getStatus()?"For sale":"Bought");
 }
 
 /* TODO: there is a problem with timers files. We will have creation times there instead of time spent on market. Don`t want to add timer as an argument, because objects don`t need to know anything about timers */
 void Object::printObjectToFinalFiles() {
 	if(status == BOUGHT) {
 		fprintf(buyersFinalPricesFile, "%.2f\n", price);
-		fprintf(buyersFinalTimersFile, "%.2f\n", creationTime);
+		fprintf(buyersFinalTimersFile, "%.2f\n", age);
 	} else {
 		fprintf(sellersFinalPricesFile, "%.2f\n", price);
-		fprintf(sellersFinalTimersFile, "%.2f\n", creationTime);
+		fprintf(sellersFinalTimersFile, "%.2f\n", age);
 	}
 }
 
 double Object::getPrice() {
 	return price;
 }
-double Object::getCreationTime() {
-	return creationTime;
+double Object::getAge() {
+	return age;
 }
 
 bool Object::getStatus() {
@@ -56,6 +60,10 @@ bool Object::getStatus() {
 
 int	Object::getNumberOfPriceReductions() {
 	return numberOfPriceReductions;
+}
+
+int Object::getTimer() {
+	return timer;
 }
 
 FILE* Object::getBuyersFinalPricesFile() {
@@ -76,9 +84,10 @@ FILE* Object::getSellersFinalTimersFile() {
 
 Object& Object::operator=(Object &object) {
 	price		 = object.getPrice();
-	creationTime = object.getCreationTime();
+	age			 = object.getAge();
 	status		 = object.getStatus();
 	numberOfPriceReductions = object.getNumberOfPriceReductions();
+	timer		 = object.getTimer();
 
 	buyersFinalPricesFile = object.getBuyersFinalPricesFile();
 	buyersFinalTimersFile = object.getBuyersFinalTimersFile();
@@ -104,7 +113,7 @@ bool Object::operator>=(Object &object) {
 }
 
 bool Object::operator<(Object &object) {
-	if(creationTime <= object.getCreationTime()) {
+	if(age <= object.getAge()) {
 		return true;
 	} else {
 		return false;
@@ -112,7 +121,7 @@ bool Object::operator<(Object &object) {
 }
 
 bool Object::operator>(Object &object) {
-	if(creationTime >= object.getCreationTime()) {
+	if(age >= object.getAge()) {
 		return true;
 	} else {
 		return false;

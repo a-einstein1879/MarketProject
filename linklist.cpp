@@ -6,6 +6,21 @@ LinkList::LinkList() {
 	firstPrice = NULL;
 	firstTimer = NULL;
 	numberOfObjects = 0;
+	meanPrice = 0;
+	meanTimer = 0;
+	timer = 1;
+}
+
+void LinkList::tick() {
+	timer++;
+	if(firstTimer == NULL) {
+		return;
+	}
+	node* newnode = firstTimer;
+	do {
+		newnode->object.tick();
+		newnode = newnode->nextTimer;
+	} while(newnode != NULL);
 }
 
 void LinkList::push(Object object, int pricePosition, int timerPosition) {
@@ -76,7 +91,10 @@ void LinkList::push(Object object, int pricePosition, int timerPosition) {
 		newNode->prevTimer = NULL;
 		firstTimer = newNode;
 	}
-
+	
+	if(numberOfObjects != 0) {meanPrice = meanPrice * double(numberOfObjects) / (double(numberOfObjects) + 1) + object.getPrice() / double(numberOfObjects);}
+	else {meanPrice = object.getPrice();}
+	//meanTimer = meanTimer * double(numberOfObjects) / (double(numberOfObjects) + 1) + object.getAge() / double(numberOfObjects);
 	numberOfObjects++;
 }
  
@@ -121,6 +139,9 @@ Object LinkList::pricePop(int pos) {
 		firstPrice = NULL;
 		firstTimer = NULL;
 	}
+
+	if(numberOfObjects != 1) {meanPrice = meanPrice * double(numberOfObjects) / (double(numberOfObjects) - 1) - returnValue.getPrice() / (double(numberOfObjects) - 1);}
+	else {meanPrice = 0;}
 	numberOfObjects--;
 	return returnValue;
 } 
@@ -258,6 +279,14 @@ int LinkList::findTimerPositionForObject(Object object) {
 
 int LinkList::getNumberOfObjects() {
 	return numberOfObjects;
+}
+
+double LinkList::getMeanPrice() {
+	return meanPrice;
+}
+
+double LinkList::getMeanTimer() {
+	return meanTimer;
 }
 
 void LinkList::feelHistogram(Histogram &histogram) {

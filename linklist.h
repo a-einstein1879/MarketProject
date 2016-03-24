@@ -25,8 +25,12 @@ private:
     node* firstPrice;
 	node* firstTimer;
 	int numberOfObjects;
+	double meanPrice;
+	double meanTimer;
+	int timer;
 public: 
     LinkList();
+	void tick();
  
     void push(Object object, int pricePosition = -1, int timerPosition = -1);
     Object pricePop(int pos = 1);
@@ -39,6 +43,8 @@ public:
 	int findPricePositionForObject(Object object);
 	int findTimerPositionForObject(Object object);
 	int getNumberOfObjects();
+	double getMeanPrice();
+	double getMeanTimer();
 
 	void feelHistogram(Histogram &histogram);
 }; 

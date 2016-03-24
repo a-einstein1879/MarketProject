@@ -3,6 +3,7 @@
 DataBase* DataBase::p_DataBase = 0;
 
 DataBase::DataBase() {
+	timer = 1;
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
 	cmn_defines = cmn_defines->getCmn_Defines();
@@ -13,6 +14,12 @@ DataBase* DataBase::getDataBase() {
 		p_DataBase = new DataBase();
 	}
 	return p_DataBase;
+}
+
+void DataBase::tick() {
+	timer++;
+	objectsForSale.tick();
+	objectsBought.tick();
 }
 
 int DataBase::pushToDataBase(Object newObject) {
@@ -62,7 +69,6 @@ Object DataBase::popHighestBuyer() {
 	}
 }
 
-#include <stdlib.h>
 void DataBase::refreshPrices() {
 	Object object;
 
@@ -85,6 +91,7 @@ void DataBase::refreshPrices() {
 
 #include <stdio.h>
 void DataBase::viewDataBase() {
+	printf("Buying mean price = %.2f Deals mean price = %.2f Selling mean price = %.2f\n", objectsBought.getMeanPrice(), deals.getMeanPrice(), objectsForSale.getMeanPrice());
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);

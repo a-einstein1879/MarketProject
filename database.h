@@ -7,6 +7,7 @@
 
 class DataBase {
 private:
+	int timer;
 	DataBase();
 	static DataBase *p_DataBase;
 	
@@ -18,15 +19,17 @@ private:
 
 	LinkList deals;
 	Cmn_Defines *cmn_defines;
+
+	void refreshPrices();
 public:
 	static DataBase* getDataBase();
+	void tick();
 	int pushToDataBase(Object newObject);
 	void addDeal(Object newObject);
 
 	bool dealPossible();
 	Object popLowestSeller();
 	Object popHighestBuyer();
-	void refreshPrices();
 
 	void viewDataBase();
 	void refreshPicture();

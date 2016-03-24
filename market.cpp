@@ -37,6 +37,7 @@ int Market::tick() {
 }
 
 void Market::switchTimers() {
+	dataBase->tick();
 	timer++;
 	timeLeftBeforeNewSellingObject--;
 	timeLeftBeforeNewObjectBought--;
@@ -84,12 +85,12 @@ int Market::addBuyer() {
 void Market::runDeal() {
 	Object seller, buyer;
 	buyer = dataBase->popHighestBuyer();
-	if(buyer.getCreationTime() == -1) {return;}
+	if(buyer.getAge() == -1) {return;}
 	seller = dataBase->popLowestSeller();
-	if(seller.getCreationTime() == -1) {dataBase->pushToDataBase(buyer); return;}
+	if(seller.getAge() == -1) {dataBase->pushToDataBase(buyer); return;}
 	Deal deal;
 	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
-	deal.time = buyer.getCreationTime() - seller.getCreationTime();
+	deal.time = buyer.getAge() - seller.getAge();
 	printDeal(deal);
 
 	Object newDeal(deal.price, deal.time, 0);
@@ -236,13 +237,13 @@ void Market::finish() {
 	Object object;
 	while(1) {
 		object = dataBase->popLowestSeller();
-		if(object.getCreationTime() == -1)	{break;}
+		if(object.getAge() == -1)	{break;}
 		else								{object.printObjectToFinalFiles(); continue;}
 	}
 
 	while(1) {
 		object = dataBase->popHighestBuyer();
-		if(object.getCreationTime() == -1)	{break;}
+		if(object.getAge() == -1)	{break;}
 		else								{object.printObjectToFinalFiles(); continue;}
 	}
 }
