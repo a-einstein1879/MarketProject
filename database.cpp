@@ -34,7 +34,11 @@ int DataBase::pushToDataBase(Object newObject) {
 }
 
 void DataBase::addDeal(Object newObject) {
-	deals.push(newObject);
+	if(newObject.getStatus() == FORSALE) {
+		dealsForSale.push(newObject);
+	} else {
+		dealsBought.push(newObject);
+	}
 }
 
 bool DataBase::dealPossible() {
@@ -93,9 +97,10 @@ void DataBase::refreshPrices() {
 #include <stdio.h>
 void DataBase::viewDataBase() {
 	/* Info part */
-	printf("Buying mean price = %.2f Deals mean price = %.2f Selling mean price = %.2f\n", objectsBought.getMeanPrice(), deals.getMeanPrice(), objectsForSale.getMeanPrice());
+	printf("Mean prices:\nBuying = %.2f; Deals(For sale / Bought) = %.2f/%.2f; Selling = %.2f\n",
+		objectsBought.getMeanPrice(), dealsForSale.getMeanPrice(), dealsBought.getMeanPrice(), objectsForSale.getMeanPrice());
 	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
-		printf("Spread is = %.2f\n", lowestSellingPrice - highestBuyingPrice);
+		printf("Spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice);
 	}
 	/* End of info part */
 
@@ -147,7 +152,8 @@ void DataBase::refreshPicture() {
 	histogram.setTmpIndex(0);
 	objectsForSale.feelHistogram(histogram);
 	histogram.setTmpIndex(1);
-	deals.feelHistogram(histogram);
+	dealsForSale.feelHistogram(histogram);
+	dealsBought.feelHistogram(histogram);
 	histogram.setTmpIndex(2);
 	objectsBought.feelHistogram(histogram);
 	 

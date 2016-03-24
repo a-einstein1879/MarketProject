@@ -17,7 +17,7 @@ private:
 	double highestBuyingPrice;
 	LinkList objectsBought;
 
-	LinkList deals;
+	LinkList dealsForSale, dealsBought;
 	Cmn_Defines *cmn_defines;
 
 	void refreshPrices();
