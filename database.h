@@ -21,6 +21,7 @@ private:
 	Cmn_Defines *cmn_defines;
 
 	void refreshPrices();
+	double meanSpread;
 public:
 	static DataBase* getDataBase();
 	void tick();

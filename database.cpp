@@ -7,6 +7,7 @@ DataBase::DataBase() {
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
 	cmn_defines = cmn_defines->getCmn_Defines();
+	meanSpread = 0;
 };
 
 DataBase* DataBase::getDataBase() {
@@ -91,7 +92,13 @@ void DataBase::refreshPrices() {
 
 #include <stdio.h>
 void DataBase::viewDataBase() {
+	/* Info part */
 	printf("Buying mean price = %.2f Deals mean price = %.2f Selling mean price = %.2f\n", objectsBought.getMeanPrice(), deals.getMeanPrice(), objectsForSale.getMeanPrice());
+	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
+		printf("Spread is = %.2f\n", lowestSellingPrice - highestBuyingPrice);
+	}
+	/* End of info part */
+
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
