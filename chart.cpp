@@ -1,5 +1,9 @@
 #include "chart.h"
 
+/************************************
+				CHART
+************************************/
+
 Chart::Chart() {
 	numberOfCharts = -1;
 	minArgument = -1;
@@ -31,6 +35,10 @@ Color Chart::getColor(int chartIndex) {
 	return colors[chartIndex];
 }
 
+
+/************************************
+			HISTOGRAM
+************************************/
 Histogram::Histogram() {
 	numberOfBins = -1;
 	tmpIndex = -1;
@@ -113,7 +121,7 @@ void Histogram::addValueToTmpIndex(double value) {
 }
 
 #include <stdio.h>
-void Histogram::printHistogram() {
+void Histogram::printChart() {
 	if(numberOfCharts < 0 || numberOfBins < 0) {return;}
 	for(int i = 0; i < numberOfCharts; i++) {
 		printf("Chart number %d:\n", i);
@@ -122,4 +130,59 @@ void Histogram::printHistogram() {
 		}
 		printf("\n");
 	}
+}
+
+
+/************************************
+			LINECHART
+************************************/
+LineChart::LineChart() {
+	numberOfArguments = -1;
+	maxActiveValue = 0;
+}
+
+LineChart::LineChart(int noc, double mA, double MA) {
+	setParameters(noc, mA, MA);
+	if(valuesLegal()) {
+		values = new double*[numberOfCharts];
+		for(int i = 0; i < numberOfCharts; i++) {
+			values[i] = new double[numberOfArguments];
+		}
+		for(int i = 0; i < numberOfCharts; i++) {
+			for(int j = 0; j < numberOfArguments; j++)
+				values[i][j] = 0;
+		}
+
+		colors = new Color[numberOfCharts];
+	}
+}
+
+LineChart::~LineChart() {
+	if(valuesLegal()) {
+		for(int i = 0; i < numberOfCharts; i++) {
+			delete [] values[i];
+		}
+		delete [] values;
+	}
+
+	delete [] colors;
+}
+
+bool LineChart::valuesLegal(int chartIndex, int argumentIndex) {
+	if(chartIndex == -1 && argumentIndex == -1 && numberOfCharts >= 0 && numberOfArguments >= 0) {return true;}
+	if(chartIndex >= 0 && chartIndex < numberOfCharts &&
+		argumentIndex >= 0 && argumentIndex < numberOfArguments &&
+		numberOfCharts >= 0 && numberOfArguments >= 0) {return true;}
+	return false;
+}
+
+void LineChart::setParameters(int noc, double mA, double MA) {
+	if(noc < 0) {return;}
+	numberOfCharts = noc;
+	numberOfArguments = int(MA - mA);
+	minArgument = mA;
+	maxArgument = MA;
+	maxActiveValue = 0;
+	unitInterval = 1;
+	maxValue = -1;
 }

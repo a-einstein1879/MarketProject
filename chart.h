@@ -21,6 +21,7 @@ public:
 	double getMaxArgument();
 	double getMaxValue();
 	Color getColor(int chartIndex);
+	virtual void printChart() {}
 };
 
 class Histogram : public Chart {
@@ -42,7 +43,21 @@ public:
 	void addValue(int chartIndex, double value);
 	void setTmpIndex(int index);
 	void addValueToTmpIndex(double value);
-	void printHistogram();
+	void printChart();
+};
+
+class LineChart : public Chart {
+private:
+	int numberOfArguments;
+	double unitInterval;
+	int maxActiveValue;
+	
+	bool valuesLegal(int chartIndex = -1, int argumentIndex = -1);
+	void setParameters(int noc, double mA, double MA);
+public:
+	LineChart();
+	LineChart(int noc, double mA, double MA);
+	~LineChart();
 };
 
 #endif
