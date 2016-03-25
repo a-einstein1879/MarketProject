@@ -16,7 +16,7 @@ void LinkList::tick() {
 	if(firstTimer == NULL) {
 		return;
 	}
-	node* newnode = firstTimer;
+	Node* newnode = firstTimer;
 	do {
 		newnode->object.tick();
 		newnode = newnode->nextTimer;
@@ -27,11 +27,11 @@ void LinkList::push(Object object, int pricePosition, int timerPosition) {
 	if(pricePosition == -1) {pricePosition = findPricePositionForObject(object);}
 	if(timerPosition == -1) {timerPosition = findTimerPositionForObject(object);}
 
-	node* newNode = new node;
+	Node* newNode = new Node;
 	newNode->object = object;
 
 	if(firstPrice != NULL) {
-		node* temp = firstPrice;
+		Node* temp = firstPrice;
 		bool end = false;
 		for (int i = 1; i < pricePosition; i++) {
 			if(temp->nextPrice != NULL) { /* In case we exceeded the number of elements, the element will be added in the end */
@@ -62,7 +62,7 @@ void LinkList::push(Object object, int pricePosition, int timerPosition) {
 	}
 	
 	if(firstTimer != NULL) {
-		node* temp = firstTimer;
+		Node* temp = firstTimer;
 		bool end = false;
 		for (int i = 1; i < timerPosition; i++) {
 			if(temp->nextTimer != NULL) { /* In case we exceeded the number of elements, the element will be added in the end */
@@ -110,7 +110,7 @@ Object LinkList::pricePop(int pos) {
 
 	Object returnValue;
 	if(firstPrice->nextPrice != NULL) { /* if the element is not the only element */
-		node* temp = firstPrice;
+		Node* temp = firstPrice;
 		for (int i = 1; i < pos; i++) {
 			if(temp->nextPrice != NULL) {
 				temp = temp->nextPrice;
@@ -164,7 +164,7 @@ Object LinkList::timerPop(int pos) {
 
 	Object returnValue;
 	if(firstTimer->nextTimer != NULL) { /* if the element is not the only element */
-		node* temp = firstTimer;
+		Node* temp = firstTimer;
 		for (int i = 1; i < pos; i++) {
 			if(temp->nextTimer != NULL) {
 				temp = temp->nextTimer;
@@ -212,7 +212,7 @@ Object LinkList::timerPop(int pos) {
  
 void LinkList::clean() {
 	if(firstPrice == NULL) {printf("List is already empty\n"); return;}
-	for(node* newnode = firstPrice; newnode->nextPrice != NULL; newnode = firstPrice) {
+	for(Node* newnode = firstPrice; newnode->nextPrice != NULL; newnode = firstPrice) {
 		firstPrice = newnode->nextPrice;
 		delete newnode;
 	}
@@ -226,7 +226,7 @@ void LinkList::viewPrice() {
 		printf("Price list is empty\n");
 		return;
 	}
-	node* newnode = firstPrice;
+	Node* newnode = firstPrice;
 	printf("Number of objects is %d\n", numberOfObjects);
 	do {
 		newnode->object.printObject();
@@ -240,7 +240,7 @@ void LinkList::viewTimers() {
 		printf("Timer list is empty\n");
 		return;
 	}
-	node* newnode = firstTimer;
+	Node* newnode = firstTimer;
 	printf("Number of objects is %d\n", numberOfObjects);
 	do {
 		newnode->object.printObject();
@@ -260,7 +260,7 @@ int LinkList::findPricePositionForObject(Object object) {
 	int pos = 1;
 	bool brk = 0;
 
-	node* newnode = firstPrice;
+	Node* newnode = firstPrice;
 	while(newnode->nextPrice != NULL) {
 		if((newnode->object <= object) && (object <= newnode->nextPrice->object)) {brk = 1; pos++; break;}
 		newnode = newnode->nextPrice;
@@ -282,7 +282,7 @@ int LinkList::findTimerPositionForObject(Object object) {
 	int pos = 1;
 	bool brk = 0;
 
-	node* newnode = firstTimer;
+	Node* newnode = firstTimer;
 	while(newnode->nextTimer != NULL) {
 		if((newnode->object > object) && (object > newnode->nextTimer->object)) {brk = 1; pos++; break;}
 		newnode = newnode->nextTimer;
@@ -308,9 +308,9 @@ double LinkList::getMeanTimer() {
 	return meanTimer;
 }
 
-void LinkList::feelHistogram(Chart &histogram) {
+void LinkList::feelHistogram(Histogram &histogram) {
 	if(firstPrice == NULL) {return;}
-	node* newnode = firstPrice;
+	Node* newnode = firstPrice;
 	do {
 		newnode->object.pushPriceToHistogram(histogram);
 		newnode = newnode->nextPrice;

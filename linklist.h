@@ -3,14 +3,14 @@
 
 #include "object.h"
 
-struct node 
+struct Node 
 {
     Object object;
-    node* nextPrice;
-    node* prevPrice;
+    Node* nextPrice;
+    Node* prevPrice;
 
-	node* nextTimer;
-	node* prevTimer;
+	Node* nextTimer;
+	Node* prevTimer;
 }; 
 
 /*
@@ -22,8 +22,8 @@ Pop is done from the beginning of the list by default
 
 class LinkList { 
 private: 
-    node* firstPrice;
-	node* firstTimer;
+    Node* firstPrice;
+	Node* firstTimer;
 	int numberOfObjects;
 	double meanPrice;
 	double meanTimer;
@@ -46,7 +46,7 @@ public:
 	double getMeanPrice();
 	double getMeanTimer();
 
-	void feelHistogram(Chart &histogram);
+	void feelHistogram(Histogram &histogram);
 }; 
 
 #endif

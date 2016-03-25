@@ -175,16 +175,16 @@ void DataBase::refreshPicture() {
 		refreshPrices();
 	}
 
-	Chart chart(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument, 0);
+	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
 
-	chart.setTmpIndex(0);
-	objectsForSale.feelHistogram(chart);
-	/*chart.setTmpIndex(1);
-	dealsForSale.feelHistogram(chart);
-	dealsBought.feelHistogram(chart);*/
-	chart.setTmpIndex(2);
-	objectsBought.feelHistogram(chart);
+	histogram.setTmpIndex(0);
+	objectsForSale.feelHistogram(histogram);
+	/*histogram.setTmpIndex(1);
+	dealsForSale.feelHistogram(histogram);
+	dealsBought.feelHistogram(histogram);*/
+	histogram.setTmpIndex(2);
+	objectsBought.feelHistogram(histogram);
 	 
-	ui->printPriceChart(chart);
+	ui->printPriceHistogram(histogram);
 	Sleep(cmn_defines->getPictureDelayTime());
 }

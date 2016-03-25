@@ -14,7 +14,8 @@ OpenGLInterface::OpenGLInterface() {
 	active = true;
 	fullscreen = false;
 	
-	CreateGLWindow(L"OpenGL window", 1024, 768, 32, fullscreen);
+	CreateGLWindow(L"OpenGL window", 800, 600, 32, fullscreen);
+	//CreateGLWindow(L"OpenGL window", 1024, 768, 32, fullscreen);
 }
 
 OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
@@ -24,14 +25,14 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
-void OpenGLInterface::printPriceChart(Chart &chart) {
+void OpenGLInterface::printPriceHistogram(Histogram &histogram) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	Color color(1, 0, 0);
 	FigureRectangle rectangle(-1, 0, 1, 1);
 	rectangle.setColor(color);
-	printChart(chart, rectangle);
+	printHistogram(histogram, rectangle);
 	rectangle.setFigure(-1, -1, 1, 0);
-	printChart(chart, rectangle);
+	printHistogram(histogram, rectangle);
 	SwapBuffers(hDC);
 //	DrawRectangle(rectangle);
 //	SwapBuffers(hDC);
@@ -40,31 +41,29 @@ void OpenGLInterface::printPriceChart(Chart &chart) {
 #define SIDEGAP 0.05
 
 /* TODO: understand why it doesn`t work without & */
-void OpenGLInterface::printChart(Chart &chart, FigureRectangle rectangle) {
-	if(chart.getChartType() == 0) {
-		int numberOfBins = chart.getNumberOfBins();
-		int numberOfCharts = chart.getNumberOfCharts();
-		double binWidth = 1 / double(numberOfBins);
-	
-		glEnable(GL_ALPHA_TEST);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
-		double leftDownX = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
-		double leftDownY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
-		double sizeX = rectangle.getSizeX();
-		double sizeY = rectangle.getSizeY();
-		for(int j = 0; j < numberOfCharts; j++) {
-			FigureRectangle histogramColumn;
-			Color color = chart.getColor(j);
-			histogramColumn.setColor(color);
-	
-			for(int i = 0; i < numberOfBins; i++) {
-				histogramColumn.setFigure(leftDownX + i * binWidth * sizeX, leftDownY, leftDownX + ((i + 1) * binWidth - binWidth * SIDEGAP) * sizeX, leftDownY + chart.getValue(j, i) / chart.getMaxValue() * sizeY);
-				DrawRectangle(histogramColumn);
-			}
+void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle rectangle) {
+	int numberOfBins = histogram.getNumberOfBins();
+	int numberOfCharts = histogram.getNumberOfCharts();
+	double binWidth = 1 / double(numberOfBins);
+
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
+	double leftDownX = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
+	double leftDownY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
+	double sizeX = rectangle.getSizeX();
+	double sizeY = rectangle.getSizeY();
+	for(int j = 0; j < numberOfCharts; j++) {
+		FigureRectangle histogramColumn;
+		Color color = histogram.getColor(j);
+		histogramColumn.setColor(color);
+
+		for(int i = 0; i < numberOfBins; i++) {
+			histogramColumn.setFigure(leftDownX + i * binWidth * sizeX, leftDownY, leftDownX + ((i + 1) * binWidth - binWidth * SIDEGAP) * sizeX, leftDownY + histogram.getValue(j, i) / histogram.getMaxValue() * sizeY);
+			DrawRectangle(histogramColumn);
 		}
-		glDisable(GL_BLEND);
 	}
+	glDisable(GL_BLEND);
 }
 
 int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {
