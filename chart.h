@@ -9,6 +9,7 @@ protected:
 	double minArgument;
 	double maxArgument;
 	double maxValue;
+	double minValue;
 	int numberOfArguments;
 	int tmpChartIndex;
 
@@ -24,11 +25,12 @@ public:
 	double getMinArgument();
 	double getMaxArgument();
 	double getMaxValue();
+	double getMinValue();
 	int getNumberOfArguments();
 	Color getColor(int chartIndex);
 	double getValue(int chartIndex, int argument);
 
-	virtual void printChart() {}
+	void printChart();
 	bool indexesLegal(int chartIndex = -1, int argument = -1);
 };
 
@@ -45,13 +47,12 @@ public:
 	
 	void addValue(int chartIndex, double value);
 	void addValueToTmpIndex(double value);
-	void printChart();
 };
 
 class LineChart : public Chart {
 private:
 	double unitInterval;
-	int maxActiveValue;
+	int *maxActiveArgument;
 	
 	void setParameters(int noc, double mA, double MA);
 public:
@@ -60,6 +61,7 @@ public:
 	~LineChart();
 
 	void addNextValue(double value, int chartIndex = -1);
+	int getMaxActiveArgument(int chartIndex);
 };
 
 #endif

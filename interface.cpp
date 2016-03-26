@@ -25,24 +25,55 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
-void OpenGLInterface::printPriceHistogram(Histogram &histogram) {
+void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChart) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Color color(1, 0, 0);
+	Color color(0, 1, 0);
 	FigureRectangle rectangle(-1, 0, 1, 1);
 	rectangle.setColor(color);
 	printHistogram(histogram, rectangle);
 	rectangle.setFigure(-1, -1, 1, 0);
-	printHistogram(histogram, rectangle);
+	printLineChart(lineChart, rectangle);
 	SwapBuffers(hDC);
 //	DrawRectangle(rectangle);
 //	SwapBuffers(hDC);
+}
+
+#include <stdio.h>
+void OpenGLInterface::printLineChart(LineChart &lineChart, FigureRectangle rectangle) {
+	/* Put coursor back to (0, 0, 0) */
+    glLoadIdentity();
+	
+	double startX = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
+	double startY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
+	double scaleY = rectangle.getSizeY();
+	double maxValue = lineChart.getMaxValue();
+	double minValue = lineChart.getMinValue();
+	/* TODO: Create mode with const and changing boarders */
+	maxValue = 20;
+	minValue = 0;
+
+	for(int j = 0; j < lineChart.getNumberOfCharts(); j++) {
+		int numberOfArguments = lineChart.getMaxActiveArgument(j);
+		double widthStep = rectangle.getSizeX() / numberOfArguments;
+		glLineWidth(1);
+		Color color = lineChart.getColor(j);
+		glColor3d(color.getRed(), color.getGreen(), color.getBlue());
+		for(int i = 1; i < numberOfArguments; i++) {
+			glBegin(GL_LINES);
+				glVertex3f(startX + (i - 1) * widthStep,
+				startY + ( lineChart.getValue(j, i - 1) - minValue )/ ( maxValue - minValue ) * scaleY, 0);
+				glVertex3f(startX + i       * widthStep,
+				startY + ( lineChart.getValue(j, i)     - minValue )/ ( maxValue - minValue ) * scaleY, 0);
+			glEnd();
+		}
+	}
 }
 
 #define SIDEGAP 0.05
 
 /* TODO: understand why it doesn`t work without & */
 void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle rectangle) {
-	int numberOfBins = histogram.getNumberOfBins();
+	int numberOfBins = histogram.getNumberOfArguments();
 	int numberOfCharts = histogram.getNumberOfCharts();
 	double binWidth = 1 / double(numberOfBins);
 

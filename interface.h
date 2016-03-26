@@ -26,8 +26,9 @@ public:
 	OpenGLInterface();
 	static OpenGLInterface* getOpenGLInterface();
 	
-	void printPriceHistogram(Histogram &histogram);
-
+	void printCharts(Histogram &histogram, LineChart &lineChart);
+	
+	void printLineChart(LineChart &lineChart, FigureRectangle rectangle);
 	void printHistogram(Histogram &histogram, FigureRectangle rectangle);
 	int DrawRectangle(FigureRectangle rectangle);
 	

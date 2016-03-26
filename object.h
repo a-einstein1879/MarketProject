@@ -48,6 +48,7 @@ public:
 	bool operator>(Object &object);
 
 	void pushPriceToHistogram(Histogram &histogram);
+	void pushPriceToChart(LineChart &lineChart);
 };
 
 #endif

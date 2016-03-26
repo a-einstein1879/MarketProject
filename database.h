@@ -4,6 +4,7 @@
 #include "object.h"
 #include "linklist.h"
 #include "cmn_defines.h"
+#include "interface.h"
 
 class DataBase {
 private:
@@ -11,6 +12,7 @@ private:
 	DataBase();
 	static DataBase *p_DataBase;
 	Cmn_Defines *cmn_defines;
+	OpenGLInterface *ui;
 	
 	double lowestSellingPrice;
 	LinkList objectsForSale;
@@ -19,6 +21,7 @@ private:
 	LinkList objectsBought;
 
 	LinkList dealsForSale, dealsBought;
+	LinkList meanForSalePrice, meanBoughtPrice;
 	
 	void checkTimers();
 	void refreshPrices();

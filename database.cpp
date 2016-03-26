@@ -7,6 +7,7 @@ DataBase::DataBase() {
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
 	cmn_defines = cmn_defines->getCmn_Defines();
+	ui = ui->getOpenGLInterface();
 };
 
 DataBase* DataBase::getDataBase() {
@@ -31,7 +32,7 @@ void DataBase::checkTimers() {
 	bool ret = true;
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.timerPop(1);
-		if(object.getAge() > 300) {
+		if(object.getAge() > 100) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsForSale.push(object);}
@@ -39,7 +40,7 @@ void DataBase::checkTimers() {
 
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.timerPop(1);
-		if(object.getAge() > 300) {
+		if(object.getAge() > 100) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsBought.push(object);}
@@ -128,6 +129,11 @@ void DataBase::viewDataBase() {
 	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
 		printf("Spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice);
 	}
+	Object newObject(objectsForSale.getMeanPrice(), -1, 0);
+	/* TODO: there is some trouble with pushing to position. Needs clearifing */
+	meanForSalePrice.push(newObject, meanForSalePrice.getNumberOfObjects() + 1);
+	newObject.setObject(objectsBought.getMeanPrice(), -1, 0);
+	meanBoughtPrice.push(newObject, meanBoughtPrice.getNumberOfObjects() + 1);
 	/* End of info part */
 
 #ifndef SILENTMODE
@@ -152,13 +158,11 @@ void DataBase::viewDataBase() {
 #endif
 }
 
-#include "interface.h"
 void DataBase::refreshPicture() {
-
 	if(!(cmn_defines->getGraphicalMode())) {return;}
+
+	/* Price histogram */
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
-	OpenGLInterface *ui;
-	ui = ui->getOpenGLInterface();
 	
 	double maxArgument;
 	double minArgument;
@@ -176,7 +180,6 @@ void DataBase::refreshPicture() {
 	}
 
 	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
-
 	histogram.setTmpChartIndex(0);
 	objectsForSale.feelHistogram(histogram);
 	/*histogram.setTmpChartIndex(1);
@@ -184,7 +187,15 @@ void DataBase::refreshPicture() {
 	dealsBought.feelHistogram(histogram);*/
 	histogram.setTmpChartIndex(2);
 	objectsBought.feelHistogram(histogram);
-	 
-	ui->printPriceHistogram(histogram);
+
+	/* Mean prices charts */
+	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getPictureRefreshFrequency();
+	LineChart lineChart(2, 0, numberOfArguments);
+	lineChart.setTmpChartIndex(0);
+	meanForSalePrice.feelLineChart(lineChart);
+	lineChart.setTmpChartIndex(1);
+	meanBoughtPrice.feelLineChart(lineChart);
+
+	ui->printCharts(histogram, lineChart);
 	Sleep(cmn_defines->getPictureDelayTime());
 }

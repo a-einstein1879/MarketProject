@@ -9,6 +9,7 @@ Chart::Chart() {
 	minArgument = -1;
 	maxArgument = -1;
 	maxValue = -1;
+	minValue = -10000;
 	numberOfArguments = -1;
 	tmpChartIndex = -1;
 }
@@ -37,6 +38,10 @@ double Chart::getMaxValue() {
 	return maxValue;
 }
 
+double Chart::getMinValue() {
+	return minValue;
+}
+
 Color Chart::getColor(int chartIndex) {
 	return colors[chartIndex];
 }
@@ -56,6 +61,18 @@ bool Chart::indexesLegal(int chartIndex, int argument) {
 		chartIndex < numberOfCharts && chartIndex >= 0 &&
 		argument < numberOfArguments && argument >= 0) {return true;}
 	return false;
+}
+
+#include <stdio.h>
+void Chart::printChart() {
+	if(!indexesLegal()) {return;}
+	for(int i = 0; i < numberOfCharts; i++) {
+		printf("Chart number %d:\n", i);
+		for(int j = 0; j < numberOfArguments; j++) {
+			printf("%.2f ", values[i][j]);
+		}
+		printf("\n");
+	}
 }
 
 /************************************
@@ -119,24 +136,10 @@ void Histogram::addValueToTmpIndex(double value) {
 	addValue(tmpChartIndex, value);
 }
 
-#include <stdio.h>
-void Histogram::printChart() {
-	if(numberOfCharts < 0 || numberOfArguments < 0) {return;}
-	for(int i = 0; i < numberOfCharts; i++) {
-		printf("Chart number %d:\n", i);
-		for(int j = 0; j < numberOfArguments; j++) {
-			printf("%.2f ", values[i][j]);
-		}
-		printf("\n");
-	}
-}
-
-
 /************************************
 			LINECHART
 ************************************/
 LineChart::LineChart() {
-	maxActiveValue = 0;
 }
 
 LineChart::LineChart(int noc, double mA, double MA) {
@@ -152,6 +155,15 @@ LineChart::LineChart(int noc, double mA, double MA) {
 		}
 
 		colors = new Color[numberOfCharts];
+		if(numberOfCharts == 2) {
+			colors[0].set(1, 0, 0);
+			colors[1].set(0, 1, 0);
+		}
+
+		maxActiveArgument = new int[numberOfCharts];
+		for(int i = 0; i < numberOfCharts; i++) {
+			maxActiveArgument[i] = 0;
+		}
 	}
 }
 
@@ -172,7 +184,7 @@ void LineChart::setParameters(int noc, double mA, double MA) {
 	numberOfArguments = int(MA - mA);
 	minArgument = mA;
 	maxArgument = MA;
-	maxActiveValue = 0;
+	maxActiveArgument = 0;
 	unitInterval = 1;
 	maxValue = -1;
 }
@@ -184,5 +196,14 @@ void LineChart::addNextValue(double value, int chartIndex) {
 		}
 		return;
 	}
-	values[chartIndex][maxActiveValue++] = value;
+	values[chartIndex][maxActiveArgument[chartIndex]++] = value;
+	if(value > maxValue) {maxValue = value;}
+	if(minValue == -10000) {minValue = value;}
+	else {
+		if(value < minValue) {minValue = value;}
+	}
+}
+
+int LineChart::getMaxActiveArgument(int chartIndex) {
+	return maxActiveArgument[chartIndex];
 }

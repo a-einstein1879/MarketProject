@@ -47,6 +47,7 @@ public:
 	double getMeanTimer();
 
 	void feelHistogram(Histogram &histogram);
+	void feelLineChart(LineChart &lineChart);
 }; 
 
 #endif
