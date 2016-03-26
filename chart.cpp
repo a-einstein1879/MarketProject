@@ -9,10 +9,16 @@ Chart::Chart() {
 	minArgument = -1;
 	maxArgument = -1;
 	maxValue = -1;
+	numberOfArguments = -1;
+	tmpChartIndex = -1;
 }
 
 void Chart::setColor(Color color, int chartIndex) {
 	colors[chartIndex] = color;
+}
+
+void Chart::setTmpChartIndex(int chartIndex) {
+	tmpChartIndex = chartIndex;
 }
 
 int Chart::getNumberOfCharts() {
@@ -35,21 +41,35 @@ Color Chart::getColor(int chartIndex) {
 	return colors[chartIndex];
 }
 
+double Chart::getValue(int chartIndex, int argument) {
+	if(!indexesLegal(chartIndex, argument)) {return -1;}
+	return values[chartIndex][argument];
+}
+
+int Chart::getNumberOfArguments() {
+	return numberOfArguments;
+}
+
+bool Chart::indexesLegal(int chartIndex, int argument) {
+	if(chartIndex == -1 && argument == -1 && numberOfCharts >= 0 && numberOfArguments >= 0) {return true;}
+	if(numberOfCharts >= 0 && numberOfArguments >= 0 &&
+		chartIndex < numberOfCharts && chartIndex >= 0 &&
+		argument < numberOfArguments && argument >= 0) {return true;}
+	return false;
+}
 
 /************************************
 			HISTOGRAM
 ************************************/
 Histogram::Histogram() {
-	numberOfBins = -1;
-	tmpIndex = -1;
 }
 
-Histogram::Histogram(int noc, int nob, double mA, double MA) {
-	setParameters(noc, nob, mA, MA);
+Histogram::Histogram(int noc, int noa, double mA, double MA) {
+	setParameters(noc, noa, mA, MA);
 }
 
 Histogram::~Histogram() {
-	if(numberOfCharts >= 0 && numberOfBins >= 0) {
+	if(numberOfCharts >= 0 && numberOfArguments >= 0) {
 		for(int i = 0; i < numberOfCharts; i++) {
 			delete [] values[i];
 		}
@@ -59,22 +79,21 @@ Histogram::~Histogram() {
 	delete [] colors;
 }
 
-void Histogram::setParameters(int noc, int nob, double mA, double MA) {
-	if(noc < 0 || nob < 0) {return;}
+void Histogram::setParameters(int noc, int noa, double mA, double MA) {
+	if(noc < 0 || noa < 0) {return;}
 	numberOfCharts = noc;
-	numberOfBins = nob;
+	numberOfArguments = noa;
 	minArgument = mA;
 	maxArgument = MA;
-	binWidth = (MA - mA) / double(numberOfBins);
+	binWidth = (MA - mA) / double(numberOfArguments);
 	maxValue = -1;
-	tmpIndex = -1;
 	
 	values = new double*[numberOfCharts];
 	for(int i = 0; i < numberOfCharts; i++) {
-		values[i] = new double[numberOfBins];
+		values[i] = new double[numberOfArguments];
 	}
 	for(int i = 0; i < numberOfCharts; i++) {
-		for(int j = 0; j < numberOfBins; j++)
+		for(int j = 0; j < numberOfArguments; j++)
 			values[i][j] = 0;
 	}
 
@@ -86,25 +105,9 @@ void Histogram::setParameters(int noc, int nob, double mA, double MA) {
 	}
 }
 
-bool Histogram::indexesLegal(int chartIndex, int bin) {
-	if(numberOfCharts >= 0 && numberOfBins >= 0 &&
-		chartIndex < numberOfCharts && chartIndex >= 0 &&
-		bin < numberOfBins && bin >= 0) {return true;}
-	return false;
-}
-
-double Histogram::getValue(int chartIndex, int bin) {
-	if(!indexesLegal(chartIndex, bin)) {return -1;}
-	return values[chartIndex][bin];
-}
-
-int Histogram::getNumberOfBins() {
-	return numberOfBins;
-}
-
 void Histogram::addValue(int chartIndex, double value) {
 	if(chartIndex < 0 || chartIndex >= numberOfCharts || value < minArgument || value > maxArgument) {return;}
-	for(int i = 0; i < numberOfBins; i++) {
+	for(int i = 0; i < numberOfArguments; i++) {
 		if(value >= minArgument + i * binWidth && value < minArgument + (i + 1) * binWidth) {
 			values[chartIndex][i]++;
 			if(values[chartIndex][i] > maxValue) {maxValue = values[chartIndex][i];}
@@ -112,20 +115,16 @@ void Histogram::addValue(int chartIndex, double value) {
 	}
 }
 
-void Histogram::setTmpIndex(int index) {
-	tmpIndex = index;
-}
-
 void Histogram::addValueToTmpIndex(double value) {
-	addValue(tmpIndex, value);
+	addValue(tmpChartIndex, value);
 }
 
 #include <stdio.h>
 void Histogram::printChart() {
-	if(numberOfCharts < 0 || numberOfBins < 0) {return;}
+	if(numberOfCharts < 0 || numberOfArguments < 0) {return;}
 	for(int i = 0; i < numberOfCharts; i++) {
 		printf("Chart number %d:\n", i);
-		for(int j = 0; j < numberOfBins; j++) {
+		for(int j = 0; j < numberOfArguments; j++) {
 			printf("%.2f ", values[i][j]);
 		}
 		printf("\n");
@@ -137,13 +136,12 @@ void Histogram::printChart() {
 			LINECHART
 ************************************/
 LineChart::LineChart() {
-	numberOfArguments = -1;
 	maxActiveValue = 0;
 }
 
 LineChart::LineChart(int noc, double mA, double MA) {
 	setParameters(noc, mA, MA);
-	if(valuesLegal()) {
+	if(indexesLegal()) {
 		values = new double*[numberOfCharts];
 		for(int i = 0; i < numberOfCharts; i++) {
 			values[i] = new double[numberOfArguments];
@@ -158,7 +156,7 @@ LineChart::LineChart(int noc, double mA, double MA) {
 }
 
 LineChart::~LineChart() {
-	if(valuesLegal()) {
+	if(indexesLegal()) {
 		for(int i = 0; i < numberOfCharts; i++) {
 			delete [] values[i];
 		}
@@ -166,14 +164,6 @@ LineChart::~LineChart() {
 	}
 
 	delete [] colors;
-}
-
-bool LineChart::valuesLegal(int chartIndex, int argumentIndex) {
-	if(chartIndex == -1 && argumentIndex == -1 && numberOfCharts >= 0 && numberOfArguments >= 0) {return true;}
-	if(chartIndex >= 0 && chartIndex < numberOfCharts &&
-		argumentIndex >= 0 && argumentIndex < numberOfArguments &&
-		numberOfCharts >= 0 && numberOfArguments >= 0) {return true;}
-	return false;
 }
 
 void LineChart::setParameters(int noc, double mA, double MA) {
@@ -185,4 +175,14 @@ void LineChart::setParameters(int noc, double mA, double MA) {
 	maxActiveValue = 0;
 	unitInterval = 1;
 	maxValue = -1;
+}
+
+void LineChart::addNextValue(double value, int chartIndex) {
+	if(chartIndex == -1) {
+		if(tmpChartIndex != -1) {
+			addNextValue(value, tmpChartIndex);
+		}
+		return;
+	}
+	values[chartIndex][maxActiveValue++] = value;
 }

@@ -177,12 +177,12 @@ void DataBase::refreshPicture() {
 
 	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
 
-	histogram.setTmpIndex(0);
+	histogram.setTmpChartIndex(0);
 	objectsForSale.feelHistogram(histogram);
-	/*histogram.setTmpIndex(1);
+	/*histogram.setTmpChartIndex(1);
 	dealsForSale.feelHistogram(histogram);
 	dealsBought.feelHistogram(histogram);*/
-	histogram.setTmpIndex(2);
+	histogram.setTmpChartIndex(2);
 	objectsBought.feelHistogram(histogram);
 	 
 	ui->printPriceHistogram(histogram);
