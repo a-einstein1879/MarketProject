@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "chart.h"
+#include "cmn_defines.h"
 
 /*
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.

@@ -46,6 +46,7 @@ void Market::switchTimers() {
 bool Market::timeToAddSeller() {
 	return (timeLeftBeforeNewSellingObject < 1) ? true : false;
 }
+
 bool Market::timeToAddBuyer() {
 	return (timeLeftBeforeNewObjectBought < 1) ? true : false;
 }

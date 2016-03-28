@@ -9,10 +9,12 @@
 #include <tchar.h>
 #include "chart.h"
 #include "interfaceClasses.h"
+#include "cmn_defines.h"
 
 class OpenGLInterface {
 private:
 	static OpenGLInterface *p_OpenGLInterface;
+	Cmn_Defines *cmn_defines;
 
 	HGLRC	hRC;
 	HDC		hDC;
@@ -26,7 +28,7 @@ public:
 	OpenGLInterface();
 	static OpenGLInterface* getOpenGLInterface();
 	
-	void printCharts(Histogram &histogram, LineChart &lineChart);
+	void printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects);
 	
 	void printLineChart(LineChart &lineChart, FigureRectangle rectangle);
 	void printHistogram(Histogram &histogram, FigureRectangle rectangle);

@@ -22,6 +22,7 @@ private:
 
 	LinkList dealsForSale, dealsBought;
 	LinkList meanForSalePrice, meanBoughtPrice;
+	LinkList meanForSaleNumberOfObjects, meanBoughtNumberOfObjects;
 	
 	void checkTimers();
 	void refreshPrices();

@@ -6,7 +6,11 @@ Cmn_Defines::Cmn_Defines() {
 	readConfiguration();
 }
 
-Cmn_Defines::~Cmn_Defines() {
+Cmn_Defines* Cmn_Defines::getCmn_Defines() {
+	if(!p_Cmn_Defines) {
+		p_Cmn_Defines = new Cmn_Defines();
+	}
+	return p_Cmn_Defines;
 }
 
 void Cmn_Defines::readConfiguration() {
@@ -136,7 +140,21 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 25:
 		maximumHistogramArgument = value;
 		break;
-		
+	case 26:
+		sideGap = value;
+		break;
+	case 27:
+		sellerPriceReduceAge = int(value);
+		break;
+	case 28:
+		sellerPriceReduceShare = value;
+		break;
+	case 29:
+		buyerPriceIncreaseAge = int(value);
+		break;
+	case 30:
+		buyerPriceIncreaseShare = value;
+		break;
 	}
 }
 
@@ -173,122 +191,19 @@ void Cmn_Defines::printConfiguration() {
 	std::cout << "Picture refresh frequency\t" << pictureRefreshFrequency << std::endl;
 	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
 	std::cout << "Number of pockets\t\t" << numberOfPockets << std::endl;
+	std::cout << "Histogram sidegap\t\t" << sideGap << std::endl;
 	std::cout << "Constant boarders mode\t\t" << constantBoardersMode << std::endl;
 	std::cout << "Minimum histogram argument\t" << minimumHistogramArgument << std::endl;
 	std::cout << "Maximum histogram argument\t" << maximumHistogramArgument << std::endl;
 
 	std::cout << std::endl;
+
+	std::cout << "Seller price reduce age\t\t" << sellerPriceReduceAge << std::endl;
+	std::cout << "Seller price reduce share\t" << sellerPriceReduceShare << std::endl;
+	std::cout << "Buyer price increase age\t" << buyerPriceIncreaseAge << std::endl;
+	std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
+	
+	std::cout << std::endl;
 }
 
 /* END OF BAD PART */
-
-Cmn_Defines* Cmn_Defines::getCmn_Defines() {
-	if(!p_Cmn_Defines) {
-		p_Cmn_Defines = new Cmn_Defines();
-	}
-	return p_Cmn_Defines;
-}
-
-int Cmn_Defines::getModelingTime() {
-	return modelingTime;
-}
-
-int Cmn_Defines::getTimerPrintingFrequency() {
-	return timerPrintingFrequency;
-}
-
-int Cmn_Defines::getAccuracy() {
-	return accuracy;
-}
-
-int Cmn_Defines::getSellerPricesMode() {
-	return sellerPricesMode;
-}
-
-double Cmn_Defines::getMaximumSellersPrice() {
-	return maximumSellersPrice;
-}
-
-double Cmn_Defines::getMinimumSellersPrice() {
-	return minimumSellersPrice;
-}
-
-double Cmn_Defines::getSellersMean() {
-	return sellersMean;
-}
-
-double Cmn_Defines::getSellersStandartDeviation() {
-	return sellersStandartDeviation;
-}
-
-int Cmn_Defines::getBuyerPricesMode() {
-	return buyerPricesMode;
-}
-
-double Cmn_Defines::getMaximumBuyersPrice() {
-	return maximumBuyersPrice;
-}
-
-double Cmn_Defines::getMinimumBuyersPrice() {
-	return minimumBuyersPrice;
-}
-
-double Cmn_Defines::getBuyersMean() {
-	return buyersMean;
-}
-
-double Cmn_Defines::getBuyersStandartDeviation() {
-	return buyersStandartDeviation;
-}
-
-int Cmn_Defines::getSellerTimersMode() {
-	return sellerTimersMode;
-}
-
-int Cmn_Defines::getSellersFrequency() {
-	return sellersFrequency;
-}
-
-double Cmn_Defines::getSellersLambda() {
-	return sellersLambda;
-}
-
-int Cmn_Defines::getBuyerTimersMode() {
-	return buyerTimersMode;
-}
-
-int Cmn_Defines::getBuyersFrequency() {
-	return buyersFrequency;
-}
-
-double Cmn_Defines::getBuyersLambda() {
-	return buyersLambda;
-}
-
-int Cmn_Defines::getGraphicalMode() {
-	return graphicalMode;
-}
-
-int Cmn_Defines::getPictureRefreshFrequency() {
-	return pictureRefreshFrequency;
-}
-
-int Cmn_Defines::getPictureDelayTime() {
-	return pictureDelayTime;
-}
-
-int Cmn_Defines::getNumberOfPockets() {
-	return numberOfPockets;
-}
-
-int Cmn_Defines::getConstantBoardersMode() {
-	return constantBoardersMode;
-}
-
-double Cmn_Defines::getMinimumHistogramArgument() {
-	return minimumHistogramArgument;
-}
-
-double Cmn_Defines::getMaximumHistogramArgument() {
-	return maximumHistogramArgument;
-}

@@ -9,7 +9,8 @@
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
-"Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument"
+"Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument", "Histogram sidegap", \
+"Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share"
 
 class Cmn_Defines {
 private:
@@ -47,12 +48,18 @@ private:
 	int pictureDelayTime;
 
 	int numberOfPockets;
+	double sideGap;
 	int constantBoardersMode;
 	double minimumHistogramArgument;
 	double maximumHistogramArgument;
 
+	/* Agent strategies */
+	int sellerPriceReduceAge;
+	double sellerPriceReduceShare;
+	int buyerPriceIncreaseAge;
+	double buyerPriceIncreaseShare;
+
 	Cmn_Defines();
-	~Cmn_Defines();
 	static Cmn_Defines *p_Cmn_Defines;
 	
 	void readConfiguration();
@@ -62,41 +69,50 @@ private:
 public:
 	static Cmn_Defines* getCmn_Defines();
 	void printConfiguration();
-
-	int getModelingTime();
-	int getTimerPrintingFrequency();
-	int getAccuracy();
-
-	int getSellerPricesMode();
-	double getMaximumSellersPrice();
-	double getMinimumSellersPrice();
-
-	double getSellersMean();
-	double getSellersStandartDeviation();
-
-	int getBuyerPricesMode();
-	double getMaximumBuyersPrice();
-	double getMinimumBuyersPrice();
-
-	double getBuyersMean();
-	double getBuyersStandartDeviation();
-
-	int getSellerTimersMode();
-	int getSellersFrequency();
-	double getSellersLambda();
-
-	int getBuyerTimersMode();
-	int getBuyersFrequency();
-	double getBuyersLambda();
 	
-	int getGraphicalMode();
-	int getPictureRefreshFrequency();
-	int getPictureDelayTime();
+	void setSellersLambda(double lambda)	{sellersLambda = lambda;}
+	void setBuyersLambda(double lambda)		{buyersLambda = lambda;}
 
-	int getNumberOfPockets();
-	int getConstantBoardersMode();
-	double getMinimumHistogramArgument();
-	double getMaximumHistogramArgument();
+	int getModelingTime()					{return modelingTime;}
+	int getTimerPrintingFrequency()			{return timerPrintingFrequency;}
+	int getAccuracy()						{return accuracy;}
+
+	int getSellerPricesMode()				{return sellerPricesMode;}
+	double getMaximumSellersPrice()			{return maximumSellersPrice;}
+	double getMinimumSellersPrice()			{return minimumSellersPrice;}
+
+	double getSellersMean()					{return sellersMean;}
+	double getSellersStandartDeviation()	{return sellersStandartDeviation;}
+
+	int getBuyerPricesMode()				{return buyerPricesMode;}
+	double getMaximumBuyersPrice()			{return maximumBuyersPrice;}
+	double getMinimumBuyersPrice()			{return minimumBuyersPrice;}
+
+	double getBuyersMean()					{return buyersMean;}
+	double getBuyersStandartDeviation()		{return buyersStandartDeviation;}
+
+	int getSellerTimersMode()				{return sellerTimersMode;}
+	int getSellersFrequency()				{return sellersFrequency;}
+	double getSellersLambda()				{return sellersLambda;}
+
+	int getBuyerTimersMode()				{return buyerTimersMode;}
+	int getBuyersFrequency()				{return buyersFrequency;}
+	double getBuyersLambda()				{return buyersLambda;}
+	
+	int getGraphicalMode()					{return graphicalMode;}
+	int getPictureRefreshFrequency()		{return pictureRefreshFrequency;}
+	int getPictureDelayTime()				{return pictureDelayTime;}
+
+	int getNumberOfPockets()				{return numberOfPockets;}
+	double getSideGap()						{return sideGap;}
+	int getConstantBoardersMode()			{return constantBoardersMode;}
+	double getMinimumHistogramArgument()	{return minimumHistogramArgument;}
+	double getMaximumHistogramArgument()	{return maximumHistogramArgument;}
+
+	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
+	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
+	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
+	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
 };
 
 #endif

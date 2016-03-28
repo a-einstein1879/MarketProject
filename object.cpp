@@ -48,11 +48,13 @@ void Object::printObjectToFinalFiles() {
 }
 
 bool Object::adaptPrice() {
+	Cmn_Defines *cmn_defines;
+	cmn_defines = cmn_defines->getCmn_Defines();
 	if(numberOfPriceReductions++ > 0) {return 1;}
 	if(status == FORSALE) {
-		price = 0.8 * price;
+		price = (1 - cmn_defines->getSellerPriceReduceShare())  * price;
 	} else {
-		price = 1.2 * price;
+		price = (1 + cmn_defines->getBuyerPriceIncreaseShare()) * price;
 	}
 	age = 0;
 	return 0;

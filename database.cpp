@@ -32,7 +32,7 @@ void DataBase::checkTimers() {
 	bool ret = true;
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.timerPop(1);
-		if(object.getAge() > 100) {
+		if(object.getAge() > cmn_defines->getSellerPriceReduceAge()) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsForSale.push(object);}
@@ -40,7 +40,7 @@ void DataBase::checkTimers() {
 
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.timerPop(1);
-		if(object.getAge() > 100) {
+		if(object.getAge() > cmn_defines->getBuyerPriceIncreaseAge()) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsBought.push(object);}
@@ -134,6 +134,11 @@ void DataBase::viewDataBase() {
 	meanForSalePrice.push(newObject, meanForSalePrice.getNumberOfObjects() + 1);
 	newObject.setObject(objectsBought.getMeanPrice(), -1, 0);
 	meanBoughtPrice.push(newObject, meanBoughtPrice.getNumberOfObjects() + 1);
+	
+	newObject.setObject(objectsBought.getNumberOfObjects(), -1, 0);
+	meanBoughtNumberOfObjects.push(newObject, meanBoughtNumberOfObjects.getNumberOfObjects() + 1);
+	newObject.setObject(objectsForSale.getNumberOfObjects(), -1, 0);
+	meanForSaleNumberOfObjects.push(newObject, meanForSaleNumberOfObjects.getNumberOfObjects() + 1);
 	/* End of info part */
 
 #ifndef SILENTMODE
@@ -190,12 +195,18 @@ void DataBase::refreshPicture() {
 
 	/* Mean prices charts */
 	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getTimerPrintingFrequency();
-	LineChart lineChart(2, 0, numberOfArguments);
-	lineChart.setTmpChartIndex(0);
-	meanForSalePrice.feelLineChart(lineChart);
-	lineChart.setTmpChartIndex(1);
-	meanBoughtPrice.feelLineChart(lineChart);
+	LineChart lineChart1(2, 0, numberOfArguments);
+	lineChart1.setTmpChartIndex(0);
+	meanForSalePrice.feelLineChart(lineChart1);
+	lineChart1.setTmpChartIndex(1);
+	meanBoughtPrice.feelLineChart(lineChart1);
 
-	ui->printCharts(histogram, lineChart);
+	LineChart lineChart2(2, 0, numberOfArguments);
+	lineChart2.setTmpChartIndex(0);
+	meanForSaleNumberOfObjects.feelLineChart(lineChart2);
+	lineChart2.setTmpChartIndex(1);
+	meanBoughtNumberOfObjects.feelLineChart(lineChart2);
+
+	ui->printCharts(histogram, lineChart1, lineChart2);
 	Sleep(cmn_defines->getPictureDelayTime());
 }

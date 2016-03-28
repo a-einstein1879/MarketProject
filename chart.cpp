@@ -117,8 +117,8 @@ void Histogram::setParameters(int noc, int noa, double mA, double MA) {
 	colors = new Color[numberOfCharts];
 	if(numberOfCharts == 3) {
 		colors[0].set(1, 0, 0);
-		colors[1].set(0, 1, 0);
-		colors[2].set(0, 0, 1);
+		colors[1].set(0, 0, 1);
+		colors[2].set(0, 1, 0);
 	}
 }
 
