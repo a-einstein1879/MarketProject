@@ -9,7 +9,7 @@
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
-"Graphical mode", "Constant boarders mode"
+"Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument"
 
 class Cmn_Defines {
 private:
@@ -45,8 +45,11 @@ private:
 	int graphicalMode;
 	int pictureRefreshFrequency;
 	int pictureDelayTime;
+
 	int numberOfPockets;
 	int constantBoardersMode;
+	double minimumHistogramArgument;
+	double maximumHistogramArgument;
 
 	Cmn_Defines();
 	~Cmn_Defines();
@@ -89,8 +92,11 @@ public:
 	int getGraphicalMode();
 	int getPictureRefreshFrequency();
 	int getPictureDelayTime();
+
 	int getNumberOfPockets();
 	int getConstantBoardersMode();
+	double getMinimumHistogramArgument();
+	double getMaximumHistogramArgument();
 };
 
 #endif

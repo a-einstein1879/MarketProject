@@ -130,6 +130,13 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	case 23:
 		constantBoardersMode = int(value);
 		break;
+	case 24:
+		minimumHistogramArgument = value;
+		break;
+	case 25:
+		maximumHistogramArgument = value;
+		break;
+		
 	}
 }
 
@@ -167,6 +174,8 @@ void Cmn_Defines::printConfiguration() {
 	std::cout << "Delay time\t\t\t" << pictureDelayTime << std::endl;
 	std::cout << "Number of pockets\t\t" << numberOfPockets << std::endl;
 	std::cout << "Constant boarders mode\t\t" << constantBoardersMode << std::endl;
+	std::cout << "Minimum histogram argument\t" << minimumHistogramArgument << std::endl;
+	std::cout << "Maximum histogram argument\t" << maximumHistogramArgument << std::endl;
 
 	std::cout << std::endl;
 }
@@ -274,4 +283,12 @@ int Cmn_Defines::getNumberOfPockets() {
 
 int Cmn_Defines::getConstantBoardersMode() {
 	return constantBoardersMode;
+}
+
+double Cmn_Defines::getMinimumHistogramArgument() {
+	return minimumHistogramArgument;
+}
+
+double Cmn_Defines::getMaximumHistogramArgument() {
+	return maximumHistogramArgument;
 }
