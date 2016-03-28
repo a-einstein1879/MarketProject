@@ -14,8 +14,8 @@ OpenGLInterface::OpenGLInterface() {
 	active = true;
 	fullscreen = false;
 	
-	CreateGLWindow(L"OpenGL window", 800, 600, 32, fullscreen);
-	//CreateGLWindow(L"OpenGL window", 1024, 768, 32, fullscreen);
+	//CreateGLWindow(L"OpenGL window", 800, 600, 32, fullscreen);
+	CreateGLWindow(L"OpenGL window", 1024, 768, 32, fullscreen);
 }
 
 OpenGLInterface* OpenGLInterface::getOpenGLInterface() {

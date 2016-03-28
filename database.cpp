@@ -167,8 +167,8 @@ void DataBase::refreshPicture() {
 	double maxArgument;
 	double minArgument;
 	if(cmn_defines->getConstantBoardersMode() == 0) {
-		minArgument = 0;
-		maxArgument = 25;
+		minArgument = cmn_defines->getMinimumHistogramArgument();
+		maxArgument = cmn_defines->getMaximumHistogramArgument();
 	} else {
 		Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
 		maxArgument = object.getPrice();
@@ -189,7 +189,7 @@ void DataBase::refreshPicture() {
 	objectsBought.feelHistogram(histogram);
 
 	/* Mean prices charts */
-	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getPictureRefreshFrequency();
+	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getTimerPrintingFrequency();
 	LineChart lineChart(2, 0, numberOfArguments);
 	lineChart.setTmpChartIndex(0);
 	meanForSalePrice.feelLineChart(lineChart);
