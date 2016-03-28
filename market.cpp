@@ -27,12 +27,13 @@ Market* Market::getMarket() {
 }
 
 int Market::tick() {
-	if(timeToAddSeller())	{addSeller();addBuyer();}
-	//if(timeToAddBuyer())	{addBuyer();}
-//	while (dealPossible())	{runDeal();}
+	if(timeToAddSeller())	{addSeller();}
+	if(timeToAddBuyer())	{addBuyer();}
+	while (dealPossible())	{runDeal();}
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{finish(); return 0;}
+	//if(timer % 3000 == 0)	{cmn_defines->setSellersLambda(cmn_defines->getSellersLambda() * 1.05);}
 	switchTimers();
 	return 1;
 }
