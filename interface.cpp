@@ -53,7 +53,8 @@ void OpenGLInterface::printLineChart(LineChart &lineChart, FigureRectangle recta
 	double maxValue = lineChart.getMaxValue();
 	double minValue = lineChart.getMinValue();
 	/* TODO: Create mode with const and changing boarders */
-	if(maxValue < 20) {maxValue = 20;} 
+	if(maxValue < 30) {maxValue = 30;}
+	//if(maxValue > 30) {printf("delta = %.2f\n", lineChart.getValue(0, lineChart.getMaxActiveArgument(0) - 1) - lineChart.getValue(1, lineChart.getMaxActiveArgument(1) - 1));}
 /*	maxValue = 20;*/
 	minValue = 0;
 

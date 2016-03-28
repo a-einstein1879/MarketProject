@@ -3,7 +3,6 @@
 DataBase* DataBase::p_DataBase = 0;
 
 DataBase::DataBase() {
-	timer = 1;
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
 	cmn_defines = cmn_defines->getCmn_Defines();
@@ -17,15 +16,19 @@ DataBase* DataBase::getDataBase() {
 	return p_DataBase;
 }
 
+void DataBase::start(int Timer) {
+	timer = Timer;
+}
+
 void DataBase::tick() {
-	timer++;
+	checkTimers();
 	objectsForSale.tick();
 	objectsBought.tick();
-	checkTimers();
+	timer++;
 }
 
 /* TODO: maybe checkTimers should be refactored so that sales will be produced in objects themselves, but it is hard to do it without disabling sales for buyers and for deals
-If new class for storing deals and other data will be done, saling can be enabled in objects */
+If new class for storing deals and other data will be created, saling can be enabled in objects */
 void DataBase::checkTimers() {
 	Object object;
 
@@ -37,7 +40,8 @@ void DataBase::checkTimers() {
 		}
 		if(ret) {objectsForSale.push(object);}
 	}
-
+	
+	ret = true;
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.timerPop(1);
 		if(object.getAge() > cmn_defines->getBuyerPriceIncreaseAge()) {
@@ -102,7 +106,6 @@ Object DataBase::popHighestBuyer() {
 
 void DataBase::refreshPrices() {
 	Object object;
-
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.pricePop(1);
 		lowestSellingPrice = object.getPrice();
@@ -145,7 +148,7 @@ void DataBase::viewDataBase() {
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
 		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
-		objectsForSale.viewPrice();
+		objectsForSale.viewTimers();
 	} else {
 		printf("Noone is selling anything\n");
 	}
@@ -153,13 +156,12 @@ void DataBase::viewDataBase() {
 	if(objectsBought.getNumberOfObjects() != 0) {
 		printf("The highest buying price is %.2f\n", highestBuyingPrice);
 		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
-		objectsBought.viewPrice();
+		objectsBought.viewTimers();
 	} else {
 		printf("Noone is buying anything\n");
 	}
 
 	printf("End of database\n\n");
-	system("pause");
 #endif
 }
 

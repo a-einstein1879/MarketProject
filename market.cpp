@@ -6,6 +6,7 @@ Market* Market::p_Market = 0;
 Market::Market() {
 	timer = 1;
 	dataBase = dataBase->getDataBase();
+	dataBase->start(timer);
 	cmn_defines = cmn_defines->getCmn_Defines();
 	cmn_defines->printConfiguration();
 	resetSellingTimer();
@@ -26,13 +27,13 @@ Market* Market::getMarket() {
 }
 
 int Market::tick() {
-	switchTimers();
-	if(timeToAddSeller())	{addSeller();}
-	if(timeToAddBuyer())	{addBuyer();}
-	while (dealPossible())	{runDeal();}
+	if(timeToAddSeller())	{addSeller();addBuyer();}
+	//if(timeToAddBuyer())	{addBuyer();}
+//	while (dealPossible())	{runDeal();}
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{finish(); return 0;}
+	switchTimers();
 	return 1;
 }
 

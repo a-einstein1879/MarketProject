@@ -21,6 +21,7 @@ private:
 	int numberOfPriceReductions;
 	int timer;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
+	Cmn_Defines *cmn_defines;
 public:
 	Object();
 	Object(double Price, double CreationTime, bool Status);

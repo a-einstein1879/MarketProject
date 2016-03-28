@@ -28,6 +28,7 @@ private:
 	void refreshPrices();
 public:
 	static DataBase* getDataBase();
+	void start(int Timer);
 	void tick();
 	int pushToDataBase(Object newObject);
 	void addDeal(Object newObject);
