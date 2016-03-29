@@ -24,24 +24,27 @@ private:
 	bool  keys[256];
 	bool  active;
 	bool  fullscreen;
-public:
-	OpenGLInterface();
-	static OpenGLInterface* getOpenGLInterface();
-	
-	void printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects);
-	
+
 	void printLineChart(LineChart &lineChart, FigureRectangle rectangle);
 	void printHistogram(Histogram &histogram, FigureRectangle rectangle);
 	int DrawRectangle(FigureRectangle rectangle);
-	
+	void drawText(const char *text, int length, float x, float y);
+
+	/* Window creation */
+	int InitGL(GLvoid);
+	BOOL CreateGLWindow(LPCWSTR title, int width, int height, int bits, bool fullscreenflag);
+	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
+
 	LRESULT WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK InitialWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-
-	int InitGL(GLvoid);
-	BOOL CreateGLWindow(LPCWSTR title, int width, int height, int bits, bool fullscreenflag);
+	/* End of window creation */
+public:
+	OpenGLInterface();
+	static OpenGLInterface* getOpenGLInterface();
 	GLvoid KillGLWindow(GLvoid);
-	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
+	
+	void printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects);
 };
 
 #endif INTERFACE_H

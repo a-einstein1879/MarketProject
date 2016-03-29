@@ -26,6 +26,16 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
+void OpenGLInterface::drawText(const char *text, int length, float x, float y)
+{
+	glLoadIdentity();
+	glRasterPos2f(x, y);
+	for(int i = 0; i < length; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]);
+	}
+}
+
 /* TODO: understand why it doesn`t work without & */
 void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -37,6 +47,8 @@ void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChartPric
 	printLineChart(lineChartPrices, rectangle);
 	rectangle.setFigure(0, -1, 1, 0);
 	printLineChart(lineChartNumberOfObjects, rectangle);
+	char text[] = "Hello, world!";
+	drawText(text, sizeof(text) / sizeof(char), 0, 0);
 	SwapBuffers(hDC);
 //	DrawRectangle(rectangle);
 //	SwapBuffers(hDC);
@@ -63,7 +75,7 @@ void OpenGLInterface::printLineChart(LineChart &lineChart, FigureRectangle recta
 		double widthStep = rectangle.getSizeX() / numberOfArguments;
 		glLineWidth(1);
 		Color color = lineChart.getColor(j);
-		glColor3d(color.getRed(), color.getGreen(), color.getBlue());
+		glColor3f(color.getRed(), color.getGreen(), color.getBlue());
 		for(int i = 1; i < numberOfArguments; i++) {
 			glBegin(GL_LINES);
 				glVertex3f(startX + (i - 1) * widthStep,
@@ -99,6 +111,7 @@ void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle recta
 		}
 	}
 	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
 }
 
 int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {
