@@ -26,7 +26,6 @@ private:
 	Node* firstTimer;
 	int numberOfObjects;
 	double meanPrice;
-	double meanTimer;
 	int timer;
 public: 
     LinkList();

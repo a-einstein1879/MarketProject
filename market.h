@@ -5,11 +5,6 @@
 #include "cmn_defines.h"
 #include <stdio.h>
 
-struct Deal {
-	double price;
-	double time;
-};
-
 class Market {
 private:
 	Market();
@@ -50,7 +45,6 @@ private:
 	void closeFiles();
 	void printTimer();
 	void refreshPicture();
-	void printDeal(Deal deal);
 public:
 	static Market* getMarket();
 

@@ -314,52 +314,46 @@ GLvoid OpenGLInterface::ReSizeGLScene(GLsizei width, GLsizei height) {
 }
 
 LRESULT OpenGLInterface::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	switch (uMsg)                // Проверка сообщения для окна
-  {
-	      case WM_ACTIVATE:            // Проверка сообщения активности окна
-    {
-      if( !HIWORD( wParam ) )          // Проверить состояние минимизации
-      {
-        active = true;          // Программа активна
-      }
-      else
-      {
-        active = false;          // Программа теперь не активна
-      }
- 
-      return 0;            // Возвращаемся в цикл обработки сообщений
-    }
-	    case WM_SYSCOMMAND:            // Перехватываем системную команду
-    {
-      switch ( wParam )            // Останавливаем системный вызов
-      {
-        case SC_SCREENSAVE:        // Пытается ли запустится скринсейвер?
-        case SC_MONITORPOWER:        // Пытается ли монитор перейти в режим сбережения энергии?
-        return 0;          // Предотвращаем это
-      }
-      break;              // Выход
-    }
-	    case WM_CLOSE:              // Мы получили сообщение о закрытие?
-    {
-      PostQuitMessage( 0 );          // Отправить сообщение о выходе
-      return 0;            // Вернуться назад
-    }
-	    case WM_KEYDOWN:            // Была ли нажата кнопка?
-    {
-      keys[wParam] = true;          // Если так, мы присваиваем этой ячейке true
-      return 0;            // Возвращаемся
-    }
-	    case WM_KEYUP:              // Была ли отпущена клавиша?
-    {
-      keys[wParam] = false;          //  Если так, мы присваиваем этой ячейке false
-      return 0;            // Возвращаемся
-    }
-	    case WM_SIZE:              // Изменены размеры OpenGL окна
-    {
-      ReSizeGLScene( LOWORD(lParam), HIWORD(lParam) );  // Младшее слово=Width, старшее слово=Height
-      return 0;            // Возвращаемся
-    }
-  }
+	switch (uMsg) {
+	case WM_ACTIVATE:
+		{
+			if( !HIWORD( wParam ) ){
+				active = true;
+			} else {
+				active = false;
+			}
+			return 0;
+		}
+	case WM_SYSCOMMAND:
+		{
+			switch ( wParam ) {
+			case SC_SCREENSAVE:
+			case SC_MONITORPOWER:
+			return 0;
+			}
+			break;
+		}
+	case WM_CLOSE:
+		{
+			PostQuitMessage( 0 );
+			return 0;
+		}
+	case WM_KEYDOWN:
+		{
+			keys[wParam] = true;
+			return 0;
+		}
+	case WM_KEYUP:
+		{
+			keys[wParam] = false;
+			return 0;
+		}
+	case WM_SIZE:
+		{
+			ReSizeGLScene( LOWORD(lParam), HIWORD(lParam) );
+			return 0;
+		}
+	}
 	return DefWindowProc( hWnd, uMsg, wParam, lParam );
 }
 

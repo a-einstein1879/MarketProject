@@ -126,12 +126,26 @@ void DataBase::refreshPrices() {
 #include <stdio.h>
 void DataBase::viewDataBase() {
 	/* Info part */
-	printf("Mean prices:\nBuying = %.2f; Deals(For sale / Bought) = %.2f/%.2f; Selling = %.2f\n",
-		objectsBought.getMeanPrice(), dealsForSale.getMeanPrice(), dealsBought.getMeanPrice(), objectsForSale.getMeanPrice());
-	printf("Number of objects. Bought: %d; For sale: %d\n", objectsBought.getNumberOfObjects(), objectsForSale.getNumberOfObjects());
+	printf("Number of objects:\nBuying: %d; Deals(Bought / For sale) = %d/%d; For sale: %d\n", objectsBought.getNumberOfObjects(), dealsBought.getNumberOfObjects(), dealsForSale.getNumberOfObjects(), objectsForSale.getNumberOfObjects());
+	printf("Mean prices:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
+		objectsBought.getMeanPrice(), dealsBought.getMeanPrice(), dealsForSale.getMeanPrice(), objectsForSale.getMeanPrice());
+	printf("Mean timers:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
+		objectsBought.getMeanTimer(), dealsBought.getMeanTimer(), dealsForSale.getMeanTimer(), objectsForSale.getMeanTimer());
+
+	double sellersMeanWaitingTime, buyersMeanWaitingTime;
+	int numberOfSellers = dealsForSale.getNumberOfObjects() + objectsForSale.getNumberOfObjects();
+	int numberOfBuyers = dealsBought.getNumberOfObjects() + objectsBought.getNumberOfObjects();
+	sellersMeanWaitingTime = dealsForSale.getMeanTimer() * double(dealsForSale.getNumberOfObjects()) / double(numberOfSellers) + objectsForSale.getMeanTimer() * double(objectsForSale.getNumberOfObjects()) / double(numberOfSellers);
+	buyersMeanWaitingTime = dealsBought.getMeanTimer() * double(dealsBought.getNumberOfObjects()) / double(numberOfBuyers) + objectsBought.getMeanTimer() * double(objectsBought.getNumberOfObjects()) / double(numberOfBuyers);
 	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
-		printf("Spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice);
+		printf("Mean waiting time(Bought / For sale) = %.2f/%.2f\n", buyersMeanWaitingTime, sellersMeanWaitingTime);
 	}
+
+	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
+		printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice, meanSpread.getMeanPrice());
+	}
+	/* End of info part */
+	
 	/* TODO: there is some trouble with pushing to position. Needs clearifing */
 	Object newObject(objectsForSale.getMeanPrice(), -1, 0);
 	meanForSalePrice.push(newObject, meanForSalePrice.getNumberOfObjects() + 1);
@@ -147,8 +161,9 @@ void DataBase::viewDataBase() {
 	meanBoughtNumberOfObjects.push(newObject, meanBoughtNumberOfObjects.getNumberOfObjects() + 1);
 	newObject.setObject(objectsForSale.getNumberOfObjects(), -1, 0);
 	meanForSaleNumberOfObjects.push(newObject, meanForSaleNumberOfObjects.getNumberOfObjects() + 1);
-	/* End of info part */
-
+	
+	newObject.setObject(lowestSellingPrice - highestBuyingPrice, -1, 0);
+	meanSpread.push(newObject, meanForSaleNumberOfObjects.getNumberOfObjects() + 1);
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);

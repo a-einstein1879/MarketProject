@@ -91,14 +91,32 @@ void Market::runDeal() {
 	if(buyer.getAge() == -1) {return;}
 	seller = dataBase->popLowestSeller();
 	if(seller.getAge() == -1) {dataBase->pushToDataBase(buyer); return;}
-	Deal deal;
-	deal.price = ( buyer.getPrice() + seller.getPrice() ) / 2;
-	deal.time = buyer.getAge() - seller.getAge();
-	printDeal(deal);
+
+	double price, time;
+	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
+	time = buyer.getAge() - seller.getAge();
+	
+	fprintf(dealFile, "%.2f\n", price);
+	if(time >= 0) {
+		fprintf(sellersFile, "%.2f\n", time);
+		fprintf(buyersFile,	 "%.2f\n", 0);
+	} else {
+		fprintf(sellersFile, "%.2f\n", 0);
+		fprintf(buyersFile,	 "%.2f\n", - time);
+	}
 
 	Object newDeal;
-	newDeal.setObject(deal.price, (deal.time > 0)?deal.time:-deal.time, (deal.time > 0)?FORSALE:BOUGHT);
-	dataBase->addDeal(newDeal);
+	if(time > 0) {
+		newDeal.setObject(price, time, FORSALE);
+		dataBase->addDeal(newDeal);
+		newDeal.setObject(price, 0, BOUGHT);
+		dataBase->addDeal(newDeal);
+	} else {
+		newDeal.setObject(price, 0, FORSALE);
+		dataBase->addDeal(newDeal);
+		newDeal.setObject(price, - time, BOUGHT);
+		dataBase->addDeal(newDeal);
+	}
 }
 
 /**********************************************************************
@@ -179,15 +197,6 @@ void Market::printTimer() {
 
 void Market::refreshPicture() {
 	dataBase->refreshPicture();
-}
-
-void Market::printDeal(Deal deal) {
-	fprintf(dealFile, "%.2f\n", deal.price);
-	if(deal.time >= 0) {
-		fprintf(sellersFile, "%.2f\n", deal.time);
-	} else {
-		fprintf(buyersFile, "%.2f\n", - deal.time);
-	}
 }
 
 void Market::openFiles() {
