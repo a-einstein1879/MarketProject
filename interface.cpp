@@ -47,9 +47,6 @@ void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChartPric
 	printLineChart(lineChartPrices, rectangle);
 	rectangle.setFigure(0, -1, 1, 0);
 	printLineChart(lineChartNumberOfObjects, rectangle);
-	char bufer[10];
-	_itoa_s(15, bufer, 10, 10);
-	drawText(bufer, sizeof(bufer) / sizeof(char), 0, 0);
 	SwapBuffers(hDC);
 //	DrawRectangle(rectangle);
 //	SwapBuffers(hDC);
@@ -60,6 +57,10 @@ void OpenGLInterface::printLineChart(LineChart &lineChart, FigureRectangle recta
 	/* Put coursor back to (0, 0, 0) */
     glLoadIdentity();
 	
+	drawArgumentLabels(lineChart.getMinArgument(), lineChart.getMaxActiveArgument(), 4, rectangle);
+	drawValueLabels(lineChart.getMinValue(), lineChart.getMaxValue(), 4, rectangle);
+	rectangle.resize(0.9, 0.93);
+
 	double startX = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
 	double startY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
 	double scaleY = rectangle.getSizeY();
@@ -95,6 +96,10 @@ void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle recta
 	int numberOfCharts = histogram.getNumberOfCharts();
 	double binWidth = 1 / double(numberOfBins);
 
+	drawArgumentLabels(histogram.getMinArgument(), histogram.getMaxArgument(), 4, rectangle);
+	drawValueLabels(histogram.getMinValue(), histogram.getMaxValue(), 4, rectangle);
+	rectangle.resize(0.93, 0.93);
+
 	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
@@ -103,6 +108,7 @@ void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle recta
 	double sizeX = rectangle.getSizeX();
 	double sizeY = rectangle.getSizeY();
 	double sideGap = cmn_defines->getSideGap();
+
 	for(int j = 0; j < numberOfCharts; j++) {
 		FigureRectangle histogramColumn;
 		Color color = histogram.getColor(j);
@@ -110,14 +116,38 @@ void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle recta
 
 		for(int i = 0; i < numberOfBins; i++) {
 			histogramColumn.setFigure(leftDownX + i * binWidth * sizeX, leftDownY, leftDownX + ((i + 1) * binWidth - binWidth * sideGap) * sizeX, leftDownY + histogram.getValue(j, i) / histogram.getMaxValue() * sizeY);
-			DrawRectangle(histogramColumn);
+			drawRectangle(histogramColumn);
 		}
 	}
 	glDisable(GL_BLEND);
 	glDisable(GL_ALPHA_TEST);
 }
 
-int OpenGLInterface::DrawRectangle(FigureRectangle rectangle) {
+void OpenGLInterface::drawArgumentLabels(double minArgument, double maxArgument, int numberOfBins, FigureRectangle rectangle) {
+	double startX = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
+	double deltaX = rectangle.getSizeX() / double(numberOfBins);
+	double y = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
+	double delta = (maxArgument - minArgument) / double(numberOfBins);
+	for(int i = 0; i < numberOfBins; i++) {
+		char bufer[10];
+		_itoa_s(minArgument + delta * i, bufer, 10, 10);
+		drawText(bufer, sizeof(bufer) / sizeof(char), startX + deltaX * i, y);
+	}
+}
+
+void OpenGLInterface::drawValueLabels(double minValue, double maxValue, int numberOfBins, FigureRectangle rectangle) {
+	double startY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
+	double deltaY = rectangle.getSizeY() / double(numberOfBins);
+	double x = rectangle.getMiddleX() - rectangle.getSizeX() / 2;
+	double delta = (maxValue - minValue) / double(numberOfBins);
+	for(int i = 0; i < numberOfBins; i++) {
+		char bufer[10];
+		_itoa_s(minValue + delta * i, bufer, 10, 10);
+		drawText(bufer, sizeof(bufer) / sizeof(char), x + 0.02, startY + deltaY * i);
+	}
+}
+
+int OpenGLInterface::drawRectangle(FigureRectangle rectangle) {
 	glLoadIdentity();
 	Color color = rectangle.getColor();
 	glColor3f(color.getRed(), color.getGreen(), color.getBlue());

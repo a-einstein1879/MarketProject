@@ -30,6 +30,7 @@ public:
 	FigureRectangle(double lDx, double lDy, double rUx, double rUy);
 	void setFigure(double lDx, double lDy, double rUx, double rUy);
 	void setColor(Color clr);
+	void resize(double scaleX, double scaleY);
 
 	double getMiddleX();
 	double getMiddleY();

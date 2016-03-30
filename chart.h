@@ -61,7 +61,7 @@ public:
 	~LineChart();
 
 	void addNextValue(double value, int chartIndex = -1);
-	int getMaxActiveArgument(int chartIndex);
+	int getMaxActiveArgument(int chartIndex = 0);
 };
 
 #endif

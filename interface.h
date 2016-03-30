@@ -27,8 +27,10 @@ private:
 
 	void printLineChart(LineChart &lineChart, FigureRectangle rectangle);
 	void printHistogram(Histogram &histogram, FigureRectangle rectangle);
-	int DrawRectangle(FigureRectangle rectangle);
+	int drawRectangle(FigureRectangle rectangle);
 	void drawText(const char *text, int length, float x, float y);
+	void drawArgumentLabels(double minArgument, double maxArgument, int numberOfBins, FigureRectangle rectangle);
+	void drawValueLabels(double minValue, double maxValue, int numberOfBins, FigureRectangle rectangle);
 
 	/* Window creation */
 	int InitGL(GLvoid);

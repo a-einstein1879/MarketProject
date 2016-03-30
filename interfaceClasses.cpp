@@ -47,6 +47,11 @@ void FigureRectangle::setColor(Color clr) {
 	color = clr;
 }
 
+void FigureRectangle::resize(double scaleX, double scaleY) {
+	sizeX = sizeX * scaleX;
+	sizeY = sizeY * scaleY;
+}
+
 double FigureRectangle::getMiddleX() {
 	return middleX;
 }

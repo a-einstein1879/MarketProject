@@ -128,6 +128,10 @@ void Histogram::addValue(int chartIndex, double value) {
 		if(value >= minArgument + i * binWidth && value < minArgument + (i + 1) * binWidth) {
 			values[chartIndex][i]++;
 			if(values[chartIndex][i] > maxValue) {maxValue = values[chartIndex][i];}
+			if(minValue == -10000) {minValue = value;}
+			else {
+				if(value < minValue) {minValue = value;}
+			}
 		}
 	}
 }
