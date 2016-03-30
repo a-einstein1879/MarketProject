@@ -217,16 +217,17 @@ void DataBase::refreshPicture() {
 
 	/* Mean prices charts */
 	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getTimerPrintingFrequency();
-	LineChart lineChart1(4, 0, numberOfArguments);
+	LineChart lineChart1(5, 0, numberOfArguments);
 	lineChart1.setTmpChartIndex(0);
 	meanForSalePrice.feelLineChart(lineChart1);
 	lineChart1.setTmpChartIndex(1);
 	askPrice.feelLineChart(lineChart1);
-
 	lineChart1.setTmpChartIndex(2);
 	bidPrice.feelLineChart(lineChart1);
 	lineChart1.setTmpChartIndex(3);
 	meanBoughtPrice.feelLineChart(lineChart1);
+	/*lineChart1.setTmpChartIndex(4);
+	meanSpread.feelLineChart(lineChart1);*/
 
 	LineChart lineChart2(2, 0, numberOfArguments);
 	lineChart2.setTmpChartIndex(0);

@@ -47,8 +47,9 @@ void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChartPric
 	printLineChart(lineChartPrices, rectangle);
 	rectangle.setFigure(0, -1, 1, 0);
 	printLineChart(lineChartNumberOfObjects, rectangle);
-	char text[] = "Hello, world!";
-	drawText(text, sizeof(text) / sizeof(char), 0, 0);
+	char bufer[10];
+	_itoa_s(15, bufer, 10, 10);
+	drawText(bufer, sizeof(bufer) / sizeof(char), 0, 0);
 	SwapBuffers(hDC);
 //	DrawRectangle(rectangle);
 //	SwapBuffers(hDC);
@@ -88,6 +89,8 @@ void OpenGLInterface::printLineChart(LineChart &lineChart, FigureRectangle recta
 }
 
 void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle rectangle) {
+	/* Put coursor back to (0, 0, 0) */
+    glLoadIdentity();
 	int numberOfBins = histogram.getNumberOfArguments();
 	int numberOfCharts = histogram.getNumberOfCharts();
 	double binWidth = 1 / double(numberOfBins);

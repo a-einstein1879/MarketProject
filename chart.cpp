@@ -165,6 +165,13 @@ LineChart::LineChart(int noc, double mA, double MA) {
 			colors[2].set(0, 1, 1);
 			colors[3].set(0, 1, 0);
 		}
+		if(numberOfCharts == 5) {
+			colors[0].set(1, 0, 0);
+			colors[1].set(1, 0, 1);
+			colors[2].set(0, 1, 1);
+			colors[3].set(0, 1, 0);
+			colors[4].set(1, 1, 1);
+		}
 
 		maxActiveArgument = new int[numberOfCharts];
 		for(int i = 0; i < numberOfCharts; i++) {

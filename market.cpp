@@ -90,7 +90,7 @@ void Market::runDeal() {
 	buyer = dataBase->popHighestBuyer();
 	if(buyer.getAge() == -1) {return;}
 	seller = dataBase->popLowestSeller();
-	if(seller.getAge() == -1) {dataBase->pushToDataBase(buyer); return;}
+	if(seller.getAge() == -1) {dataBase->pushToDataBase(buyer);return;}
 
 	double price, time;
 	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
