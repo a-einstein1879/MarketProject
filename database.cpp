@@ -132,6 +132,7 @@ void DataBase::viewDataBase() {
 	printf("Mean timers:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
 		objectsBought.getMeanTimer(), dealsBought.getMeanTimer(), dealsForSale.getMeanTimer(), objectsForSale.getMeanTimer());
 
+	/* Count mean waiting time */
 	double sellersMeanWaitingTime, buyersMeanWaitingTime;
 	int numberOfSellers = dealsForSale.getNumberOfObjects() + objectsForSale.getNumberOfObjects();
 	int numberOfBuyers = dealsBought.getNumberOfObjects() + objectsBought.getNumberOfObjects();
