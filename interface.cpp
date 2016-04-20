@@ -147,7 +147,7 @@ void OpenGLInterface::drawValueLabels(double minValue, double maxValue, int numb
 	}
 }
 
-int OpenGLInterface::drawRectangle(FigureRectangle rectangle) {
+void OpenGLInterface::drawRectangle(FigureRectangle rectangle) {
 	glLoadIdentity();
 	Color color = rectangle.getColor();
 	glColor3f(color.getRed(), color.getGreen(), color.getBlue());
@@ -160,8 +160,6 @@ int OpenGLInterface::drawRectangle(FigureRectangle rectangle) {
 		glVertex3f(halfSizeX, -halfSizeY, 0.0);
 		glVertex3f(-halfSizeX,-halfSizeY, 0.0);
 	glEnd();
-	
-	return true;
 }
 
 int OpenGLInterface::InitGL(GLvoid) {
@@ -176,38 +174,38 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
 	DWORD    dwStyle;
 	
 	RECT WindowRect;                // Grabs Rectangle Upper Left / Lower Right Values
-	WindowRect.left=(long)0;              // Установить левую составляющую в 0
-	WindowRect.right=(long)width;              // Установить правую составляющую в Width
-	WindowRect.top=(long)0;                // Установить верхнюю составляющую в 0
-	WindowRect.bottom=(long)height;              // Установить нижнюю составляющую в Height
+	WindowRect.left=(long)0;              // Г“Г±ГІГ Г­Г®ГўГЁГІГј Г«ГҐГўГіГѕ Г±Г®Г±ГІГ ГўГ«ГїГѕГ№ГіГѕ Гў 0
+	WindowRect.right=(long)width;              // Г“Г±ГІГ Г­Г®ГўГЁГІГј ГЇГ°Г ГўГіГѕ Г±Г®Г±ГІГ ГўГ«ГїГѕГ№ГіГѕ Гў Width
+	WindowRect.top=(long)0;                // Г“Г±ГІГ Г­Г®ГўГЁГІГј ГўГҐГ°ГµГ­ГѕГѕ Г±Г®Г±ГІГ ГўГ«ГїГѕГ№ГіГѕ Гў 0
+	WindowRect.bottom=(long)height;              // Г“Г±ГІГ Г­Г®ГўГЁГІГј Г­ГЁГ¦Г­ГѕГѕ Г±Г®Г±ГІГ ГўГ«ГїГѕГ№ГіГѕ Гў Height
 
-	fullscreen = fullscreenflag;              // Устанавливаем значение глобальной переменной fullscreen
-	hInstance    = GetModuleHandle(NULL);        // Считаем дескриптор нашего приложения
-	wc.style    = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;      // Перерисуем при перемещении и создаём скрытый DC
-	wc.lpfnWndProc    = &OpenGLInterface::InitialWndProc;          // Процедура обработки сообщений
-	wc.cbClsExtra    = 0;              // Нет дополнительной информации для окна
-	wc.cbWndExtra    = 0;              // Нет дополнительной информации для окна
-	wc.hInstance    = hInstance;            // Устанавливаем дескриптор
-	wc.hIcon    = LoadIcon(NULL, IDI_WINLOGO);        // Загружаем иконку по умолчанию
-	wc.hCursor    = LoadCursor(NULL, IDC_ARROW);        // Загружаем указатель мышки
-	wc.hbrBackground  = NULL;              // Фон не требуется для GL
-	wc.lpszMenuName    = NULL;              // Меню в окне не будет
-	wc.lpszClassName  = L"OpenGL";            // Устанавливаем имя классу
+	fullscreen = fullscreenflag;              // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЈГ«Г®ГЎГ Г«ГјГ­Г®Г© ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г®Г© fullscreen
+	hInstance    = GetModuleHandle(NULL);        // Г‘Г·ГЁГІГ ГҐГ¬ Г¤ГҐГ±ГЄГ°ГЁГЇГІГ®Г° Г­Г ГёГҐГЈГ® ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГї
+	wc.style    = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;      // ГЏГҐГ°ГҐГ°ГЁГ±ГіГҐГ¬ ГЇГ°ГЁ ГЇГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГЁ ГЁ Г±Г®Г§Г¤Г ВёГ¬ Г±ГЄГ°Г»ГІГ»Г© DC
+	wc.lpfnWndProc    = &OpenGLInterface::InitialWndProc;          // ГЏГ°Г®Г¶ГҐГ¤ГіГ°Г  Г®ГЎГ°Г ГЎГ®ГІГЄГЁ Г±Г®Г®ГЎГ№ГҐГ­ГЁГ©
+	wc.cbClsExtra    = 0;              // ГЌГҐГІ Г¤Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­Г®Г© ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г¤Г«Гї Г®ГЄГ­Г 
+	wc.cbWndExtra    = 0;              // ГЌГҐГІ Г¤Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­Г®Г© ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГЁ Г¤Г«Гї Г®ГЄГ­Г 
+	wc.hInstance    = hInstance;            // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г¤ГҐГ±ГЄГ°ГЁГЇГІГ®Г°
+	wc.hIcon    = LoadIcon(NULL, IDI_WINLOGO);        // Г‡Г ГЈГ°ГіГ¦Г ГҐГ¬ ГЁГЄГ®Г­ГЄГі ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ
+	wc.hCursor    = LoadCursor(NULL, IDC_ARROW);        // Г‡Г ГЈГ°ГіГ¦Г ГҐГ¬ ГіГЄГ Г§Г ГІГҐГ«Гј Г¬Г»ГёГЄГЁ
+	wc.hbrBackground  = NULL;              // Г”Г®Г­ Г­ГҐ ГІГ°ГҐГЎГіГҐГІГ±Гї Г¤Г«Гї GL
+	wc.lpszMenuName    = NULL;              // ГЊГҐГ­Гѕ Гў Г®ГЄГ­ГҐ Г­ГҐ ГЎГіГ¤ГҐГІ
+	wc.lpszClassName  = L"OpenGL";            // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЁГ¬Гї ГЄГ«Г Г±Г±Гі
 
 	if( !RegisterClass( &wc ) ) {
     MessageBox( NULL, L"Failed To Register The Window Class.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-    return false;                // Выход и возвращение функцией значения false
+    return false;                // Г‚Г»ГµГ®Г¤ ГЁ ГўГ®Г§ГўГ°Г Г№ГҐГ­ГЁГҐ ГґГіГ­ГЄГ¶ГЁГҐГ© Г§Г­Г Г·ГҐГ­ГЁГї false
 	}
 
 	if( fullscreen ) {
-		DEVMODE dmScreenSettings;            // Режим устройства
-		memset( &dmScreenSettings, 0, sizeof( dmScreenSettings ) );    // Очистка для хранения установок
-		dmScreenSettings.dmSize=sizeof( dmScreenSettings );      // Размер структуры Devmode
-		dmScreenSettings.dmPelsWidth  =   width;        // Ширина экрана
-		dmScreenSettings.dmPelsHeight  =   height;        // Высота экрана
-		dmScreenSettings.dmBitsPerPel  =   bits;        // Глубина цвета
-		dmScreenSettings.dmFields= DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;// Режим Пикселя
-		// Пытаемся установить выбранный режим и получить результат.  Примечание: CDS_FULLSCREEN убирает панель управления.
+		DEVMODE dmScreenSettings;            // ГђГҐГ¦ГЁГ¬ ГіГ±ГІГ°Г®Г©Г±ГІГўГ 
+		memset( &dmScreenSettings, 0, sizeof( dmScreenSettings ) );    // ГЋГ·ГЁГ±ГІГЄГ  Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї ГіГ±ГІГ Г­Г®ГўГ®ГЄ
+		dmScreenSettings.dmSize=sizeof( dmScreenSettings );      // ГђГ Г§Г¬ГҐГ° Г±ГІГ°ГіГЄГІГіГ°Г» Devmode
+		dmScreenSettings.dmPelsWidth  =   width;        // ГГЁГ°ГЁГ­Г  ГЅГЄГ°Г Г­Г 
+		dmScreenSettings.dmPelsHeight  =   height;        // Г‚Г»Г±Г®ГІГ  ГЅГЄГ°Г Г­Г 
+		dmScreenSettings.dmBitsPerPel  =   bits;        // ГѓГ«ГіГЎГЁГ­Г  Г¶ГўГҐГІГ 
+		dmScreenSettings.dmFields= DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;// ГђГҐГ¦ГЁГ¬ ГЏГЁГЄГ±ГҐГ«Гї
+		// ГЏГ»ГІГ ГҐГ¬Г±Гї ГіГ±ГІГ Г­Г®ГўГЁГІГј ГўГ»ГЎГ°Г Г­Г­Г»Г© Г°ГҐГ¦ГЁГ¬ ГЁ ГЇГ®Г«ГіГ·ГЁГІГј Г°ГҐГ§ГіГ«ГјГІГ ГІ.  ГЏГ°ГЁГ¬ГҐГ·Г Г­ГЁГҐ: CDS_FULLSCREEN ГіГЎГЁГ°Г ГҐГІ ГЇГ Г­ГҐГ«Гј ГіГЇГ°Г ГўГ«ГҐГ­ГЁГї.
 		if( ChangeDisplaySettings( &dmScreenSettings, CDS_FULLSCREEN ) != DISP_CHANGE_SUCCESSFUL ) {
 			if( MessageBox( NULL, L"The Requested Fullscreen Mode Is Not Supported By\nYour Video Card. Use Windowed Mode Instead?", L"NeHe GL", MB_YESNO | MB_ICONEXCLAMATION) == IDYES ) {
 				fullscreen = false;
@@ -219,99 +217,99 @@ BOOL OpenGLInterface::CreateGLWindow( LPCWSTR title, int width, int height, int 
 	}
 
 	if(fullscreen) {
-		dwExStyle  =   WS_EX_APPWINDOW;          // Расширенный стиль окна
-		dwStyle    =   WS_POPUP;            // Обычный стиль окна
+		dwExStyle  =   WS_EX_APPWINDOW;          // ГђГ Г±ГёГЁГ°ГҐГ­Г­Г»Г© Г±ГІГЁГ«Гј Г®ГЄГ­Г 
+		dwStyle    =   WS_POPUP;            // ГЋГЎГ»Г·Г­Г»Г© Г±ГІГЁГ«Гј Г®ГЄГ­Г 
 		ShowCursor( true );
 	} else {
-		dwExStyle  =   WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;      // Расширенный стиль окна
-		dwStyle    =   WS_OVERLAPPEDWINDOW;        // Обычный стиль окна
+		dwExStyle  =   WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;      // ГђГ Г±ГёГЁГ°ГҐГ­Г­Г»Г© Г±ГІГЁГ«Гј Г®ГЄГ­Г 
+		dwStyle    =   WS_OVERLAPPEDWINDOW;        // ГЋГЎГ»Г·Г­Г»Г© Г±ГІГЁГ«Гј Г®ГЄГ­Г 
 	}
 	AdjustWindowRectEx( &WindowRect, dwStyle, false, dwExStyle );
 
-	if( !( hWnd = CreateWindowEx(  dwExStyle,          // Расширенный стиль для окна
-          _T("OpenGL"),          // Имя класса
-          title,            // Заголовок окна
-          WS_CLIPSIBLINGS |        // Требуемый стиль для окна
-          WS_CLIPCHILDREN |        // Требуемый стиль для окна
-          dwStyle,          // Выбираемые стили для окна
-          0, 0,            // Позиция окна
-          WindowRect.right-WindowRect.left,    // Вычисление подходящей ширины
-          WindowRect.bottom-WindowRect.top,    // Вычисление подходящей высоты
-          NULL,            // Нет родительского
-          NULL,            // Нет меню
-          hInstance,          // Дескриптор приложения
-          this ) ) ) {          // Не передаём ничего до WM_CREATE (???)
-			  KillGLWindow();                // Восстановить экран
+	if( !( hWnd = CreateWindowEx(  dwExStyle,          // ГђГ Г±ГёГЁГ°ГҐГ­Г­Г»Г© Г±ГІГЁГ«Гј Г¤Г«Гї Г®ГЄГ­Г 
+          _T("OpenGL"),          // Г€Г¬Гї ГЄГ«Г Г±Г±Г 
+          title,            // Г‡Г ГЈГ®Г«Г®ГўГ®ГЄ Г®ГЄГ­Г 
+          WS_CLIPSIBLINGS |        // Г’Г°ГҐГЎГіГҐГ¬Г»Г© Г±ГІГЁГ«Гј Г¤Г«Гї Г®ГЄГ­Г 
+          WS_CLIPCHILDREN |        // Г’Г°ГҐГЎГіГҐГ¬Г»Г© Г±ГІГЁГ«Гј Г¤Г«Гї Г®ГЄГ­Г 
+          dwStyle,          // Г‚Г»ГЎГЁГ°Г ГҐГ¬Г»ГҐ Г±ГІГЁГ«ГЁ Г¤Г«Гї Г®ГЄГ­Г 
+          0, 0,            // ГЏГ®Г§ГЁГ¶ГЁГї Г®ГЄГ­Г 
+          WindowRect.right-WindowRect.left,    // Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ ГЇГ®Г¤ГµГ®Г¤ГїГ№ГҐГ© ГёГЁГ°ГЁГ­Г»
+          WindowRect.bottom-WindowRect.top,    // Г‚Г»Г·ГЁГ±Г«ГҐГ­ГЁГҐ ГЇГ®Г¤ГµГ®Г¤ГїГ№ГҐГ© ГўГ»Г±Г®ГІГ»
+          NULL,            // ГЌГҐГІ Г°Г®Г¤ГЁГІГҐГ«ГјГ±ГЄГ®ГЈГ®
+          NULL,            // ГЌГҐГІ Г¬ГҐГ­Гѕ
+          hInstance,          // Г„ГҐГ±ГЄГ°ГЁГЇГІГ®Г° ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГї
+          this ) ) ) {          // ГЌГҐ ГЇГҐГ°ГҐГ¤Г ВёГ¬ Г­ГЁГ·ГҐГЈГ® Г¤Г® WM_CREATE (???)
+			  KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
 			  MessageBox( NULL, L"Window Creation Error.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-			  return false;                // Вернуть false
+			  return false;                // Г‚ГҐГ°Г­ГіГІГј false
 	}
 
-	static  PIXELFORMATDESCRIPTOR pfd=            // pfd сообщает Windows каким будет вывод на экран каждого пикселя
+	static  PIXELFORMATDESCRIPTOR pfd=            // pfd Г±Г®Г®ГЎГ№Г ГҐГІ Windows ГЄГ ГЄГЁГ¬ ГЎГіГ¤ГҐГІ ГўГ»ГўГ®Г¤ Г­Г  ГЅГЄГ°Г Г­ ГЄГ Г¦Г¤Г®ГЈГ® ГЇГЁГЄГ±ГҐГ«Гї
   {
-    sizeof(PIXELFORMATDESCRIPTOR),            // Размер дескриптора данного формата пикселей
-    1,                  // Номер версии
-    PFD_DRAW_TO_WINDOW |              // Формат для Окна
-    PFD_SUPPORT_OPENGL |              // Формат для OpenGL
-    PFD_DOUBLEBUFFER,              // Формат для двойного буфера
-    PFD_TYPE_RGBA,                // Требуется RGBA формат
-    bits,                  // Выбирается бит глубины цвета
-    0, 0, 0, 0, 0, 0,              // Игнорирование цветовых битов
-    0,                  // Нет буфера прозрачности
-    0,                  // Сдвиговый бит игнорируется
-    0,                  // Нет буфера накопления
-    0, 0, 0, 0,                // Биты накопления игнорируются
-    32,                  // 32 битный Z-буфер (буфер глубины)
-    0,                  // Нет буфера трафарета
-    0,                  // Нет вспомогательных буферов
-    PFD_MAIN_PLANE,                // Главный слой рисования
-    0,                  // Зарезервировано
-    0, 0, 0                  // Маски слоя игнорируются
+    sizeof(PIXELFORMATDESCRIPTOR),            // ГђГ Г§Г¬ГҐГ° Г¤ГҐГ±ГЄГ°ГЁГЇГІГ®Г°Г  Г¤Г Г­Г­Г®ГЈГ® ГґГ®Г°Г¬Г ГІГ  ГЇГЁГЄГ±ГҐГ«ГҐГ©
+    1,                  // ГЌГ®Г¬ГҐГ° ГўГҐГ°Г±ГЁГЁ
+    PFD_DRAW_TO_WINDOW |              // Г”Г®Г°Г¬Г ГІ Г¤Г«Гї ГЋГЄГ­Г 
+    PFD_SUPPORT_OPENGL |              // Г”Г®Г°Г¬Г ГІ Г¤Г«Гї OpenGL
+    PFD_DOUBLEBUFFER,              // Г”Г®Г°Г¬Г ГІ Г¤Г«Гї Г¤ГўГ®Г©Г­Г®ГЈГ® ГЎГіГґГҐГ°Г 
+    PFD_TYPE_RGBA,                // Г’Г°ГҐГЎГіГҐГІГ±Гї RGBA ГґГ®Г°Г¬Г ГІ
+    bits,                  // Г‚Г»ГЎГЁГ°Г ГҐГІГ±Гї ГЎГЁГІ ГЈГ«ГіГЎГЁГ­Г» Г¶ГўГҐГІГ 
+    0, 0, 0, 0, 0, 0,              // Г€ГЈГ­Г®Г°ГЁГ°Г®ГўГ Г­ГЁГҐ Г¶ГўГҐГІГ®ГўГ»Гµ ГЎГЁГІГ®Гў
+    0,                  // ГЌГҐГІ ГЎГіГґГҐГ°Г  ГЇГ°Г®Г§Г°Г Г·Г­Г®Г±ГІГЁ
+    0,                  // Г‘Г¤ГўГЁГЈГ®ГўГ»Г© ГЎГЁГІ ГЁГЈГ­Г®Г°ГЁГ°ГіГҐГІГ±Гї
+    0,                  // ГЌГҐГІ ГЎГіГґГҐГ°Г  Г­Г ГЄГ®ГЇГ«ГҐГ­ГЁГї
+    0, 0, 0, 0,                // ГЃГЁГІГ» Г­Г ГЄГ®ГЇГ«ГҐГ­ГЁГї ГЁГЈГ­Г®Г°ГЁГ°ГіГѕГІГ±Гї
+    32,                  // 32 ГЎГЁГІГ­Г»Г© Z-ГЎГіГґГҐГ° (ГЎГіГґГҐГ° ГЈГ«ГіГЎГЁГ­Г»)
+    0,                  // ГЌГҐГІ ГЎГіГґГҐГ°Г  ГІГ°Г ГґГ Г°ГҐГІГ 
+    0,                  // ГЌГҐГІ ГўГ±ГЇГ®Г¬Г®ГЈГ ГІГҐГ«ГјГ­Г»Гµ ГЎГіГґГҐГ°Г®Гў
+    PFD_MAIN_PLANE,                // ГѓГ«Г ГўГ­Г»Г© Г±Г«Г®Г© Г°ГЁГ±Г®ГўГ Г­ГЁГї
+    0,                  // Г‡Г Г°ГҐГ§ГҐГ°ГўГЁГ°Г®ГўГ Г­Г®
+    0, 0, 0                  // ГЊГ Г±ГЄГЁ Г±Г«Г®Гї ГЁГЈГ­Г®Г°ГЁГ°ГіГѕГІГ±Гї
   };
 
-	if( !( hDC = GetDC( hWnd ) ) ) {             // Можем ли мы получить Контекст Устройства?
-		KillGLWindow();                // Восстановить экран
+	if( !( hDC = GetDC( hWnd ) ) ) {             // ГЊГ®Г¦ГҐГ¬ Г«ГЁ Г¬Г» ГЇГ®Г«ГіГ·ГЁГІГј ГЉГ®Г­ГІГҐГЄГ±ГІ Г“Г±ГІГ°Г®Г©Г±ГІГўГ ?
+		KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
 		MessageBox( NULL, L"Can't Create A GL Device Context.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-		return false;                // Вернуть false
+		return false;                // Г‚ГҐГ°Г­ГіГІГј false
 	}
 	
-	if( !( PixelFormat = ChoosePixelFormat( hDC, &pfd ) ) )        // Найден ли подходящий формат пикселя?
+	if( !( PixelFormat = ChoosePixelFormat( hDC, &pfd ) ) )        // ГЌГ Г©Г¤ГҐГ­ Г«ГЁ ГЇГ®Г¤ГµГ®Г¤ГїГ№ГЁГ© ГґГ®Г°Г¬Г ГІ ГЇГЁГЄГ±ГҐГ«Гї?
   {
-    KillGLWindow();                // Восстановить экран
+    KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
     MessageBox( NULL, L"Can't Find A Suitable PixelFormat.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-    return false;                // Вернуть false
+    return false;                // Г‚ГҐГ°Г­ГіГІГј false
   }
 	
-	if( !SetPixelFormat( hDC, PixelFormat, &pfd ) )          // Возможно ли установить Формат Пикселя?
+	if( !SetPixelFormat( hDC, PixelFormat, &pfd ) )          // Г‚Г®Г§Г¬Г®Г¦Г­Г® Г«ГЁ ГіГ±ГІГ Г­Г®ГўГЁГІГј Г”Г®Г°Г¬Г ГІ ГЏГЁГЄГ±ГҐГ«Гї?
   {
-    KillGLWindow();                // Восстановить экран
+    KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
     MessageBox( NULL, L"Can't Set The PixelFormat.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-    return false;                // Вернуть false
+    return false;                // Г‚ГҐГ°Г­ГіГІГј false
   }
 	
-	if( !( hRC = wglCreateContext( hDC ) ) )          // Возможно ли установить Контекст Рендеринга?
+	if( !( hRC = wglCreateContext( hDC ) ) )          // Г‚Г®Г§Г¬Г®Г¦Г­Г® Г«ГЁ ГіГ±ГІГ Г­Г®ГўГЁГІГј ГЉГ®Г­ГІГҐГЄГ±ГІ ГђГҐГ­Г¤ГҐГ°ГЁГ­ГЈГ ?
   {
-    KillGLWindow();                // Восстановить экран
+    KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
     MessageBox( NULL, L"Can't Create A GL Rendering Context.", L"ERROR", MB_OK | MB_ICONEXCLAMATION);
-    return false;                // Вернуть false
+    return false;                // Г‚ГҐГ°Г­ГіГІГј false
   }
 
-	if( !wglMakeCurrent( hDC, hRC ) )            // Попробовать активировать Контекст Рендеринга
+	if( !wglMakeCurrent( hDC, hRC ) )            // ГЏГ®ГЇГ°Г®ГЎГ®ГўГ ГІГј Г ГЄГІГЁГўГЁГ°Г®ГўГ ГІГј ГЉГ®Г­ГІГҐГЄГ±ГІ ГђГҐГ­Г¤ГҐГ°ГЁГ­ГЈГ 
   {
-    KillGLWindow();                // Восстановить экран
+    KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
     MessageBox( NULL, L"Can't Activate The GL Rendering Context.", L"ERROR", MB_OK | MB_ICONEXCLAMATION );
-    return false;                // Вернуть false
+    return false;                // Г‚ГҐГ°Г­ГіГІГј false
   }
 
-	ShowWindow( hWnd, SW_SHOW );              // Показать окно
-	SetForegroundWindow( hWnd );              // Слегка повысим приоритет
-	SetFocus( hWnd );                // Установить фокус клавиатуры на наше окно
-	ReSizeGLScene( width, height );              // Настроим перспективу для нашего OpenGL экрана.
+	ShowWindow( hWnd, SW_SHOW );              // ГЏГ®ГЄГ Г§Г ГІГј Г®ГЄГ­Г®
+	SetForegroundWindow( hWnd );              // Г‘Г«ГҐГЈГЄГ  ГЇГ®ГўГ»Г±ГЁГ¬ ГЇГ°ГЁГ®Г°ГЁГІГҐГІ
+	SetFocus( hWnd );                // Г“Г±ГІГ Г­Г®ГўГЁГІГј ГґГ®ГЄГіГ± ГЄГ«Г ГўГЁГ ГІГіГ°Г» Г­Г  Г­Г ГёГҐ Г®ГЄГ­Г®
+	ReSizeGLScene( width, height );              // ГЌГ Г±ГІГ°Г®ГЁГ¬ ГЇГҐГ°Г±ГЇГҐГЄГІГЁГўГі Г¤Г«Гї Г­Г ГёГҐГЈГ® OpenGL ГЅГЄГ°Г Г­Г .
 
-	if( !InitGL() )                  // Инициализация только что созданного окна
+	if( !InitGL() )                  // Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї ГІГ®Г«ГјГЄГ® Г·ГІГ® Г±Г®Г§Г¤Г Г­Г­Г®ГЈГ® Г®ГЄГ­Г 
   {
-    KillGLWindow();                // Восстановить экран
+    KillGLWindow();                // Г‚Г®Г±Г±ГІГ Г­Г®ГўГЁГІГј ГЅГЄГ°Г Г­
     MessageBox( NULL, _T("Initialization Failed."), _T("ERROR"), MB_OK | MB_ICONEXCLAMATION );
-    return false;                // Вернуть false
+    return false;                // Г‚ГҐГ°Г­ГіГІГј false
   }
 
 	return true;
