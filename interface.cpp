@@ -26,8 +26,8 @@ OpenGLInterface* OpenGLInterface::getOpenGLInterface() {
 	return p_OpenGLInterface;
 }
 
-void OpenGLInterface::drawText(const char *text, int length, float x, float y)
-{
+void OpenGLInterface::drawText(const char *text, int length, float x, float y) {
+	glColor3f(1, 1, 1);
 	glLoadIdentity();
 	glRasterPos2f(x, y);
 	for(int i = 0; i < length; i++)
