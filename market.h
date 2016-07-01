@@ -13,18 +13,22 @@ private:
 	
 	DataBase *dataBase;
 	Configurator *configurator;
+
+	/* Timers */
 	int timer;
 	int timeLeftBeforeNewSellingObject;
 	int timeLeftBeforeNewObjectBought;
-
 	void switchTimers();
+	/* End of timers */
 
+	/* Timer checkers */
 	bool timeToAddSeller();
 	bool timeToAddBuyer();
 	bool dealPossible();
 	bool timeToPrintTimer();
 	bool timeToRefreshPicture();
 	bool timeToFinish();
+	/* End of timer checkers */
 	
 	/* Statistics */
 	double formSellingPrice();
@@ -38,11 +42,7 @@ private:
 
 	int addSeller();
 	int addBuyer();
-	void runDeal();
 
-	FILE *dealFile, *sellersFile, *buyersFile, *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
-	void openFiles();
-	void closeFiles();
 	void printTimer();
 	void refreshPicture();
 public:

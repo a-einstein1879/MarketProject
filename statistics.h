@@ -21,6 +21,10 @@ private:
 	int numberOfObjectTypes;
 	int numberOfStatistics;
 	LinkList **statistics;
+
+	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
+	void openFiles();
+	void closeFiles();
 public:
 	static Statistics* getStatistics();
 	void addStatisticsElement(double newValue, int type, int statisticsId);
@@ -30,8 +34,8 @@ public:
 };
 
 /*
-0 - prices of objects that were sold in case seller appeared on market first
-1 - prices of objects that were sold in case buyer appeared on market first
+0 - mean price of object on market for sale
+1 - mean price of object on market bought
 2 - number of objects on market for sale
 3 - number of objects on market bought
 4 - bid price

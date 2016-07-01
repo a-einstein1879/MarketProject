@@ -75,3 +75,33 @@ void Statistics::memoryClear() {
 	}
 	delete [] statistics;
 }
+
+#include <stdio.h>
+void Statistics::openFiles() {	
+	buyersFinalPricesFile = fopen(BUYERSFINALPRICESFILE, "w");
+	if(buyersFinalPricesFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFINALPRICESFILE);
+	}
+
+	buyersFinalTimersFile = fopen(BUYERSFINALTIMERSFILE, "w");
+	if(buyersFinalTimersFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFINALTIMERSFILE);
+	}
+
+	sellersFinalPricesFile = fopen(SELLERSFINALPRICESFILE, "w");
+	if(sellersFinalPricesFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFINALPRICESFILE);
+	}
+
+	sellersFinalTimersFile = fopen(SELLERSFINALTIMERSFILE, "w");
+	if(sellersFinalTimersFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFINALTIMERSFILE);
+	}
+}
+
+void Statistics::closeFiles() {
+	fclose(buyersFinalPricesFile);
+	fclose(buyersFinalTimersFile);
+	fclose(sellersFinalPricesFile);
+	fclose(sellersFinalTimersFile);
+}

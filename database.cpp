@@ -8,7 +8,11 @@ DataBase::DataBase() {
 	configurator = configurator->getConfigurator();
 	ui = ui->getOpenGLInterface();
 	statistics = statistics->getStatistics();
+	openFiles();
 };
+DataBase::~DataBase() {
+	closeFiles();
+}
 
 DataBase* DataBase::getDataBase() {
 	if(!p_DataBase) {
@@ -26,6 +30,21 @@ void DataBase::tick() {
 	objectsForSale.tick();
 	objectsBought.tick();
 	timer++;
+}
+
+void DataBase::closeDatabase() {
+	Object object;
+	while(1) {
+		object = popLowestSeller();
+		if(object.getAge() == -1)	{break;}
+		else						{object.printObjectToFinalFiles(); continue;}
+	}
+
+	while(1) {
+		object = popHighestBuyer();
+		if(object.getAge() == -1)	{break;}
+		else						{object.printObjectToFinalFiles(); continue;}
+	}
 }
 
 /* TODO: maybe checkTimers should be refactored so that sales will be produced in objects themselves, but it is hard to do it without disabling sales for buyers and for deals
@@ -81,6 +100,42 @@ bool DataBase::dealPossible() {
 	}
 }
 
+void DataBase::runPossibleDeal() {
+	Object seller, buyer;
+	buyer = popHighestBuyer();
+	if(buyer.getAge() == -1) {return;}
+	seller = popLowestSeller();
+	if(seller.getAge() == -1) {pushToDataBase(buyer);return;}
+
+	double price, time;
+	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
+	time = buyer.getAge() - seller.getAge();
+
+	/* Adding new deal to deal database */
+	Object newDeal;
+	if(time > 0) {
+		newDeal.setObject(price, time, FORSALE);
+		addDeal(newDeal);
+		newDeal.setObject(price, 0, BOUGHT);
+		addDeal(newDeal);
+	} else {
+		newDeal.setObject(price, 0, FORSALE);
+		addDeal(newDeal);
+		newDeal.setObject(price, - time, BOUGHT);
+		addDeal(newDeal);
+	}
+
+	/* Printing deal data to output files */
+	fprintf(dealFile, "%.2f\n", price);
+	if(time >= 0) {
+		fprintf(sellersFile, "%.2f\n", time);
+		fprintf(buyersFile,	 "%.2f\n", 0);
+	} else {
+		fprintf(sellersFile, "%.2f\n", 0);
+		fprintf(buyersFile,	 "%.2f\n", - time);
+	}
+}
+
 Object DataBase::popLowestSeller() {
 	if(objectsForSale.getNumberOfObjects() > 0) {
 		Object object;
@@ -125,7 +180,7 @@ void DataBase::refreshPrices() {
 }
 
 #include <stdio.h>
-void DataBase::viewDataBase() {
+void DataBase::viewDataBaseInfo() {
 	/* Info part */
 	printf("Number of objects:\nBuying: %d; Deals(Bought / For sale) = %d/%d; For sale: %d\n", objectsBought.getNumberOfObjects(), dealsBought.getNumberOfObjects(), dealsForSale.getNumberOfObjects(), objectsForSale.getNumberOfObjects());
 	printf("Mean prices:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
@@ -211,4 +266,28 @@ void DataBase::refreshPicture() {
 	ui->drawMarketHistogram(histogram);
 
 	statistics->drawStatistics();
+}
+
+#include <stdio.h>
+void DataBase::openFiles() {
+	dealFile = fopen(DEALFILE, "w");
+	if(dealFile == NULL) {
+		printf("File '%s' can`t be open ", DEALFILE);
+	}
+	
+	sellersFile = fopen(SELLERSFILE, "w");
+	if(sellersFile == NULL) {
+		printf("File '%s' can`t be open ", SELLERSFILE);
+	}
+	
+	buyersFile = fopen(BUYERSFILE, "w");
+	if(buyersFile == NULL) {
+		printf("File '%s' can`t be open ", BUYERSFILE);
+	}
+}
+
+void DataBase::closeFiles() {
+	fclose(dealFile);
+	fclose(sellersFile);
+	fclose(buyersFile);
 }
