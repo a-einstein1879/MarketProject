@@ -150,6 +150,9 @@ double Market::getExponentiallyDistributedValue(double lambda) {
 						End of statistical part
 **********************************************************************/
 
+/**********************************************************************
+							Interface
+**********************************************************************/
 #include <stdio.h>
 void Market::printTimer() {
 	printf("Timer = %d\n", timer);
@@ -160,3 +163,6 @@ void Market::refreshPicture() {
 	dataBase->gatherStatistics();
 	dataBase->refreshPicture();
 }
+/**********************************************************************
+						End of interface
+**********************************************************************/
