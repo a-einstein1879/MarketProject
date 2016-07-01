@@ -1,19 +1,19 @@
-#include "cmn_defines.h"
+#include "configurator.h"
 
-Cmn_Defines* Cmn_Defines::p_Cmn_Defines = 0;
+Configurator* Configurator::p_Configurator = 0;
 
-Cmn_Defines::Cmn_Defines() {
+Configurator::Configurator() {
 	readConfiguration();
 }
 
-Cmn_Defines* Cmn_Defines::getCmn_Defines() {
-	if(!p_Cmn_Defines) {
-		p_Cmn_Defines = new Cmn_Defines();
+Configurator* Configurator::getConfigurator() {
+	if(!p_Configurator) {
+		p_Configurator = new Configurator();
 	}
-	return p_Cmn_Defines;
+	return p_Configurator;
 }
 
-void Cmn_Defines::readConfiguration() {
+void Configurator::readConfiguration() {
 	std::string line;
 	std::ifstream configurationFile(CONFIGURATIONFILE);
 
@@ -25,7 +25,7 @@ void Cmn_Defines::readConfiguration() {
 }
 
 /* BAD PART. NEEDS REFACTORING */
-void Cmn_Defines::handleConfigurationFileLine(std::string line) {
+void Configurator::handleConfigurationFileLine(std::string line) {
 	std::string configurationExpressions[] = {CONFIGURATIONEXPRESSIONS};
 	int numberOfExpressions = sizeof(configurationExpressions) / sizeof(std::string);
 	double value = -1;
@@ -39,7 +39,7 @@ void Cmn_Defines::handleConfigurationFileLine(std::string line) {
 	}
 }
 
-double Cmn_Defines::getNumberFromString(std::string line) {
+double Configurator::getNumberFromString(std::string line) {
 	bool found = false;
 	bool dot = false;
 	int numberOfDigitsAfterDot = 0;
@@ -60,7 +60,7 @@ double Cmn_Defines::getNumberFromString(std::string line) {
 }
 /* TODO: improve this part of code. Need some kind of hash */
 
-void Cmn_Defines::defineVariable(int index, double value) {
+void Configurator::defineVariable(int index, double value) {
 	switch(index) {
 	case 0:
 		sellerPricesMode = int(value);
@@ -158,7 +158,7 @@ void Cmn_Defines::defineVariable(int index, double value) {
 	}
 }
 
-void Cmn_Defines::printConfiguration() {
+void Configurator::printConfiguration() {
 	std::cout << "Modeling time\t\t\t" << modelingTime << std::endl;
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
 	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;

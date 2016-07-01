@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "outputGraphics.h"
 
 #include <stdlib.h>
 // Include tchar to define _T
@@ -7,7 +7,7 @@
 OpenGLInterface* OpenGLInterface::p_OpenGLInterface = 0;
 
 OpenGLInterface::OpenGLInterface() {
-	cmn_defines = cmn_defines->getCmn_Defines();
+	configurator = configurator->getConfigurator();
 	hRC  = NULL;
 	hDC  = NULL;
 	hWnd = NULL;
@@ -107,7 +107,7 @@ void OpenGLInterface::printHistogram(Histogram &histogram, FigureRectangle recta
 	double leftDownY = rectangle.getMiddleY() - rectangle.getSizeY() / 2;
 	double sizeX = rectangle.getSizeX();
 	double sizeY = rectangle.getSizeY();
-	double sideGap = cmn_defines->getSideGap();
+	double sideGap = configurator->getSideGap();
 
 	for(int j = 0; j < numberOfCharts; j++) {
 		FigureRectangle histogramColumn;

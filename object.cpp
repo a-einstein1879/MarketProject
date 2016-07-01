@@ -6,11 +6,11 @@ Object::Object() {
 	age = -1;
 	status = 0;
 	numberOfPriceReductions = 0;
-	cmn_defines = cmn_defines->getCmn_Defines();
+	configurator = configurator->getConfigurator();
 }
 
 Object::Object(double Price, double CreationTime, bool Status) {
-	cmn_defines = cmn_defines->getCmn_Defines();
+	configurator = configurator->getConfigurator();
 	timer = int(CreationTime);
 	setObject(Price, 0, Status);
 }
@@ -52,9 +52,9 @@ void Object::printObjectToFinalFiles() {
 bool Object::adaptPrice() {
 	if(numberOfPriceReductions++ > 0) {return 1;}
 	if(status == FORSALE) {
-		price = (1 - cmn_defines->getSellerPriceReduceShare())  * price;
+		price = (1 - configurator->getSellerPriceReduceShare())  * price;
 	} else {
-		price = (1 + cmn_defines->getBuyerPriceIncreaseShare()) * price;
+		price = (1 + configurator->getBuyerPriceIncreaseShare()) * price;
 	}
 	age = 0;
 	return 0;

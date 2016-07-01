@@ -9,12 +9,12 @@
 #include <tchar.h>
 #include "chart.h"
 #include "interfaceClasses.h"
-#include "cmn_defines.h"
+#include "configurator.h"
 
 class OpenGLInterface {
 private:
 	static OpenGLInterface *p_OpenGLInterface;
-	Cmn_Defines *cmn_defines;
+	Configurator *configurator;
 
 	HGLRC	hRC;
 	HDC		hDC;

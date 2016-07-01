@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "chart.h"
-#include "cmn_defines.h"
+#include "configurator.h"
 
 /*
 Operators >= and <= are defined to find cheaper or more expensive objects not comparing objects statuses.
@@ -21,7 +21,7 @@ private:
 	int numberOfPriceReductions;
 	int timer;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
-	Cmn_Defines *cmn_defines;
+	Configurator *configurator;
 public:
 	Object();
 	Object(double Price, double CreationTime, bool Status);

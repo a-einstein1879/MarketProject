@@ -5,7 +5,7 @@ DataBase* DataBase::p_DataBase = 0;
 DataBase::DataBase() {
 	lowestSellingPrice = -1;
 	highestBuyingPrice = -1;
-	cmn_defines = cmn_defines->getCmn_Defines();
+	configurator = configurator->getConfigurator();
 	ui = ui->getOpenGLInterface();
 };
 
@@ -35,7 +35,7 @@ void DataBase::checkTimers() {
 	bool ret = true;
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		object = objectsForSale.timerPop(1);
-		if(object.getAge() > cmn_defines->getSellerPriceReduceAge()) {
+		if(object.getAge() > configurator->getSellerPriceReduceAge()) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsForSale.push(object);}
@@ -44,7 +44,7 @@ void DataBase::checkTimers() {
 	ret = true;
 	if(objectsBought.getNumberOfObjects() != 0) {
 		object = objectsBought.timerPop(1);
-		if(object.getAge() > cmn_defines->getBuyerPriceIncreaseAge()) {
+		if(object.getAge() > configurator->getBuyerPriceIncreaseAge()) {
 			if(object.adaptPrice()) {ret = false;}
 		}
 		if(ret) {objectsBought.push(object);}
@@ -187,16 +187,16 @@ void DataBase::viewDataBase() {
 }
 
 void DataBase::refreshPicture() {
-	if(!(cmn_defines->getGraphicalMode())) {return;}
+	if(!(configurator->getGraphicalMode())) {return;}
 
 	/* Price histogram */
 	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	
 	double maxArgument;
 	double minArgument;
-	if(cmn_defines->getConstantBoardersMode() == 0) {
-		minArgument = cmn_defines->getMinimumHistogramArgument();
-		maxArgument = cmn_defines->getMaximumHistogramArgument();
+	if(configurator->getConstantBoardersMode() == 0) {
+		minArgument = configurator->getMinimumHistogramArgument();
+		maxArgument = configurator->getMaximumHistogramArgument();
 	} else {
 		Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
 		maxArgument = object.getPrice();
@@ -207,7 +207,7 @@ void DataBase::refreshPicture() {
 		refreshPrices();
 	}
 
-	Histogram histogram(3, cmn_defines->getNumberOfPockets(), minArgument, maxArgument);
+	Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
 	histogram.setTmpChartIndex(0);
 	objectsForSale.feelHistogram(histogram);
 	/*histogram.setTmpChartIndex(1);
@@ -217,7 +217,7 @@ void DataBase::refreshPicture() {
 	objectsBought.feelHistogram(histogram);
 
 	/* Mean prices charts */
-	int numberOfArguments = cmn_defines->getModelingTime() / cmn_defines->getTimerPrintingFrequency();
+	int numberOfArguments = configurator->getModelingTime() / configurator->getTimerPrintingFrequency();
 	LineChart lineChart1(5, 0, numberOfArguments);
 	lineChart1.setTmpChartIndex(0);
 	meanForSalePrice.feelLineChart(lineChart1);
@@ -237,5 +237,5 @@ void DataBase::refreshPicture() {
 	meanBoughtNumberOfObjects.feelLineChart(lineChart2);
 
 	ui->printCharts(histogram, lineChart1, lineChart2);
-	Sleep(cmn_defines->getPictureDelayTime());
+	Sleep(configurator->getPictureDelayTime());
 }

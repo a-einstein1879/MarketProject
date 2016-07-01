@@ -8,7 +8,7 @@ LinkList::LinkList() {
 	numberOfObjects = 0;
 	meanPrice = 0;
 	timer = 1;
-	cmn_defines = cmn_defines->getCmn_Defines();
+	configurator = configurator->getConfigurator();
 }
 
 void LinkList::tick() {
@@ -304,7 +304,7 @@ double LinkList::getMeanTimer() {
 	Node* newnode = firstPrice;
 	double meanTimer = 0;
 	do {
-		meanTimer += newnode->object.getAge() + newnode->object.getNumberOfPriceReductions() * cmn_defines->getSellerPriceReduceAge();
+		meanTimer += newnode->object.getAge() + newnode->object.getNumberOfPriceReductions() * configurator->getSellerPriceReduceAge();
 		newnode = newnode->nextPrice;
 	} while(newnode != NULL);
 	return meanTimer / double(numberOfObjects);

@@ -7,8 +7,8 @@ Market::Market() {
 	timer = 1;
 	dataBase = dataBase->getDataBase();
 	dataBase->start(timer);
-	cmn_defines = cmn_defines->getCmn_Defines();
-	cmn_defines->printConfiguration();
+	configurator = configurator->getConfigurator();
+	configurator->printConfiguration();
 	resetSellingTimer();
 	resetBuyingTimer();
 
@@ -33,7 +33,7 @@ int Market::tick() {
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{finish(); return 0;}
-	//if(timer % 3000 == 0)	{cmn_defines->setSellersLambda(cmn_defines->getSellersLambda() * 1.05);}
+	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda() * 1.05);}
 	switchTimers();
 	return 1;
 }
@@ -54,15 +54,15 @@ bool Market::timeToAddBuyer() {
 }
 
 bool Market::timeToPrintTimer() {
-	return (timer % cmn_defines->getTimerPrintingFrequency() == 0) ? true : false;
+	return (timer % configurator->getTimerPrintingFrequency() == 0) ? true : false;
 }
 
 bool Market::timeToRefreshPicture() {
-	return (timer % cmn_defines->getPictureRefreshFrequency() == 0) ? true : false;
+	return (timer % configurator->getPictureRefreshFrequency() == 0) ? true : false;
 }
 
 bool Market::timeToFinish() {
-	return (timer < cmn_defines->getModelingTime()) ? false : true;
+	return (timer < configurator->getModelingTime()) ? false : true;
 }
 
 bool Market::dealPossible() {
@@ -126,50 +126,50 @@ void Market::runDeal() {
 #include <cmath>
 
 double Market::formSellingPrice() {
-	switch(cmn_defines->getSellerPricesMode()) {
+	switch(configurator->getSellerPricesMode()) {
 		case 1:
-			return getNormallyDistributedValue(cmn_defines->getSellersMean(), cmn_defines->getSellersStandartDeviation());
+			return getNormallyDistributedValue(configurator->getSellersMean(), configurator->getSellersStandartDeviation());
 		case 0:
-			return cmn_defines->getMinimumSellersPrice() + rand()%int(cmn_defines->getMaximumSellersPrice() - cmn_defines->getMinimumSellersPrice() + 1);
+			return configurator->getMinimumSellersPrice() + rand()%int(configurator->getMaximumSellersPrice() - configurator->getMinimumSellersPrice() + 1);
 	}
 	return -1;
 }
 
 double Market::formBuyingPrice() {
-	switch(cmn_defines->getBuyerPricesMode()) {
+	switch(configurator->getBuyerPricesMode()) {
 		case 1:
-			return getNormallyDistributedValue(cmn_defines->getBuyersMean(), cmn_defines->getBuyersStandartDeviation());
+			return getNormallyDistributedValue(configurator->getBuyersMean(), configurator->getBuyersStandartDeviation());
 		case 0:
-			return cmn_defines->getMinimumBuyersPrice() + rand()%int(cmn_defines->getMaximumBuyersPrice() - cmn_defines->getMinimumBuyersPrice() + 1);
+			return configurator->getMinimumBuyersPrice() + rand()%int(configurator->getMaximumBuyersPrice() - configurator->getMinimumBuyersPrice() + 1);
 	}
 	return -1;
 }
 
 void Market::resetSellingTimer() {
-	switch(cmn_defines->getBuyerPricesMode()) {
+	switch(configurator->getBuyerPricesMode()) {
 		case 1:
-			timeLeftBeforeNewSellingObject = int(getExponentiallyDistributedValue(cmn_defines->getSellersLambda()));
+			timeLeftBeforeNewSellingObject = int(getExponentiallyDistributedValue(configurator->getSellersLambda()));
 			return;
 		case 0:
-			timeLeftBeforeNewSellingObject = cmn_defines->getSellersFrequency();
+			timeLeftBeforeNewSellingObject = configurator->getSellersFrequency();
 			return;
 	}
 }
 
 void Market::resetBuyingTimer() {
-	switch(cmn_defines->getBuyerPricesMode()) {
+	switch(configurator->getBuyerPricesMode()) {
 		case 1:
-			timeLeftBeforeNewObjectBought = int(getExponentiallyDistributedValue(cmn_defines->getBuyersLambda()));
+			timeLeftBeforeNewObjectBought = int(getExponentiallyDistributedValue(configurator->getBuyersLambda()));
 			return;
 		case 0:
-			timeLeftBeforeNewObjectBought = cmn_defines->getBuyersFrequency();
+			timeLeftBeforeNewObjectBought = configurator->getBuyersFrequency();
 			return;
 	}
 }
 
 double Market::getNormallyDistributedValue(double mean, double standartDeviation) {
 	double u, v, s;
-	int accuracy = cmn_defines->getAccuracy();
+	int accuracy = configurator->getAccuracy();
 	do {
 		u = 2 * double(rand()%accuracy) / accuracy - 1;
 		v = 2 * double(rand()%accuracy) / accuracy - 1;
@@ -180,7 +180,7 @@ double Market::getNormallyDistributedValue(double mean, double standartDeviation
 }
 
 double Market::getExponentiallyDistributedValue(double lambda) {
-	int accuracy = cmn_defines->getAccuracy();
+	int accuracy = configurator->getAccuracy();
 	double val = -1 * log(1 - double(rand()%accuracy) / accuracy) / lambda;
 	return val;
 }

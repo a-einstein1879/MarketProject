@@ -3,15 +3,15 @@
 
 #include "object.h"
 #include "linklist.h"
-#include "cmn_defines.h"
-#include "interface.h"
+#include "configurator.h"
+#include "outputGraphics.h"
 
 class DataBase {
 private:
 	int timer;
 	DataBase();
 	static DataBase *p_DataBase;
-	Cmn_Defines *cmn_defines;
+	Configurator *configurator;
 	OpenGLInterface *ui;
 	
 	double lowestSellingPrice;

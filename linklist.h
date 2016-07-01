@@ -27,7 +27,7 @@ private:
 	int numberOfObjects;
 	double meanPrice;
 	int timer;
-	Cmn_Defines *cmn_defines;
+	Configurator *configurator;
 public: 
     LinkList();
 	void tick();

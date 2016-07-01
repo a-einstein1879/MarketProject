@@ -2,7 +2,7 @@
 #define MARKET_H
 
 #include "database.h"
-#include "cmn_defines.h"
+#include "configurator.h"
 #include <stdio.h>
 
 class Market {
@@ -12,7 +12,7 @@ private:
 	static Market *p_Market;
 	
 	DataBase *dataBase;
-	Cmn_Defines *cmn_defines;
+	Configurator *configurator;
 	int timer;
 	int timeLeftBeforeNewSellingObject;
 	int timeLeftBeforeNewObjectBought;

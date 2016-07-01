@@ -12,7 +12,7 @@
 "Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument", "Histogram sidegap", \
 "Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share"
 
-class Cmn_Defines {
+class Configurator {
 private:
 	int modelingTime;
 	int timerPrintingFrequency;
@@ -59,15 +59,15 @@ private:
 	int buyerPriceIncreaseAge;
 	double buyerPriceIncreaseShare;
 
-	Cmn_Defines();
-	static Cmn_Defines *p_Cmn_Defines;
+	Configurator();
+	static Configurator *p_Configurator;
 	
 	void readConfiguration();
 	void handleConfigurationFileLine(std::string line);
 	double getNumberFromString(std::string line);
 	void defineVariable(int index, double value);
 public:
-	static Cmn_Defines* getCmn_Defines();
+	static Configurator* getConfigurator();
 	void printConfiguration();
 	
 	void setSellersLambda(double lambda)	{sellersLambda = lambda;}

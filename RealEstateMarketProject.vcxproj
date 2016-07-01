@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cmn_defines.cpp" />
+    <ClCompile Include="configurator.cpp" />
     <ClCompile Include="database.cpp" />
     <ClCompile Include="chart.cpp" />
-    <ClCompile Include="interface.cpp" />
+    <ClCompile Include="outputGraphics.cpp" />
     <ClCompile Include="interfaceClasses.cpp" />
     <ClCompile Include="linklist.cpp" />
     <ClCompile Include="main.cpp" />
@@ -23,10 +23,10 @@
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cmn_defines.h" />
+    <ClInclude Include="configurator.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="chart.h" />
-    <ClInclude Include="interface.h" />
+    <ClInclude Include="outputGraphics.h" />
     <ClInclude Include="interfaceClasses.h" />
     <ClInclude Include="linklist.h" />
     <ClInclude Include="market.h" />

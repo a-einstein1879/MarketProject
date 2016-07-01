@@ -1,6 +1,6 @@
 #include <ctime>
 
-#include "interface.h"
+#include "outputGraphics.h"
 #include "market.h"
 
 #include <stdio.h>
