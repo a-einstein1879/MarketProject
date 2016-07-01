@@ -21,10 +21,6 @@ private:
 	int numberOfObjectTypes;
 	int numberOfStatistics;
 	LinkList **statistics;
-
-	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
-	void openFiles();
-	void closeFiles();
 public:
 	static Statistics* getStatistics();
 	void addStatisticsElement(double newValue, int type, int statisticsId);

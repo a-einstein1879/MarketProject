@@ -68,7 +68,6 @@ bool Market::dealPossible() {
 
 int Market::addSeller() {
 	Object object(formSellingPrice(), timer, FORSALE);
-	//object.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
@@ -76,7 +75,6 @@ int Market::addSeller() {
 
 int Market::addBuyer() {
 	Object object(formBuyingPrice(), timer, BOUGHT);
-	//object.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;

@@ -32,6 +32,7 @@ private:
 	void refreshPrices();
 
 	FILE *dealFile, *sellersFile, *buyersFile;
+	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
 	void openFiles();
 	void closeFiles();
 public:
