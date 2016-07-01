@@ -46,7 +46,9 @@ public:
 	static OpenGLInterface* getOpenGLInterface();
 	GLvoid KillGLWindow(GLvoid);
 	
-	void printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects);
+	void drawMarketHistogram(Histogram &histogram);
+	void drawStaticsCharts(LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects);
+	void tick();
 };
 
 #endif INTERFACE_H

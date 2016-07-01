@@ -236,6 +236,8 @@ void DataBase::refreshPicture() {
 	lineChart2.setTmpChartIndex(1);
 	meanBoughtNumberOfObjects.feelLineChart(lineChart2);
 
-	ui->printCharts(histogram, lineChart1, lineChart2);
+	ui->drawMarketHistogram(histogram);
+	ui->drawStaticsCharts(lineChart1, lineChart2);
+	ui->tick();
 	Sleep(configurator->getPictureDelayTime());
 }

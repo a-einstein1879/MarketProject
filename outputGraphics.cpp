@@ -37,19 +37,21 @@ void OpenGLInterface::drawText(const char *text, int length, float x, float y) {
 }
 
 /* TODO: understand why it doesn`t work without & */
-void OpenGLInterface::printCharts(Histogram &histogram, LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects) {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	Color color(0, 1, 0);
+void OpenGLInterface::drawMarketHistogram(Histogram &histogram) {
 	FigureRectangle rectangle(-1, 0, 1, 1);
-	rectangle.setColor(color);
 	printHistogram(histogram, rectangle);
-	rectangle.setFigure(-1, -1, 0, 0);
+}
+
+void OpenGLInterface::drawStaticsCharts(LineChart &lineChartPrices, LineChart &lineChartNumberOfObjects) {
+	FigureRectangle rectangle(-1, -1, 0, 0);
 	printLineChart(lineChartPrices, rectangle);
 	rectangle.setFigure(0, -1, 1, 0);
 	printLineChart(lineChartNumberOfObjects, rectangle);
+}
+
+void OpenGLInterface::tick() {
 	SwapBuffers(hDC);
-//	DrawRectangle(rectangle);
-//	SwapBuffers(hDC);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 #include <stdio.h>
