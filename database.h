@@ -5,6 +5,7 @@
 #include "linklist.h"
 #include "configurator.h"
 #include "outputGraphics.h"
+#include "statistics.h"
 
 class DataBase {
 private:
@@ -13,6 +14,7 @@ private:
 	static DataBase *p_DataBase;
 	Configurator *configurator;
 	OpenGLInterface *ui;
+	Statistics *statistics;
 	
 	double lowestSellingPrice;
 	LinkList objectsForSale;
@@ -41,6 +43,7 @@ public:
 
 	void viewDataBase();
 	void refreshPicture();
+	void gatherStatistics();
 };
 
 #endif

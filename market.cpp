@@ -34,12 +34,12 @@ int Market::tick() {
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{finish(); return 0;}
 	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda() * 1.05);}
+	dataBase->tick();
 	switchTimers();
 	return 1;
 }
 
 void Market::switchTimers() {
-	dataBase->tick();
 	timer++;
 	timeLeftBeforeNewSellingObject--;
 	timeLeftBeforeNewObjectBought--;

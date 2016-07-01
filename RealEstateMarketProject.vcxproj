@@ -20,6 +20,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="market.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="statistics.cpp" />
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="linklist.h" />
     <ClInclude Include="market.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="statistics.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{649C92DE-84E7-468D-9A2D-B39799407576}</ProjectGuid>

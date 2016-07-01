@@ -45,6 +45,9 @@
     <ClCompile Include="configurator.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="statistics.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -69,6 +72,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="configurator.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="statistics.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
