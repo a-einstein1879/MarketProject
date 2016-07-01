@@ -11,33 +11,67 @@ Statistics* Statistics::getStatistics() {
 
 Statistics::Statistics() {
 	numberOfObjectTypes = 2;
+	numberOfStatistics = 7;
 	memeryAllocation();
+	configurator = configurator->getConfigurator();
+	ui = ui->getOpenGLInterface();
 }
 
 Statistics::~Statistics() {
 	memoryClear();
 }
 
+void Statistics::addStatisticsElement(double newValue, int type, int statisticsId) {
+	if(type >= numberOfObjectTypes || type < 0 || statisticsId >= numberOfStatistics || statisticsId < 0) {return;}
+	Object newObject(newValue, -1, 0);
+	statistics[type][statisticsId].push(newObject, statistics[type][statisticsId].getNumberOfObjects() + 1);
+}
+
+void Statistics::drawStatistics() {
+	int numberOfArguments = configurator->getModelingTime() / configurator->getTimerPrintingFrequency();
+
+	LineChart lineChart1(5, 0, numberOfArguments);
+	lineChart1.setTmpChartIndex(0);
+	statistics[0][FORSALEPRICEID].feelLineChart(lineChart1);
+	lineChart1.setTmpChartIndex(1);
+	statistics[0][ASKPRICEID].feelLineChart(lineChart1);
+	lineChart1.setTmpChartIndex(2);
+	statistics[0][BIDPRICEID].feelLineChart(lineChart1);
+	lineChart1.setTmpChartIndex(3);
+	statistics[0][BOUGHTPRICEID].feelLineChart(lineChart1);
+	/*lineChart1.setTmpChartIndex(4);
+	meanSpread.feelLineChart(lineChart1);*/
+
+	LineChart lineChart2(2, 0, numberOfArguments);
+	lineChart2.setTmpChartIndex(0);
+	statistics[0][FORSALENUMBEROFOBJECTSID].feelLineChart(lineChart2);
+	lineChart2.setTmpChartIndex(1);
+	statistics[0][BOUGHTNUMBEROFBJECTSID].feelLineChart(lineChart2);
+
+	ui->drawStaticsCharts(lineChart1, lineChart2);
+	ui->tick();
+	Sleep(configurator->getPictureDelayTime());
+}
+
+double Statistics::getStatisticsElement(int type, int statisticsId) {
+	return statistics[type][statisticsId].pricePop().getPrice();
+}
+
+double Statistics::getMeanValue(int type, int statisticsId) {
+	return statistics[type][statisticsId].getMeanPrice();
+}
+
 void Statistics::memeryAllocation() {
-	dealsForSale				= new LinkList[numberOfObjectTypes];
-	dealsBought					= new LinkList[numberOfObjectTypes];
-	meanForSalePrice			= new LinkList[numberOfObjectTypes];
-	meanBoughtPrice				= new LinkList[numberOfObjectTypes];
-	meanForSaleNumberOfObjects	= new LinkList[numberOfObjectTypes];
-	meanBoughtNumberOfObjects	= new LinkList[numberOfObjectTypes];
-	bidPrice					= new LinkList[numberOfObjectTypes];
-	askPrice					= new LinkList[numberOfObjectTypes];
-	meanSpread					= new LinkList[numberOfObjectTypes];
+	statistics = new LinkList* [numberOfObjectTypes];
+
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		statistics[i] = new LinkList[numberOfStatistics];
+	}
 }
 
 void Statistics::memoryClear() {
-	delete [] dealsForSale;
-	delete [] dealsBought;
-	delete [] meanForSalePrice;
-	delete [] meanBoughtPrice;
-	delete [] meanForSaleNumberOfObjects;
-	delete [] meanBoughtNumberOfObjects;
-	delete [] bidPrice;
-	delete [] askPrice;
-	delete [] meanSpread;
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		delete [] statistics[i];
+	}
+	delete [] statistics;
 }

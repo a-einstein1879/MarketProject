@@ -144,10 +144,9 @@ void DataBase::viewDataBase() {
 	}
 
 	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
-		printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice, meanSpread.getMeanPrice());
+		printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice, statistics->getMeanValue(0, SPREADID));
 	}
 	/* End of info part */
-	gatherStatistics();
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
@@ -171,23 +170,13 @@ void DataBase::viewDataBase() {
 
 void DataBase::gatherStatistics() {
 	/* TODO: there is some trouble with pushing to position. Needs clearifing */
-	Object newObject(objectsForSale.getMeanPrice(), -1, 0);
-	meanForSalePrice.push(newObject, meanForSalePrice.getNumberOfObjects() + 1);
-	newObject.setObject(objectsBought.getMeanPrice(), -1, 0);
-	meanBoughtPrice.push(newObject, meanBoughtPrice.getNumberOfObjects() + 1);
-	
-	newObject.setObject(highestBuyingPrice, -1, 0);
-	bidPrice.push(newObject, bidPrice.getNumberOfObjects() + 1);
-	newObject.setObject(lowestSellingPrice, -1, 0);
-	askPrice.push(newObject, askPrice.getNumberOfObjects() + 1);
-	
-	newObject.setObject(objectsBought.getNumberOfObjects(), -1, 0);
-	meanBoughtNumberOfObjects.push(newObject, meanBoughtNumberOfObjects.getNumberOfObjects() + 1);
-	newObject.setObject(objectsForSale.getNumberOfObjects(), -1, 0);
-	meanForSaleNumberOfObjects.push(newObject, meanForSaleNumberOfObjects.getNumberOfObjects() + 1);
-	
-	newObject.setObject(lowestSellingPrice - highestBuyingPrice, -1, 0);
-	meanSpread.push(newObject, meanForSaleNumberOfObjects.getNumberOfObjects() + 1);
+	statistics->addStatisticsElement(objectsForSale.getMeanPrice(),				0, FORSALEPRICEID);
+	statistics->addStatisticsElement(objectsBought.getMeanPrice(),				0, BOUGHTPRICEID);
+	statistics->addStatisticsElement(objectsForSale.getNumberOfObjects(),		0, FORSALENUMBEROFOBJECTSID);
+	statistics->addStatisticsElement(objectsBought.getNumberOfObjects(),		0, BOUGHTNUMBEROFBJECTSID);
+	statistics->addStatisticsElement(highestBuyingPrice,						0, BIDPRICEID);
+	statistics->addStatisticsElement(lowestSellingPrice,						0, ASKPRICEID);
+	statistics->addStatisticsElement(lowestSellingPrice - highestBuyingPrice,	0, SPREADID);
 }
 
 void DataBase::refreshPicture() {
@@ -221,27 +210,5 @@ void DataBase::refreshPicture() {
 	objectsBought.feelHistogram(histogram);
 	ui->drawMarketHistogram(histogram);
 
-	/* Mean prices charts */
-	int numberOfArguments = configurator->getModelingTime() / configurator->getTimerPrintingFrequency();
-	LineChart lineChart1(5, 0, numberOfArguments);
-	lineChart1.setTmpChartIndex(0);
-	meanForSalePrice.feelLineChart(lineChart1);
-	lineChart1.setTmpChartIndex(1);
-	askPrice.feelLineChart(lineChart1);
-	lineChart1.setTmpChartIndex(2);
-	bidPrice.feelLineChart(lineChart1);
-	lineChart1.setTmpChartIndex(3);
-	meanBoughtPrice.feelLineChart(lineChart1);
-	/*lineChart1.setTmpChartIndex(4);
-	meanSpread.feelLineChart(lineChart1);*/
-
-	LineChart lineChart2(2, 0, numberOfArguments);
-	lineChart2.setTmpChartIndex(0);
-	meanForSaleNumberOfObjects.feelLineChart(lineChart2);
-	lineChart2.setTmpChartIndex(1);
-	meanBoughtNumberOfObjects.feelLineChart(lineChart2);
-
-	ui->drawStaticsCharts(lineChart1, lineChart2);
-	ui->tick();
-	Sleep(configurator->getPictureDelayTime());
+	statistics->drawStatistics();
 }

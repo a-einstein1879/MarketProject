@@ -196,6 +196,7 @@ void Market::printTimer() {
 }
 
 void Market::refreshPicture() {
+	dataBase->gatherStatistics();
 	dataBase->refreshPicture();
 }
 
