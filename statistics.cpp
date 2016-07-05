@@ -23,7 +23,7 @@ Statistics::~Statistics() {
 
 void Statistics::addStatisticsElement(double newValue, int type, int statisticsId) {
 	if(type >= numberOfObjectTypes || type < 0 || statisticsId >= numberOfStatistics || statisticsId < 0) {return;}
-	Object newObject(newValue, -1, 0);
+	Object newObject(newValue, -1, 0, type);
 	statistics[type][statisticsId].push(newObject, statistics[type][statisticsId].getNumberOfObjects() + 1);
 }
 
@@ -42,11 +42,13 @@ void Statistics::drawStatistics() {
 	/*lineChart1.setTmpChartIndex(4);
 	meanSpread.feelLineChart(lineChart1);*/
 
-	LineChart lineChart2(2, 0, numberOfArguments);
-	lineChart2.setTmpChartIndex(0);
-	statistics[0][FORSALENUMBEROFOBJECTSID].feelLineChart(lineChart2);
-	lineChart2.setTmpChartIndex(1);
-	statistics[0][BOUGHTNUMBEROFBJECTSID].feelLineChart(lineChart2);
+	LineChart lineChart2(2 * numberOfObjectTypes, 0, numberOfArguments);
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		lineChart2.setTmpChartIndex(i * 2);
+		statistics[i][FORSALENUMBEROFOBJECTSID].feelLineChart(lineChart2);
+		lineChart2.setTmpChartIndex(i * 2 + 1);
+		statistics[i][BOUGHTNUMBEROFBJECTSID].feelLineChart(lineChart2);
+	}
 
 	ui->drawStaticsCharts(lineChart1, lineChart2);
 	ui->tick();

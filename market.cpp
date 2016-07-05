@@ -71,7 +71,7 @@ bool Market::dealPossible(int typeId) {
 
 int Market::addSeller() {
 	int rnd = rand()%numberOfObjectTypes;
-	Object object(formSellingPrice() + rnd * 30, timer, FORSALE, rnd);
+	Object object(formSellingPrice() + rnd * 40, timer, FORSALE, rnd);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
@@ -79,7 +79,7 @@ int Market::addSeller() {
 
 int Market::addBuyer() {
 	int rnd = rand()%numberOfObjectTypes;
-	Object object(formBuyingPrice() + rnd * 30, timer, BOUGHT, rnd);
+	Object object(formBuyingPrice() + rnd * 40, timer, BOUGHT, rnd);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;

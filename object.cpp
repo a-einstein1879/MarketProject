@@ -68,6 +68,7 @@ Object& Object::operator=(Object &object) {
 	status		 = object.getStatus();
 	numberOfPriceReductions = object.getNumberOfPriceReductions();
 	timer		 = object.getTimer();
+	type		 = object.getType();
 
 	buyersFinalPricesFile = object.getBuyersFinalPricesFile();
 	buyersFinalTimersFile = object.getBuyersFinalTimersFile();

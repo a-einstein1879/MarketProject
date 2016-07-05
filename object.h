@@ -25,7 +25,7 @@ private:
 	Configurator *configurator;
 public:
 	Object();
-	Object(double Price, double CreationTime, bool Status, int Type = 0);
+	Object(double Price, double CreationTime, bool Status, int Type);
 	void setObject(double Price, double Age, bool Status);
 	void setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile);
 	void tick();

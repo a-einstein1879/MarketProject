@@ -225,7 +225,7 @@ void DataBase::viewDataBaseInfo() {
 		}
 
 		if(highestBuyingPrice[i] != -1 && lowestSellingPrice[i] != -1) {
-			printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice[i] - highestBuyingPrice[i], statistics->getMeanValue(0, SPREADID));
+			printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice[i] - highestBuyingPrice[i], statistics->getMeanValue(i, SPREADID));
 		}
 	}
 #ifndef SILENTMODE
@@ -265,26 +265,26 @@ void DataBase::gatherStatistics() {
 void DataBase::refreshPicture() {
 	if(!(configurator->getGraphicalMode())) {return;}
 	
-	//Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
-	Histogram histogram(3, configurator->getNumberOfPockets(), 0, 100);
+	double maxArgument = -100;
+	double minArgument = 100;
+	if(configurator->getConstantBoardersMode() == 1) {
+		minArgument = configurator->getMinimumHistogramArgument();
+		maxArgument = configurator->getMaximumHistogramArgument();
+	} else {
+		for(int i = 0; i < numberOfObjectTypes; i++) {
+			Object object = objectsForSale[i].pricePop(objectsForSale[i].getNumberOfObjects());
+			maxArgument = (object.getPrice() > maxArgument) ? object.getPrice() : maxArgument;
+			objectsForSale[i].push(object);
+			object = objectsBought[i].pricePop(1);
+			minArgument = (object.getPrice() < minArgument) ? object.getPrice() : minArgument;
+			objectsBought[i].push(object);
+			refreshPrices();
+		}
+	}
+	Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		/* Price histogram */
 		if(objectsForSale[i].getNumberOfObjects() == 0 || objectsBought[i].getNumberOfObjects() == 0) {continue;}
-	
-		/*double maxArgument;
-		double minArgument;
-		if(configurator->getConstantBoardersMode() == 0) {
-			minArgument = configurator->getMinimumHistogramArgument();
-			maxArgument = configurator->getMaximumHistogramArgument();
-		} else {
-			Object object = objectsForSale[i].pricePop(objectsForSale[i].getNumberOfObjects());
-			maxArgument = object.getPrice();
-			objectsForSale[i].push(object);
-			object = objectsBought[i].pricePop(1);
-			minArgument = object.getPrice();
-			objectsBought[i].push(object);
-			refreshPrices();
-		}*/
 
 		histogram.setTmpChartIndex(0);
 		objectsForSale[i].feelHistogram(histogram);
