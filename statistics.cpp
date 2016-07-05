@@ -10,11 +10,11 @@ Statistics* Statistics::getStatistics() {
 }
 
 Statistics::Statistics() {
-	numberOfObjectTypes = 2;
-	numberOfStatistics = 7;
-	memeryAllocation();
 	configurator = configurator->getConfigurator();
 	ui = ui->getOpenGLInterface();
+	numberOfStatistics = 7;
+	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
+	memeryAllocation();
 }
 
 Statistics::~Statistics() {

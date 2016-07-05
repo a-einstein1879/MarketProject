@@ -5,18 +5,19 @@
 #include <iostream>
 #include <string>
 
-#define CONFIGURATIONFILE "configuration.txt"
+#define CONFIGURATIONFILE "configuration/configuration.txt"
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
 "Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument", "Histogram sidegap", \
-"Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share"
+"Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share", "Number of object types"
 
 class Configurator {
 private:
 	int modelingTime;
 	int timerPrintingFrequency;
 	int accuracy;
+	int numberOfObjectTypes;
 
 	/* 0 - uniform, 1 - normal distribution */
 	int sellerPricesMode;
@@ -70,12 +71,16 @@ public:
 	static Configurator* getConfigurator();
 	void printConfiguration();
 	
+	/* Set */
 	void setSellersLambda(double lambda)	{sellersLambda = lambda;}
 	void setBuyersLambda(double lambda)		{buyersLambda = lambda;}
+	/* End of set */
 
+	/* Get */
 	int getModelingTime()					{return modelingTime;}
 	int getTimerPrintingFrequency()			{return timerPrintingFrequency;}
 	int getAccuracy()						{return accuracy;}
+	int getNumberOfObjectTypes()			{return numberOfObjectTypes;}
 
 	int getSellerPricesMode()				{return sellerPricesMode;}
 	double getMaximumSellersPrice()			{return maximumSellersPrice;}
@@ -113,6 +118,7 @@ public:
 	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
 	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
 	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
+	/* End of get */
 };
 
 #endif

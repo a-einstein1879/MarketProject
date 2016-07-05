@@ -155,6 +155,9 @@ void Configurator::defineVariable(int index, double value) {
 	case 30:
 		buyerPriceIncreaseShare = value;
 		break;
+	case 31:
+		numberOfObjectTypes = int(value);
+		break;
 	}
 }
 
@@ -162,6 +165,7 @@ void Configurator::printConfiguration() {
 	std::cout << "Modeling time\t\t\t" << modelingTime << std::endl;
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
 	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;
+	std::cout << "Number of object types\t\t\t" << numberOfObjectTypes << std::endl;
 
 	std::cout << std::endl;
 
