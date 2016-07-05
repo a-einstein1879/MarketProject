@@ -3,15 +3,30 @@
 DataBase* DataBase::p_DataBase = 0;
 
 DataBase::DataBase() {
-	lowestSellingPrice = -1;
-	highestBuyingPrice = -1;
 	configurator = configurator->getConfigurator();
 	ui = ui->getOpenGLInterface();
 	statistics = statistics->getStatistics();
 	openFiles();
-};
+	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
+
+	/* Memory allocation */
+	lowestSellingPrice = new double[numberOfObjectTypes];
+	highestBuyingPrice = new double[numberOfObjectTypes];
+	objectsForSale = new LinkList[numberOfObjectTypes];
+	objectsBought = new LinkList[numberOfObjectTypes];
+
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		lowestSellingPrice[i] = -1;
+		highestBuyingPrice[i] = -1;
+	}
+}
+
 DataBase::~DataBase() {
 	closeFiles();
+	delete [] lowestSellingPrice;
+	delete [] highestBuyingPrice;
+	delete [] objectsForSale;
+	delete [] objectsBought;
 }
 
 DataBase* DataBase::getDataBase() {
@@ -27,23 +42,27 @@ void DataBase::start(int Timer) {
 
 void DataBase::tick() {
 	checkTimers();
-	objectsForSale.tick();
-	objectsBought.tick();
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		objectsForSale[i].tick();
+		objectsBought[i].tick();
+	}
 	timer++;
 }
 
 void DataBase::closeDatabase() {
 	Object object;
-	while(1) {
-		object = popLowestSeller();
-		if(object.getAge() == -1)	{break;}
-		else						{object.printObjectToFinalFiles(); continue;}
-	}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		while(1) {
+			object = popLowestSeller(i);
+			if(object.getAge() == -1)	{break;}
+			else						{object.printObjectToFinalFiles(); continue;}
+		}
 
-	while(1) {
-		object = popHighestBuyer();
-		if(object.getAge() == -1)	{break;}
-		else						{object.printObjectToFinalFiles(); continue;}
+		while(1) {
+			object = popHighestBuyer(i);
+			if(object.getAge() == -1)	{break;}
+			else						{object.printObjectToFinalFiles(); continue;}
+		}
 	}
 }
 
@@ -51,34 +70,37 @@ void DataBase::closeDatabase() {
 If new class for storing deals and other data will be created, saling can be enabled in objects */
 void DataBase::checkTimers() {
 	Object object;
-
-	bool ret = true;
-	if(objectsForSale.getNumberOfObjects() != 0) {
-		object = objectsForSale.timerPop(1);
-		if(object.getAge() > configurator->getSellerPriceReduceAge()) {
-			if(object.adaptPrice()) {ret = false;}
-		}
-		if(ret) {objectsForSale.push(object);}
-	}
 	
-	ret = true;
-	if(objectsBought.getNumberOfObjects() != 0) {
-		object = objectsBought.timerPop(1);
-		if(object.getAge() > configurator->getBuyerPriceIncreaseAge()) {
-			if(object.adaptPrice()) {ret = false;}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		bool ret = true;
+		if(objectsForSale[i].getNumberOfObjects() != 0) {
+			object = objectsForSale[i].timerPop(1);
+			if(object.getAge() > configurator->getSellerPriceReduceAge()) {
+				if(object.adaptPrice()) {ret = false;}
+			}
+			if(ret) {objectsForSale[i].push(object);}
 		}
-		if(ret) {objectsBought.push(object);}
-	}
+	
+		ret = true;
+		if(objectsBought[i].getNumberOfObjects() != 0) {
+			object = objectsBought[i].timerPop(1);
+			if(object.getAge() > configurator->getBuyerPriceIncreaseAge()) {
+				if(object.adaptPrice()) {ret = false;}
+			}
+			if(ret) {objectsBought[i].push(object);}
+		}
 
-	refreshPrices();
+		refreshPrices();
+	}
 }
 
 int DataBase::pushToDataBase(Object newObject) {
 	newObject.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
+	int type = newObject.getType();
 	if(newObject.getStatus() == FORSALE) {
-		objectsForSale.push(newObject);
+		objectsForSale[type].push(newObject);
 	} else {
-		objectsBought.push(newObject);
+		objectsBought[type].push(newObject);
 	}
 	refreshPrices();
 	return 0;
@@ -92,21 +114,21 @@ void DataBase::addDeal(Object newObject) {
 	}
 }
 
-bool DataBase::dealPossible() {
-	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return false;}
-	if(highestBuyingPrice >= lowestSellingPrice) {
+bool DataBase::dealPossible(int typeId) {
+	if(objectsForSale[typeId].getNumberOfObjects() == 0 || objectsBought[typeId].getNumberOfObjects() == 0) {return false;}
+	if(highestBuyingPrice[typeId] >= lowestSellingPrice[typeId]) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-void DataBase::runPossibleDeal() {
+void DataBase::runPossibleDeal(int typeId) {
 	Object seller, buyer;
-	buyer = popHighestBuyer();
+	buyer = popHighestBuyer(typeId);
 	if(buyer.getAge() == -1) {return;}
-	seller = popLowestSeller();
-	if(seller.getAge() == -1) {pushToDataBase(buyer);return;}
+	seller = popLowestSeller(typeId);
+	if(seller.getAge() == -1) {pushToDataBase(buyer); return;}
 
 	double price, time;
 	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
@@ -137,10 +159,10 @@ void DataBase::runPossibleDeal() {
 	}
 }
 
-Object DataBase::popLowestSeller() {
-	if(objectsForSale.getNumberOfObjects() > 0) {
+Object DataBase::popLowestSeller(int typeId) {
+	if(objectsForSale[typeId].getNumberOfObjects() > 0) {
 		Object object;
-		object = objectsForSale.pricePop(1);
+		object = objectsForSale[typeId].pricePop(1);
 		refreshPrices();
 		return object;
 	} else {
@@ -149,10 +171,10 @@ Object DataBase::popLowestSeller() {
 	}
 }
 
-Object DataBase::popHighestBuyer() {
-	if(objectsBought.getNumberOfObjects() > 0) {
+Object DataBase::popHighestBuyer(int typeId) {
+	if(objectsBought[typeId].getNumberOfObjects() > 0) {
 		Object object;
-		object = objectsBought.pricePop(objectsBought.getNumberOfObjects());
+		object = objectsBought[typeId].pricePop(objectsBought[typeId].getNumberOfObjects());
 		refreshPrices();
 		return object;
 	} else {
@@ -163,46 +185,49 @@ Object DataBase::popHighestBuyer() {
 
 void DataBase::refreshPrices() {
 	Object object;
-	if(objectsForSale.getNumberOfObjects() != 0) {
-		object = objectsForSale.pricePop(1);
-		lowestSellingPrice = object.getPrice();
-		objectsForSale.push(object);
-	} else {
-		lowestSellingPrice = -1;
-	}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		if(objectsForSale[i].getNumberOfObjects() != 0) {
+			object = objectsForSale[i].pricePop(1);
+			lowestSellingPrice[i] = object.getPrice();
+			objectsForSale[i].push(object);
+		} else {
+			lowestSellingPrice[i] = -1;
+		}
 	
-	if(objectsBought.getNumberOfObjects() != 0) {
-		object = objectsBought.pricePop(objectsBought.getNumberOfObjects());
-		highestBuyingPrice = object.getPrice();
-		objectsBought.push(object);
-	} else {
-		highestBuyingPrice = -1;
+		if(objectsBought[i].getNumberOfObjects() != 0) {
+			object = objectsBought[i].pricePop(objectsBought[i].getNumberOfObjects());
+			highestBuyingPrice[i] = object.getPrice();
+			objectsBought[i].push(object);
+		} else {
+			highestBuyingPrice[i] = -1;
+		}
 	}
 }
 
 #include <stdio.h>
 void DataBase::viewDataBaseInfo() {
-	/* Info part */
-	printf("Number of objects:\nBuying: %d; Deals(Bought / For sale) = %d/%d; For sale: %d\n", objectsBought.getNumberOfObjects(), dealsBought.getNumberOfObjects(), dealsForSale.getNumberOfObjects(), objectsForSale.getNumberOfObjects());
-	printf("Mean prices:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
-		objectsBought.getMeanPrice(), dealsBought.getMeanPrice(), dealsForSale.getMeanPrice(), objectsForSale.getMeanPrice());
-	printf("Mean timers:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
-		objectsBought.getMeanTimer(), dealsBought.getMeanTimer(), dealsForSale.getMeanTimer(), objectsForSale.getMeanTimer());
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		printf("Type %d:\n", i);
+		printf("Number of objects:\nBuying: %d; Deals(Bought / For sale) = %d/%d; For sale: %d\n", objectsBought[i].getNumberOfObjects(), dealsBought.getNumberOfObjects(), dealsForSale.getNumberOfObjects(), objectsForSale[i].getNumberOfObjects());
+		printf("Mean prices:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
+			objectsBought[i].getMeanPrice(), dealsBought.getMeanPrice(), dealsForSale.getMeanPrice(), objectsForSale[i].getMeanPrice());
+		printf("Mean timers:\nBuying = %.2f; Deals(Bought / For sale) = %.2f/%.2f; Selling = %.2f\n",
+			objectsBought[i].getMeanTimer(), dealsBought.getMeanTimer(), dealsForSale.getMeanTimer(), objectsForSale[i].getMeanTimer());
 
-	/* Count mean waiting time */
-	double sellersMeanWaitingTime, buyersMeanWaitingTime;
-	int numberOfSellers = dealsForSale.getNumberOfObjects() + objectsForSale.getNumberOfObjects();
-	int numberOfBuyers = dealsBought.getNumberOfObjects() + objectsBought.getNumberOfObjects();
-	sellersMeanWaitingTime = dealsForSale.getMeanTimer() * double(dealsForSale.getNumberOfObjects()) / double(numberOfSellers) + objectsForSale.getMeanTimer() * double(objectsForSale.getNumberOfObjects()) / double(numberOfSellers);
-	buyersMeanWaitingTime = dealsBought.getMeanTimer() * double(dealsBought.getNumberOfObjects()) / double(numberOfBuyers) + objectsBought.getMeanTimer() * double(objectsBought.getNumberOfObjects()) / double(numberOfBuyers);
-	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
-		printf("Mean waiting time(Bought / For sale) = %.2f/%.2f\n", buyersMeanWaitingTime, sellersMeanWaitingTime);
-	}
+		/* Count mean waiting time */
+		double sellersMeanWaitingTime, buyersMeanWaitingTime;
+		int numberOfSellers = dealsForSale.getNumberOfObjects() + objectsForSale[i].getNumberOfObjects();
+		int numberOfBuyers = dealsBought.getNumberOfObjects() + objectsBought[i].getNumberOfObjects();
+		sellersMeanWaitingTime = dealsForSale.getMeanTimer() * double(dealsForSale.getNumberOfObjects()) / double(numberOfSellers) + objectsForSale[i].getMeanTimer() * double(objectsForSale[i].getNumberOfObjects()) / double(numberOfSellers);
+		buyersMeanWaitingTime = dealsBought.getMeanTimer() * double(dealsBought.getNumberOfObjects()) / double(numberOfBuyers) + objectsBought[i].getMeanTimer() * double(objectsBought[i].getNumberOfObjects()) / double(numberOfBuyers);
+		if(highestBuyingPrice[i] != -1 && lowestSellingPrice[i] != -1) {
+			printf("Mean waiting time(Bought / For sale) = %.2f/%.2f\n", buyersMeanWaitingTime, sellersMeanWaitingTime);
+		}
 
-	if(highestBuyingPrice != -1 && lowestSellingPrice != -1) {
-		printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice - highestBuyingPrice, statistics->getMeanValue(0, SPREADID));
+		if(highestBuyingPrice[i] != -1 && lowestSellingPrice[i] != -1) {
+			printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice[i] - highestBuyingPrice[i], statistics->getMeanValue(0, SPREADID));
+		}
 	}
-	/* End of info part */
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
 		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
@@ -225,47 +250,52 @@ void DataBase::viewDataBaseInfo() {
 }
 
 void DataBase::gatherStatistics() {
-	/* TODO: there is some trouble with pushing to position. Needs clearifing */
-	statistics->addStatisticsElement(objectsForSale.getMeanPrice(),				0, FORSALEPRICEID);
-	statistics->addStatisticsElement(objectsBought.getMeanPrice(),				0, BOUGHTPRICEID);
-	statistics->addStatisticsElement(objectsForSale.getNumberOfObjects(),		0, FORSALENUMBEROFOBJECTSID);
-	statistics->addStatisticsElement(objectsBought.getNumberOfObjects(),		0, BOUGHTNUMBEROFBJECTSID);
-	statistics->addStatisticsElement(highestBuyingPrice,						0, BIDPRICEID);
-	statistics->addStatisticsElement(lowestSellingPrice,						0, ASKPRICEID);
-	statistics->addStatisticsElement(lowestSellingPrice - highestBuyingPrice,	0, SPREADID);
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		/* TODO: there is some trouble with pushing to position. Needs clearifing */
+		statistics->addStatisticsElement(objectsForSale[i].getMeanPrice(),				i, FORSALEPRICEID);
+		statistics->addStatisticsElement(objectsBought[i].getMeanPrice(),				i, BOUGHTPRICEID);
+		statistics->addStatisticsElement(objectsForSale[i].getNumberOfObjects(),		i, FORSALENUMBEROFOBJECTSID);
+		statistics->addStatisticsElement(objectsBought[i].getNumberOfObjects(),			i, BOUGHTNUMBEROFBJECTSID);
+		statistics->addStatisticsElement(highestBuyingPrice[i],							i, BIDPRICEID);
+		statistics->addStatisticsElement(lowestSellingPrice[i],							i, ASKPRICEID);
+		statistics->addStatisticsElement(lowestSellingPrice[i] - highestBuyingPrice[i],	i, SPREADID);
+	}
 }
 
 void DataBase::refreshPicture() {
 	if(!(configurator->getGraphicalMode())) {return;}
-
-	/* Price histogram */
-	if(objectsForSale.getNumberOfObjects() == 0 || objectsBought.getNumberOfObjects() == 0) {return;}
 	
-	double maxArgument;
-	double minArgument;
-	if(configurator->getConstantBoardersMode() == 0) {
-		minArgument = configurator->getMinimumHistogramArgument();
-		maxArgument = configurator->getMaximumHistogramArgument();
-	} else {
-		Object object = objectsForSale.pricePop(objectsForSale.getNumberOfObjects());
-		maxArgument = object.getPrice();
-		objectsForSale.push(object);
-		object = objectsBought.pricePop(1);
-		minArgument = object.getPrice();
-		objectsBought.push(object);
-		refreshPrices();
+	//Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
+	Histogram histogram(3, configurator->getNumberOfPockets(), 0, 100);
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		/* Price histogram */
+		if(objectsForSale[i].getNumberOfObjects() == 0 || objectsBought[i].getNumberOfObjects() == 0) {continue;}
+	
+		/*double maxArgument;
+		double minArgument;
+		if(configurator->getConstantBoardersMode() == 0) {
+			minArgument = configurator->getMinimumHistogramArgument();
+			maxArgument = configurator->getMaximumHistogramArgument();
+		} else {
+			Object object = objectsForSale[i].pricePop(objectsForSale[i].getNumberOfObjects());
+			maxArgument = object.getPrice();
+			objectsForSale[i].push(object);
+			object = objectsBought[i].pricePop(1);
+			minArgument = object.getPrice();
+			objectsBought[i].push(object);
+			refreshPrices();
+		}*/
+
+		histogram.setTmpChartIndex(0);
+		objectsForSale[i].feelHistogram(histogram);
+		/*histogram.setTmpChartIndex(1);
+		dealsForSale.feelHistogram(histogram);
+		dealsBought.feelHistogram(histogram);*/
+		histogram.setTmpChartIndex(2);
+		objectsBought[i].feelHistogram(histogram);
 	}
-
-	Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
-	histogram.setTmpChartIndex(0);
-	objectsForSale.feelHistogram(histogram);
-	/*histogram.setTmpChartIndex(1);
-	dealsForSale.feelHistogram(histogram);
-	dealsBought.feelHistogram(histogram);*/
-	histogram.setTmpChartIndex(2);
-	objectsBought.feelHistogram(histogram);
+	
 	ui->drawMarketHistogram(histogram);
-
 	statistics->drawStatistics();
 }
 

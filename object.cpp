@@ -5,13 +5,15 @@ Object::Object() {
 	price = 0;
 	age = -1;
 	status = 0;
+	type = 0;
 	numberOfPriceReductions = 0;
 	configurator = configurator->getConfigurator();
 }
 
-Object::Object(double Price, double CreationTime, bool Status) {
+Object::Object(double Price, double CreationTime, bool Status, int Type) {
 	configurator = configurator->getConfigurator();
 	timer = int(CreationTime);
+	type = Type;
 	setObject(Price, 0, Status);
 }
 
@@ -58,41 +60,6 @@ bool Object::adaptPrice() {
 	}
 	age = 0;
 	return 0;
-}
-
-double Object::getPrice() {
-	return price;
-}
-double Object::getAge() {
-	return age;
-}
-
-bool Object::getStatus() {
-	return status;
-}
-
-int	Object::getNumberOfPriceReductions() {
-	return numberOfPriceReductions;
-}
-
-int Object::getTimer() {
-	return timer;
-}
-
-FILE* Object::getBuyersFinalPricesFile() {
-	return buyersFinalPricesFile;
-}
-
-FILE* Object::getBuyersFinalTimersFile() {
-	return buyersFinalTimersFile;
-}
-
-FILE* Object::getSellersFinalPricesFile() {
-	return sellersFinalPricesFile;
-}
-
-FILE* Object::getSellersFinalTimersFile() {
-	return sellersFinalTimersFile;
 }
 
 Object& Object::operator=(Object &object) {

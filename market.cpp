@@ -11,6 +11,7 @@ Market::Market() {
 	configurator->printConfiguration();
 	resetSellingTimer();
 	resetBuyingTimer();
+	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
 }
 
 Market::~Market() {
@@ -26,7 +27,9 @@ Market* Market::getMarket() {
 int Market::tick() {
 	if(timeToAddSeller())	{addSeller();}
 	if(timeToAddBuyer())	{addBuyer();}
-	while (dealPossible())	{dataBase->runPossibleDeal();}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		while (dealPossible(i))	{dataBase->runPossibleDeal(i);}
+	}
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{dataBase->closeDatabase(); return 0;}
@@ -62,19 +65,21 @@ bool Market::timeToFinish() {
 	return (timer < configurator->getModelingTime()) ? false : true;
 }
 
-bool Market::dealPossible() {
-	return dataBase->dealPossible();
+bool Market::dealPossible(int typeId) {
+	return dataBase->dealPossible(typeId);
 }
 
 int Market::addSeller() {
-	Object object(formSellingPrice(), timer, FORSALE);
+	int rnd = rand()%numberOfObjectTypes;
+	Object object(formSellingPrice() + rnd * 30, timer, FORSALE, rnd);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
 }
 
 int Market::addBuyer() {
-	Object object(formBuyingPrice(), timer, BOUGHT);
+	int rnd = rand()%numberOfObjectTypes;
+	Object object(formBuyingPrice() + rnd * 30, timer, BOUGHT, rnd);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;

@@ -16,17 +16,19 @@ private:
 	Configurator *configurator;
 	OpenGLInterface *ui;
 	Statistics *statistics;
-	
-	double lowestSellingPrice;
-	LinkList objectsForSale;
 
-	double highestBuyingPrice;
-	LinkList objectsBought;
+	int numberOfObjectTypes;
+	
+	double *lowestSellingPrice;
+	LinkList *objectsForSale;
+
+	double *highestBuyingPrice;
+	LinkList *objectsBought;
 
 	LinkList dealsForSale, dealsBought;
 	
-	Object popLowestSeller();
-	Object popHighestBuyer();
+	Object popLowestSeller(int typeId);
+	Object popHighestBuyer(int typeId);
 
 	void checkTimers();
 	void refreshPrices();
@@ -43,8 +45,8 @@ public:
 	int pushToDataBase(Object newObject);
 	void addDeal(Object newObject);
 
-	bool dealPossible();
-	void runPossibleDeal();
+	bool dealPossible(int typeId);
+	void runPossibleDeal(int typeId);
 
 	void viewDataBaseInfo();
 	void refreshPicture();

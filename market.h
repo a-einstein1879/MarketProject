@@ -14,6 +14,8 @@ private:
 	DataBase *dataBase;
 	Configurator *configurator;
 
+	int numberOfObjectTypes;
+
 	/* Timers */
 	int timer;
 	int timeLeftBeforeNewSellingObject;
@@ -24,7 +26,7 @@ private:
 	/* Timer checkers */
 	bool timeToAddSeller();
 	bool timeToAddBuyer();
-	bool dealPossible();
+	bool dealPossible(int typeId);
 	bool timeToPrintTimer();
 	bool timeToRefreshPicture();
 	bool timeToFinish();

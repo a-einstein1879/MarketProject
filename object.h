@@ -20,11 +20,12 @@ private:
 	bool status;
 	int numberOfPriceReductions;
 	int timer;
+	int type;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
 	Configurator *configurator;
 public:
 	Object();
-	Object(double Price, double CreationTime, bool Status);
+	Object(double Price, double CreationTime, bool Status, int Type = 0);
 	void setObject(double Price, double Age, bool Status);
 	void setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile);
 	void tick();
@@ -33,15 +34,19 @@ public:
 
 	/* Returns 1 if sale is not possible and 0 if it succeeded */
 	bool adaptPrice();
-	double	getPrice();
-	double	getAge();
-	bool	getStatus();
-	int		getNumberOfPriceReductions();
-	int		getTimer();
-	FILE* getBuyersFinalPricesFile();
-	FILE* getBuyersFinalTimersFile();
-	FILE* getSellersFinalPricesFile();
-	FILE* getSellersFinalTimersFile();
+
+	/* Get */
+	double	getPrice()						{return price;}
+	double	getAge()						{return age;}
+	bool	getStatus()						{return status;}
+	int		getNumberOfPriceReductions()	{return numberOfPriceReductions;}
+	int		getTimer()						{return timer;}
+	int		getType()						{return type;}
+	FILE* getBuyersFinalPricesFile()		{return buyersFinalPricesFile;}
+	FILE* getBuyersFinalTimersFile()		{return buyersFinalTimersFile;}
+	FILE* getSellersFinalPricesFile()		{return sellersFinalPricesFile;}
+	FILE* getSellersFinalTimersFile()		{return sellersFinalTimersFile;}
+	/* End of get */
 
 	Object& operator=(Object &object);
 	bool operator<=(Object &object);

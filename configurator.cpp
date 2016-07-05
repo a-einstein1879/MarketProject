@@ -165,7 +165,7 @@ void Configurator::printConfiguration() {
 	std::cout << "Modeling time\t\t\t" << modelingTime << std::endl;
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
 	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;
-	std::cout << "Number of object types\t\t\t" << numberOfObjectTypes << std::endl;
+	std::cout << "Number of object types\t\t" << numberOfObjectTypes << std::endl;
 
 	std::cout << std::endl;
 
