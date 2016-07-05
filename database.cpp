@@ -225,8 +225,9 @@ void DataBase::viewDataBaseInfo() {
 		}
 
 		if(highestBuyingPrice[i] != -1 && lowestSellingPrice[i] != -1) {
-			printf("Spread = %.2f, Mean spread = %.2f\n\n", lowestSellingPrice[i] - highestBuyingPrice[i], statistics->getMeanValue(i, SPREADID));
+			printf("Spread = %.2f, Mean spread = %.2f\n", lowestSellingPrice[i] - highestBuyingPrice[i], statistics->getMeanValue(i, SPREADID));
 		}
+		printf("\n");
 	}
 #ifndef SILENTMODE
 	if(objectsForSale.getNumberOfObjects() != 0) {
