@@ -3,7 +3,22 @@
 Configurator* Configurator::p_Configurator = 0;
 
 Configurator::Configurator() {
-	readConfiguration();
+	numberOfObjectTypes = -1;
+	readGeneralConfiguration();
+}
+
+Configurator::~Configurator() {
+	if(numberOfObjectTypes != -1) {freeMemory();}
+}
+
+void Configurator::allocateMemory() {
+	if(numberOfObjectTypes <= 0) {return;}
+	sellersMean = new double[numberOfObjectTypes];
+}
+
+void Configurator::freeMemory() {
+	if(numberOfObjectTypes <= 0) {return;}
+	delete [] sellersMean;
 }
 
 Configurator* Configurator::getConfigurator() {
@@ -13,7 +28,7 @@ Configurator* Configurator::getConfigurator() {
 	return p_Configurator;
 }
 
-void Configurator::readConfiguration() {
+void Configurator::readGeneralConfiguration() {
 	std::string line;
 	std::ifstream configurationFile(CONFIGURATIONFILE);
 
@@ -21,11 +36,27 @@ void Configurator::readConfiguration() {
 		getline(configurationFile, line, '\n');
 		handleConfigurationFileLine(line);
 	}
+
 	configurationFile.close();
 }
 
+void Configurator::readObjectSpecificConfiguration() {
+	std::string line;
+	if(numberOfObjectTypes <= 0) {return;}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		std::ifstream configurationFile(TYPEFOLDER + std::to_string(i + 1) + ".txt");
+	
+		while(!configurationFile.eof()) {
+			getline(configurationFile, line, '\n');
+			handleConfigurationFileLine(line, i);
+		}
+
+		configurationFile.close();
+	}
+}
+
 /* BAD PART. NEEDS REFACTORING */
-void Configurator::handleConfigurationFileLine(std::string line) {
+void Configurator::handleConfigurationFileLine(std::string line, int type) {
 	std::string configurationExpressions[] = {CONFIGURATIONEXPRESSIONS};
 	int numberOfExpressions = sizeof(configurationExpressions) / sizeof(std::string);
 	double value = -1;
@@ -34,7 +65,7 @@ void Configurator::handleConfigurationFileLine(std::string line) {
 		std::size_t found = line.find(toFind);
 		if (found != std::string::npos) {
 			value = getNumberFromString(line);
-			defineVariable(i, value);
+			defineVariable(i, value, type);
 		}
 	}
 }
@@ -60,7 +91,7 @@ double Configurator::getNumberFromString(std::string line) {
 }
 /* TODO: improve this part of code. Need some kind of hash */
 
-void Configurator::defineVariable(int index, double value) {
+void Configurator::defineVariable(int index, double value, int type) {
 	switch(index) {
 	case 0:
 		sellerPricesMode = int(value);
@@ -72,7 +103,9 @@ void Configurator::defineVariable(int index, double value) {
 		minimumSellersPrice = value;
 		break;
 	case 3:
-		sellersMean = value;
+		if(type >= 0) {
+			sellersMean[type] = value;
+		}
 		break;
 	case 4:
 		sellersStandartDeviation = value;
@@ -157,6 +190,8 @@ void Configurator::defineVariable(int index, double value) {
 		break;
 	case 31:
 		numberOfObjectTypes = int(value);
+		allocateMemory();
+		readObjectSpecificConfiguration();
 		break;
 	}
 }
@@ -166,28 +201,6 @@ void Configurator::printConfiguration() {
 	std::cout << "Timer printing frequency\t" << timerPrintingFrequency << std::endl;
 	std::cout << "Accuracy\t\t\t" << accuracy << std::endl;
 	std::cout << "Number of object types\t\t" << numberOfObjectTypes << std::endl;
-
-	std::cout << std::endl;
-
-	std::cout << "Seller prices mode\t\t" << sellerPricesMode << std::endl;
-	std::cout << "Maximum seller price\t\t" << maximumSellersPrice << std::endl;
-	std::cout << "Minimum seller price\t\t" << minimumSellersPrice << std::endl;
-	std::cout << "Seller mean price\t\t" << sellersMean << std::endl;
-	std::cout << "Seller standart deviation\t" << sellersStandartDeviation << std::endl;
-	std::cout << "Seller timer mode\t\t" << sellerTimersMode << std::endl;
-	std::cout << "Seller frequency\t\t" << sellersFrequency << std::endl;
-	std::cout << "Seller lambda\t\t\t" << sellersLambda << std::endl;
-
-	std::cout << std::endl;
-
-	std::cout << "Buyer prices mode\t\t" << buyerPricesMode << std::endl;
-	std::cout << "Maximum buyer price\t\t" << maximumBuyersPrice << std::endl;
-	std::cout << "Minimum buyer price\t\t" << minimumBuyersPrice << std::endl;
-	std::cout << "Buyer mean price\t\t" << buyersMean << std::endl;
-	std::cout << "Buyer standart deviation\t" << buyersStandartDeviation << std::endl;
-	std::cout << "Buyer timer mode\t\t" << buyerTimersMode << std::endl;
-	std::cout << "Buyer frequency\t\t\t" << buyersFrequency << std::endl;
-	std::cout << "Buyer lambda\t\t\t" << buyersLambda << std::endl;
 
 	std::cout << std::endl;
 	
@@ -201,13 +214,42 @@ void Configurator::printConfiguration() {
 	std::cout << "Maximum histogram argument\t" << maximumHistogramArgument << std::endl;
 
 	std::cout << std::endl;
-
-	std::cout << "Seller price reduce age\t\t" << sellerPriceReduceAge << std::endl;
-	std::cout << "Seller price reduce share\t" << sellerPriceReduceShare << std::endl;
-	std::cout << "Buyer price increase age\t" << buyerPriceIncreaseAge << std::endl;
-	std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
 	
-	std::cout << std::endl;
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+
+		std::cout << "Type " << i << ":" << std::endl;
+
+		std::cout << "Seller prices mode\t\t" << sellerPricesMode << std::endl;
+		std::cout << "Maximum seller price\t\t" << maximumSellersPrice << std::endl;
+		std::cout << "Minimum seller price\t\t" << minimumSellersPrice << std::endl;
+		std::cout << "Seller mean price\t\t" << sellersMean[i] << std::endl;
+		std::cout << "Seller standart deviation\t" << sellersStandartDeviation << std::endl;
+		std::cout << "Seller timer mode\t\t" << sellerTimersMode << std::endl;
+		std::cout << "Seller frequency\t\t" << sellersFrequency << std::endl;
+		std::cout << "Seller lambda\t\t\t" << sellersLambda << std::endl;
+
+		std::cout << std::endl;
+
+		std::cout << "Buyer prices mode\t\t" << buyerPricesMode << std::endl;
+		std::cout << "Maximum buyer price\t\t" << maximumBuyersPrice << std::endl;
+		std::cout << "Minimum buyer price\t\t" << minimumBuyersPrice << std::endl;
+		std::cout << "Buyer mean price\t\t" << buyersMean << std::endl;
+		std::cout << "Buyer standart deviation\t" << buyersStandartDeviation << std::endl;
+		std::cout << "Buyer timer mode\t\t" << buyerTimersMode << std::endl;
+		std::cout << "Buyer frequency\t\t\t" << buyersFrequency << std::endl;
+		std::cout << "Buyer lambda\t\t\t" << buyersLambda << std::endl;
+
+		std::cout << std::endl;
+
+		std::cout << "Seller price reduce age\t\t" << sellerPriceReduceAge << std::endl;
+		std::cout << "Seller price reduce share\t" << sellerPriceReduceShare << std::endl;
+		std::cout << "Buyer price increase age\t" << buyerPriceIncreaseAge << std::endl;
+		std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
+	
+		std::cout << std::endl;
+	}
+
+	system("pause");
 }
 
 /* END OF BAD PART */

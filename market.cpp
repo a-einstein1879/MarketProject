@@ -71,7 +71,7 @@ bool Market::dealPossible(int typeId) {
 
 int Market::addSeller() {
 	int rnd = rand()%numberOfObjectTypes;
-	Object object(formSellingPrice() + rnd * 40, timer, FORSALE, rnd);
+	Object object(formSellingPrice(rnd), timer, FORSALE, rnd);
 	dataBase->pushToDataBase(object);
 	resetSellingTimer();
 	return 0;
@@ -79,7 +79,7 @@ int Market::addSeller() {
 
 int Market::addBuyer() {
 	int rnd = rand()%numberOfObjectTypes;
-	Object object(formBuyingPrice() + rnd * 40, timer, BOUGHT, rnd);
+	Object object(formBuyingPrice(rnd) + rnd * 40, timer, BOUGHT, rnd);
 	dataBase->pushToDataBase(object);
 	resetBuyingTimer();
 	return 0;
@@ -91,17 +91,17 @@ int Market::addBuyer() {
 #include <stdlib.h>
 #include <cmath>
 
-double Market::formSellingPrice() {
+double Market::formSellingPrice(int type) {
 	switch(configurator->getSellerPricesMode()) {
 		case 1:
-			return getNormallyDistributedValue(configurator->getSellersMean(), configurator->getSellersStandartDeviation());
+			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation());
 		case 0:
 			return configurator->getMinimumSellersPrice() + rand()%int(configurator->getMaximumSellersPrice() - configurator->getMinimumSellersPrice() + 1);
 	}
 	return -1;
 }
 
-double Market::formBuyingPrice() {
+double Market::formBuyingPrice(int type) {
 	switch(configurator->getBuyerPricesMode()) {
 		case 1:
 			return getNormallyDistributedValue(configurator->getBuyersMean(), configurator->getBuyersStandartDeviation());
