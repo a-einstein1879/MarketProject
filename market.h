@@ -35,8 +35,8 @@ private:
 	/* Statistics */
 	double formSellingPrice(int type);
 	double formBuyingPrice(int type);
-	void resetSellingTimer();
-	void resetBuyingTimer();
+	void resetSellingTimer(int type);
+	void resetBuyingTimer(int type);
 	
 	double getNormallyDistributedValue(double mean, double standartDeviation);
 	double getExponentiallyDistributedValue(double lambda);

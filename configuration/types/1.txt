@@ -1,9 +1,3 @@
-/* Agent strategies */
-Seller price reduce age		10000
-Seller price reduce share	0.2
-Buyer price increase age	10000
-Buyer price increase share	0.2
-
 /* Statistics */
 /* 0 - uniform, 1 - normal distribution */
 Seller prices mode		1

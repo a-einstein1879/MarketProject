@@ -15,3 +15,9 @@ Histogram sidegap		0.05
 Constant boarders mode		0
 Minimum histogram argument	0
 Maximum histogram argument	40
+
+/* Agent strategies */
+Seller price reduce age		10000
+Seller price reduce share	0.2
+Buyer price increase age	10000
+Buyer price increase share	0.2

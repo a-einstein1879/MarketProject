@@ -13,12 +13,60 @@ Configurator::~Configurator() {
 
 void Configurator::allocateMemory() {
 	if(numberOfObjectTypes <= 0) {return;}
-	sellersMean = new double[numberOfObjectTypes];
+	/* Seller prices */
+	sellerPricesMode		= new int[numberOfObjectTypes];
+	maximumSellersPrice		= new double[numberOfObjectTypes];
+	minimumSellersPrice		= new double[numberOfObjectTypes];
+
+	sellersMean				= new double[numberOfObjectTypes];
+	sellersStandartDeviation= new double[numberOfObjectTypes];
+
+	/* Buyer prices */
+	buyerPricesMode			= new int[numberOfObjectTypes];
+	maximumBuyersPrice		= new double[numberOfObjectTypes];
+	minimumBuyersPrice		= new double[numberOfObjectTypes];
+
+	buyersMean				= new double[numberOfObjectTypes];
+	buyersStandartDeviation = new double[numberOfObjectTypes];
+
+	/* Seller timers */
+	sellerTimersMode	= new int[numberOfObjectTypes];
+	sellersFrequency	= new int[numberOfObjectTypes];
+	sellersLambda		= new double[numberOfObjectTypes];
+
+	/* Buyer timers */
+	buyerTimersMode		= new int[numberOfObjectTypes];
+	buyersFrequency		= new int[numberOfObjectTypes];
+	buyersLambda		= new double[numberOfObjectTypes];
 }
 
 void Configurator::freeMemory() {
 	if(numberOfObjectTypes <= 0) {return;}
+	/* Seller prices */
+	delete [] sellerPricesMode;
+	delete [] maximumSellersPrice;
+	delete [] minimumSellersPrice;
+
 	delete [] sellersMean;
+	delete [] sellersStandartDeviation;
+
+	/* Buyer prices */
+	delete [] buyerPricesMode;
+	delete [] maximumBuyersPrice;
+	delete [] minimumBuyersPrice;
+
+	delete [] buyersMean;
+	delete [] buyersStandartDeviation;
+
+	/* Seller timers */
+	delete [] sellerTimersMode;
+	delete [] sellersFrequency;
+	delete [] sellersLambda;
+
+	/* Buyer timers */
+	delete [] buyerTimersMode;
+	delete [] buyersFrequency;
+	delete [] buyersLambda;
 }
 
 Configurator* Configurator::getConfigurator() {
@@ -93,56 +141,6 @@ double Configurator::getNumberFromString(std::string line) {
 
 void Configurator::defineVariable(int index, double value, int type) {
 	switch(index) {
-	case 0:
-		sellerPricesMode = int(value);
-		break;
-	case 1:
-		maximumSellersPrice = value;
-		break;
-	case 2:
-		minimumSellersPrice = value;
-		break;
-	case 3:
-		if(type >= 0) {
-			sellersMean[type] = value;
-		}
-		break;
-	case 4:
-		sellersStandartDeviation = value;
-		break;
-	case 5:
-		sellerTimersMode = int(value);
-		break;
-	case 6:
-		sellersFrequency = int(value);
-		break;
-	case 7:
-		sellersLambda = value;
-		break;
-	case 8:
-		buyerPricesMode = int(value);
-		break;
-	case 9:
-		maximumBuyersPrice = value;
-		break;
-	case 10:
-		minimumBuyersPrice = value;
-		break;
-	case 11:
-		buyersMean = value;
-		break;
-	case 12:
-		buyersStandartDeviation = value;
-		break;
-	case 13:
-		buyerTimersMode = int(value);
-		break;
-	case 14:
-		buyersFrequency = int(value);
-		break;
-	case 15:
-		buyersLambda = value;
-		break;
 	case 16:
 		modelingTime = int(value);
 		break;
@@ -188,10 +186,68 @@ void Configurator::defineVariable(int index, double value, int type) {
 	case 30:
 		buyerPriceIncreaseShare = value;
 		break;
-	case 31:
+	case 31: {
 		numberOfObjectTypes = int(value);
 		allocateMemory();
 		readObjectSpecificConfiguration();
+		break;
+			 }
+	default:
+		break;
+	}
+
+	
+	if(type < 0) {return;}
+	switch(index) {
+	case 0:
+		sellerPricesMode[type] = int(value);
+		break;
+	case 1:
+		maximumSellersPrice[type] = value;
+		break;
+	case 2:
+		minimumSellersPrice[type] = value;
+		break;
+	case 3:
+		sellersMean[type] = value;
+		break;
+	case 4:
+		sellersStandartDeviation[type] = value;
+		break;
+	case 5:
+		sellerTimersMode[type] = int(value);
+		break;
+	case 6:
+		sellersFrequency[type] = int(value);
+		break;
+	case 7:
+		sellersLambda[type] = value;
+		break;
+	case 8:
+		buyerPricesMode[type] = int(value);
+		break;
+	case 9:
+		maximumBuyersPrice[type] = value;
+		break;
+	case 10:
+		minimumBuyersPrice[type] = value;
+		break;
+	case 11:
+		buyersMean[type] = value;
+		break;
+	case 12:
+		buyersStandartDeviation[type] = value;
+		break;
+	case 13:
+		buyerTimersMode[type] = int(value);
+		break;
+	case 14:
+		buyersFrequency[type] = int(value);
+		break;
+	case 15:
+		buyersLambda[type] = value;
+		break;
+	default:
 		break;
 	}
 }
@@ -219,35 +275,35 @@ void Configurator::printConfiguration() {
 
 		std::cout << "Type " << i << ":" << std::endl;
 
-		std::cout << "Seller prices mode\t\t" << sellerPricesMode << std::endl;
-		std::cout << "Maximum seller price\t\t" << maximumSellersPrice << std::endl;
-		std::cout << "Minimum seller price\t\t" << minimumSellersPrice << std::endl;
-		std::cout << "Seller mean price\t\t" << sellersMean[i] << std::endl;
-		std::cout << "Seller standart deviation\t" << sellersStandartDeviation << std::endl;
-		std::cout << "Seller timer mode\t\t" << sellerTimersMode << std::endl;
-		std::cout << "Seller frequency\t\t" << sellersFrequency << std::endl;
-		std::cout << "Seller lambda\t\t\t" << sellersLambda << std::endl;
+		std::cout << "Seller prices mode\t\t"		<< sellerPricesMode[i] << std::endl;
+		std::cout << "Maximum seller price\t\t"		<< maximumSellersPrice[i] << std::endl;
+		std::cout << "Minimum seller price\t\t"		<< minimumSellersPrice[i] << std::endl;
+		std::cout << "Seller mean price\t\t"		<< sellersMean[i] << std::endl;
+		std::cout << "Seller standart deviation\t"	<< sellersStandartDeviation[i] << std::endl;
+		std::cout << "Seller timer mode\t\t"		<< sellerTimersMode[i] << std::endl;
+		std::cout << "Seller frequency\t\t"			<< sellersFrequency[i] << std::endl;
+		std::cout << "Seller lambda\t\t\t"			<< sellersLambda[i] << std::endl;
 
 		std::cout << std::endl;
 
-		std::cout << "Buyer prices mode\t\t" << buyerPricesMode << std::endl;
-		std::cout << "Maximum buyer price\t\t" << maximumBuyersPrice << std::endl;
-		std::cout << "Minimum buyer price\t\t" << minimumBuyersPrice << std::endl;
-		std::cout << "Buyer mean price\t\t" << buyersMean << std::endl;
-		std::cout << "Buyer standart deviation\t" << buyersStandartDeviation << std::endl;
-		std::cout << "Buyer timer mode\t\t" << buyerTimersMode << std::endl;
-		std::cout << "Buyer frequency\t\t\t" << buyersFrequency << std::endl;
-		std::cout << "Buyer lambda\t\t\t" << buyersLambda << std::endl;
+		std::cout << "Buyer prices mode\t\t"		<< buyerPricesMode[i] << std::endl;
+		std::cout << "Maximum buyer price\t\t"		<< maximumBuyersPrice[i] << std::endl;
+		std::cout << "Minimum buyer price\t\t"		<< minimumBuyersPrice[i] << std::endl;
+		std::cout << "Buyer mean price\t\t"			<< buyersMean[i] << std::endl;
+		std::cout << "Buyer standart deviation\t"	<< buyersStandartDeviation[i] << std::endl;
+		std::cout << "Buyer timer mode\t\t"			<< buyerTimersMode[i] << std::endl;
+		std::cout << "Buyer frequency\t\t\t"		<< buyersFrequency[i] << std::endl;
+		std::cout << "Buyer lambda\t\t\t"			<< buyersLambda[i] << std::endl;
 
-		std::cout << std::endl;
-
-		std::cout << "Seller price reduce age\t\t" << sellerPriceReduceAge << std::endl;
-		std::cout << "Seller price reduce share\t" << sellerPriceReduceShare << std::endl;
-		std::cout << "Buyer price increase age\t" << buyerPriceIncreaseAge << std::endl;
-		std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
-	
 		std::cout << std::endl;
 	}
+	
+	std::cout << "Seller price reduce age\t\t"	<< sellerPriceReduceAge << std::endl;
+	std::cout << "Seller price reduce share\t"	<< sellerPriceReduceShare << std::endl;
+	std::cout << "Buyer price increase age\t"	<< buyerPriceIncreaseAge << std::endl;
+	std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
+	
+	std::cout << std::endl;
 
 	system("pause");
 }

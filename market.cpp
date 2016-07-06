@@ -9,9 +9,11 @@ Market::Market() {
 	dataBase->start(timer);
 	configurator = configurator->getConfigurator();
 	configurator->printConfiguration();
-	resetSellingTimer();
-	resetBuyingTimer();
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		resetSellingTimer(i);
+		resetBuyingTimer(i);
+	}
 }
 
 Market::~Market() {
@@ -33,7 +35,7 @@ int Market::tick() {
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{dataBase->closeDatabase(); return 0;}
-	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda() * 1.05);}
+	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda(0) * 1.05, 0);}
 	dataBase->tick();
 	switchTimers();
 	return 1;
@@ -73,15 +75,15 @@ int Market::addSeller() {
 	int rnd = rand()%numberOfObjectTypes;
 	Object object(formSellingPrice(rnd), timer, FORSALE, rnd);
 	dataBase->pushToDataBase(object);
-	resetSellingTimer();
+	resetSellingTimer(rnd);
 	return 0;
 }
 
 int Market::addBuyer() {
 	int rnd = rand()%numberOfObjectTypes;
-	Object object(formBuyingPrice(rnd) + rnd * 40, timer, BOUGHT, rnd);
+	Object object(formBuyingPrice(rnd), timer, BOUGHT, rnd);
 	dataBase->pushToDataBase(object);
-	resetBuyingTimer();
+	resetBuyingTimer(rnd);
 	return 0;
 }
 
@@ -92,43 +94,43 @@ int Market::addBuyer() {
 #include <cmath>
 
 double Market::formSellingPrice(int type) {
-	switch(configurator->getSellerPricesMode()) {
+	switch(configurator->getSellerPricesMode(type)) {
 		case 1:
-			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation());
+			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation(type));
 		case 0:
-			return configurator->getMinimumSellersPrice() + rand()%int(configurator->getMaximumSellersPrice() - configurator->getMinimumSellersPrice() + 1);
+			return configurator->getMinimumSellersPrice(type) + rand()%int(configurator->getMaximumSellersPrice(type) - configurator->getMinimumSellersPrice(type) + 1);
 	}
 	return -1;
 }
 
 double Market::formBuyingPrice(int type) {
-	switch(configurator->getBuyerPricesMode()) {
+	switch(configurator->getBuyerPricesMode(type)) {
 		case 1:
-			return getNormallyDistributedValue(configurator->getBuyersMean(), configurator->getBuyersStandartDeviation());
+			return getNormallyDistributedValue(configurator->getBuyersMean(type), configurator->getBuyersStandartDeviation(type));
 		case 0:
-			return configurator->getMinimumBuyersPrice() + rand()%int(configurator->getMaximumBuyersPrice() - configurator->getMinimumBuyersPrice() + 1);
+			return configurator->getMinimumBuyersPrice(type) + rand()%int(configurator->getMaximumBuyersPrice(type) - configurator->getMinimumBuyersPrice(type) + 1);
 	}
 	return -1;
 }
 
-void Market::resetSellingTimer() {
-	switch(configurator->getBuyerPricesMode()) {
+void Market::resetSellingTimer(int type) {
+	switch(configurator->getSellerTimersMode(type)) {
 		case 1:
-			timeLeftBeforeNewSellingObject = int(getExponentiallyDistributedValue(configurator->getSellersLambda()));
+			timeLeftBeforeNewSellingObject = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type)));
 			return;
 		case 0:
-			timeLeftBeforeNewSellingObject = configurator->getSellersFrequency();
+			timeLeftBeforeNewSellingObject = configurator->getSellersFrequency(type);
 			return;
 	}
 }
 
-void Market::resetBuyingTimer() {
-	switch(configurator->getBuyerPricesMode()) {
+void Market::resetBuyingTimer(int type) {
+	switch(configurator->getBuyerTimersMode(type)) {
 		case 1:
-			timeLeftBeforeNewObjectBought = int(getExponentiallyDistributedValue(configurator->getBuyersLambda()));
+			timeLeftBeforeNewObjectBought = int(getExponentiallyDistributedValue(configurator->getBuyersLambda(type)));
 			return;
 		case 0:
-			timeLeftBeforeNewObjectBought = configurator->getBuyersFrequency();
+			timeLeftBeforeNewObjectBought = configurator->getBuyersFrequency(type);
 			return;
 	}
 }

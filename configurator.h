@@ -19,36 +19,6 @@ private:
 	int timerPrintingFrequency;
 	int accuracy;
 
-	/* Must be defined before memory allocation */
-	int numberOfObjectTypes;
-	void allocateMemory();
-	void freeMemory();
-	void readObjectSpecificConfiguration();
-
-	/* 0 - uniform, 1 - normal distribution */
-	int sellerPricesMode;
-	double maximumSellersPrice;
-	double minimumSellersPrice;
-
-	double *sellersMean;
-	double sellersStandartDeviation;
-
-	int buyerPricesMode;
-	double maximumBuyersPrice;
-	double minimumBuyersPrice;
-
-	double buyersMean;
-	double buyersStandartDeviation;
-
-	/* 0 - uniform, 1 - exponencial */
-	int sellerTimersMode;
-	int sellersFrequency;
-	double sellersLambda;
-
-	int buyerTimersMode;
-	int buyersFrequency;
-	double buyersLambda;
-
 	/* Picture */
 	int graphicalMode;
 	int pictureRefreshFrequency;
@@ -59,6 +29,36 @@ private:
 	int constantBoardersMode;
 	double minimumHistogramArgument;
 	double maximumHistogramArgument;
+
+	/* Must be defined before memory allocation */
+	int numberOfObjectTypes;
+	void allocateMemory();
+	void freeMemory();
+	void readObjectSpecificConfiguration();
+
+	/* 0 - uniform, 1 - normal distribution */
+	int *sellerPricesMode;
+	double *maximumSellersPrice;
+	double *minimumSellersPrice;
+
+	double *sellersMean;
+	double *sellersStandartDeviation;
+
+	int *buyerPricesMode;
+	double *maximumBuyersPrice;
+	double *minimumBuyersPrice;
+
+	double *buyersMean;
+	double *buyersStandartDeviation;
+
+	/* 0 - uniform, 1 - exponencial */
+	int *sellerTimersMode;
+	int *sellersFrequency;
+	double *sellersLambda;
+
+	int *buyerTimersMode;
+	int *buyersFrequency;
+	double *buyersLambda;
 
 	/* Agent strategies */
 	int sellerPriceReduceAge;
@@ -79,8 +79,8 @@ public:
 	void printConfiguration();
 	
 	/* Set */
-	void setSellersLambda(double lambda)	{sellersLambda = lambda;}
-	void setBuyersLambda(double lambda)		{buyersLambda = lambda;}
+	void setSellersLambda(double lambda, int type)	{if(numberOfObjectTypes <= 0) {return;} else {sellersLambda[type] = lambda;}}
+	void setBuyersLambda(double lambda, int type)	{if(numberOfObjectTypes <= 0) {return;} else {buyersLambda[type] = lambda;}}
 	/* End of set */
 
 	/* Get */
@@ -89,27 +89,32 @@ public:
 	int getAccuracy()						{return accuracy;}
 	int getNumberOfObjectTypes()			{return numberOfObjectTypes;}
 
-	int getSellerPricesMode()				{return sellerPricesMode;}
-	double getMaximumSellersPrice()			{return maximumSellersPrice;}
-	double getMinimumSellersPrice()			{return minimumSellersPrice;}
+	int getSellerPricesMode(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return sellerPricesMode[type];}}
+	double getMaximumSellersPrice(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return maximumSellersPrice[type];}}
+	double getMinimumSellersPrice(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return minimumSellersPrice[type];}}
 
-	double getSellersMean(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersMean[type];}}
-	double getSellersStandartDeviation()	{return sellersStandartDeviation;}
+	double getSellersMean(int type)					{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersMean[type];}}
+	double getSellersStandartDeviation(int type)	{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersStandartDeviation[type];}}
 
-	int getBuyerPricesMode()				{return buyerPricesMode;}
-	double getMaximumBuyersPrice()			{return maximumBuyersPrice;}
-	double getMinimumBuyersPrice()			{return minimumBuyersPrice;}
+	int getBuyerPricesMode(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyerPricesMode[type];}}
+	double getMaximumBuyersPrice(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return maximumBuyersPrice[type];}}
+	double getMinimumBuyersPrice(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return minimumBuyersPrice[type];}}
 
-	double getBuyersMean()					{return buyersMean;}
-	double getBuyersStandartDeviation()		{return buyersStandartDeviation;}
+	double getBuyersMean(int type)					{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersMean[type];}}
+	double getBuyersStandartDeviation(int type)		{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersStandartDeviation[type];}}
 
-	int getSellerTimersMode()				{return sellerTimersMode;}
-	int getSellersFrequency()				{return sellersFrequency;}
-	double getSellersLambda()				{return sellersLambda;}
+	int getSellerTimersMode(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return sellerTimersMode[type];}}
+	int getSellersFrequency(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersFrequency[type];}}
+	double getSellersLambda(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersLambda[type];}}
 
-	int getBuyerTimersMode()				{return buyerTimersMode;}
-	int getBuyersFrequency()				{return buyersFrequency;}
-	double getBuyersLambda()				{return buyersLambda;}
+	int getBuyerTimersMode(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyerTimersMode[type];}}
+	int getBuyersFrequency(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersFrequency[type];}}
+	double getBuyersLambda(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersLambda[type];}}
+	
+	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
+	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
+	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
+	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
 	
 	int getGraphicalMode()					{return graphicalMode;}
 	int getPictureRefreshFrequency()		{return pictureRefreshFrequency;}
@@ -120,11 +125,6 @@ public:
 	int getConstantBoardersMode()			{return constantBoardersMode;}
 	double getMinimumHistogramArgument()	{return minimumHistogramArgument;}
 	double getMaximumHistogramArgument()	{return maximumHistogramArgument;}
-
-	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
-	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
-	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
-	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
 	/* End of get */
 };
 
