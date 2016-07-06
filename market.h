@@ -33,8 +33,8 @@ private:
 	/* End of timer checkers */
 	
 	/* Statistics */
-	double formSellingPrice(int type);
-	double formBuyingPrice(int type);
+	double formSellingPrice();
+	double formBuyingPrice();
 	void resetSellingTimer();
 	void resetBuyingTimer();
 	

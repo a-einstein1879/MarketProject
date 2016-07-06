@@ -80,7 +80,7 @@ Object& Object::operator=(Object &object) {
 bool Object::operator<=(Object &object) {
 	if(type != object.getType()) {
 		printf("Type mismatch\n");
-	//	system("pause");
+		system("pause");
 	}
 	if(price <= object.getPrice()) {
 		return true;
@@ -92,7 +92,7 @@ bool Object::operator<=(Object &object) {
 bool Object::operator>=(Object &object) {
 	if(type != object.getType()) {
 		printf("Type mismatch\n");
-	//	system("pause");
+		system("pause");
 	}
 	if(price >= object.getPrice()) {
 		return true;
@@ -104,7 +104,7 @@ bool Object::operator>=(Object &object) {
 bool Object::operator<(Object &object) {
 	if(type != object.getType()) {
 		printf("Type mismatch\n");
-	//	system("pause");
+		system("pause");
 	}
 	if(age <= object.getAge()) {
 		return true;
@@ -115,8 +115,7 @@ bool Object::operator<(Object &object) {
 
 bool Object::operator>(Object &object) {
 	if(type != object.getType()) {
-		printf("Type mismatch\n");
-	//	system("pause");
+		system("pause");
 	}
 	if(age >= object.getAge()) {
 		return true;

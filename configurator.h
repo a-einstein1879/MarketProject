@@ -6,7 +6,6 @@
 #include <string>
 
 #define CONFIGURATIONFILE "configuration/configuration.txt"
-#define TYPEFOLDER "configuration/types/"
 #define CONFIGURATIONEXPRESSIONS "Seller prices mode", "Maximum seller price", "Minimum seller price", "Seller mean price", "Seller standart deviation",\
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
@@ -18,19 +17,14 @@ private:
 	int modelingTime;
 	int timerPrintingFrequency;
 	int accuracy;
-
-	/* Must be defined before memory allocation */
 	int numberOfObjectTypes;
-	void allocateMemory();
-	void freeMemory();
-	void readObjectSpecificConfiguration();
 
 	/* 0 - uniform, 1 - normal distribution */
 	int sellerPricesMode;
 	double maximumSellersPrice;
 	double minimumSellersPrice;
 
-	double *sellersMean;
+	double sellersMean;
 	double sellersStandartDeviation;
 
 	int buyerPricesMode;
@@ -67,13 +61,12 @@ private:
 	double buyerPriceIncreaseShare;
 
 	Configurator();
-	~Configurator();
 	static Configurator *p_Configurator;
 	
-	void readGeneralConfiguration();
-	void handleConfigurationFileLine(std::string line, int type = -1);
+	void readConfiguration();
+	void handleConfigurationFileLine(std::string line);
 	double getNumberFromString(std::string line);
-	void defineVariable(int index, double value, int type = -1);
+	void defineVariable(int index, double value);
 public:
 	static Configurator* getConfigurator();
 	void printConfiguration();
@@ -93,7 +86,7 @@ public:
 	double getMaximumSellersPrice()			{return maximumSellersPrice;}
 	double getMinimumSellersPrice()			{return minimumSellersPrice;}
 
-	double getSellersMean(int type)			{if(numberOfObjectTypes <= 0) {return -1;} else {return sellersMean[type];}}
+	double getSellersMean()					{return sellersMean;}
 	double getSellersStandartDeviation()	{return sellersStandartDeviation;}
 
 	int getBuyerPricesMode()				{return buyerPricesMode;}
