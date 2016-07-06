@@ -1,0 +1,17 @@
+/* General */
+Modeling time			1000000
+Timer printing frequency	100
+Accuracy			100
+Number of object types		2
+
+/* Picture */
+/* 1 - on, 0 - off */
+Graphical mode			1
+Delay time			0
+Picture refresh frequency	100
+/* Histogram */
+Number of pockets		40
+Histogram sidegap		0.05
+Constant boarders mode		0
+Minimum histogram argument	0
+Maximum histogram argument	40

@@ -1,0 +1,30 @@
+/* Agent strategies */
+Seller price reduce age		10000
+Seller price reduce share	0.2
+Buyer price increase age	10000
+Buyer price increase share	0.2
+
+/* Statistics */
+/* 0 - uniform, 1 - normal distribution */
+Seller prices mode		1
+Maximum seller price		25
+Minimum seller price		10
+Seller mean price		65
+Seller standart deviation	5
+
+/* 0 - uniform, 1 - exponencial */
+Seller timer mode		1
+Seller frequency		5
+Seller lambda			0.04
+
+/* 0 - uniform, 1 - normal distribution */
+Buyer prices mode		1
+Maximum buyer price		15
+Minimum buyer price		10
+Buyer mean price		15
+Buyer standart deviation	3
+
+/* 0 - uniform, 1 - exponencial */
+Buyer timer mode		1
+Buyer frequency			5
+Buyer lambda			0.04
