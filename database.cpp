@@ -55,7 +55,7 @@ void DataBase::closeDatabase() {
 		while(1) {
 			object = popLowestSeller(i);
 			if(object.getAge() == -1)	{break;}
-			else						{object.printObjectToFinalFiles(); continue;}
+			else						{object.printObjectToFinalFiles(); fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", object.getPrice(), object.getAge()); continue;}
 		}
 
 		while(1) {
@@ -153,7 +153,9 @@ void DataBase::runPossibleDeal(int typeId) {
 	if(time >= 0) {
 		fprintf(sellersFile, "%.2f\n", time);
 		fprintf(buyersFile,	 "%.2f\n", 0);
+		fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", seller.getPrice(), time);
 	} else {
+		fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", seller.getPrice(), 0);
 		fprintf(sellersFile, "%.2f\n", 0);
 		fprintf(buyersFile,	 "%.2f\n", - time);
 	}
@@ -336,6 +338,11 @@ void DataBase::openFiles() {
 	if(sellersFinalTimersFile == NULL) {
 		printf("File '%s' can`t be open ", SELLERSFINALTIMERSFILE);
 	}
+	
+	timeExpositionRelationFile = fopen(TIMEEXPOSITIONFILE, "w");
+	if(timeExpositionRelationFile == NULL) {
+		printf("File '%s' can`t be open ", TIMEEXPOSITIONFILE);
+	}
 }
 
 void DataBase::closeFiles() {
@@ -346,4 +353,5 @@ void DataBase::closeFiles() {
 	fclose(buyersFinalTimersFile);
 	fclose(sellersFinalPricesFile);
 	fclose(sellersFinalTimersFile);
+	fclose(timeExpositionRelationFile);
 }

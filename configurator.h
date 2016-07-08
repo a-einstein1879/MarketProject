@@ -146,6 +146,7 @@ public:
 
 #define SELLERSFINALPRICESFILE	"output/sellersFinalPrices.txt"
 #define SELLERSFINALTIMERSFILE	"output/sellersFinalTimers.txt"
+#define TIMEEXPOSITIONFILE		"output/timeExposition.txt"
 #define SILENTMODE
 
 /***********************************************************

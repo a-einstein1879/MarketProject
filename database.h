@@ -35,6 +35,7 @@ private:
 
 	FILE *dealFile, *sellersFile, *buyersFile;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
+	FILE *timeExpositionRelationFile;
 	void openFiles();
 	void closeFiles();
 public:
