@@ -192,6 +192,9 @@ void Configurator::defineVariable(int index, double value, int type) {
 		readObjectSpecificConfiguration();
 		break;
 			 }
+	case 32:
+		numberOfPriceAdaptations = int(value);
+		break;
 	default:
 		break;
 	}

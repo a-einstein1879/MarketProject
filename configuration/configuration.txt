@@ -1,8 +1,8 @@
 /* General */
-Modeling time			1000000
+Modeling time			100000
 Timer printing frequency	100
 Accuracy			100
-Number of object types		2
+Number of object types		1
 
 /* Picture */
 /* 1 - on, 0 - off */
@@ -17,7 +17,8 @@ Minimum histogram argument	0
 Maximum histogram argument	40
 
 /* Agent strategies */
-Seller price reduce age		10000
+Number of possible price adaptations	1
+Seller price reduce age		1000000
 Seller price reduce share	0.2
-Buyer price increase age	10000
+Buyer price increase age	1000000
 Buyer price increase share	0.2

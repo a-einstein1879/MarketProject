@@ -16,7 +16,7 @@ Buyer prices mode		1
 Maximum buyer price		15
 Minimum buyer price		10
 Buyer mean price		15
-Buyer standart deviation	3
+Buyer standart deviation	2
 
 /* 0 - uniform, 1 - exponencial */
 Buyer timer mode		1

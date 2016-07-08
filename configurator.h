@@ -11,7 +11,8 @@
 "Seller timer mode", "Seller frequency", "Seller lambda", "Buyer prices mode", "Maximum buyer price", "Minimum buyer price", "Buyer mean price", "Buyer standart deviation",\
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
 "Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument", "Histogram sidegap", \
-"Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share", "Number of object types"
+"Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share", "Number of object types", \
+"Number of possible price adaptations"
 
 class Configurator {
 private:
@@ -61,6 +62,7 @@ private:
 	double *buyersLambda;
 
 	/* Agent strategies */
+	int numberOfPriceAdaptations;
 	int sellerPriceReduceAge;
 	double sellerPriceReduceShare;
 	int buyerPriceIncreaseAge;
@@ -111,6 +113,7 @@ public:
 	int getBuyersFrequency(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersFrequency[type];}}
 	double getBuyersLambda(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersLambda[type];}}
 	
+	double getNumberOfPriceAdaptations()	{return numberOfPriceAdaptations;}
 	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
 	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
 	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}

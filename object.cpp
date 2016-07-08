@@ -52,7 +52,7 @@ void Object::printObjectToFinalFiles() {
 }
 
 bool Object::adaptPrice() {
-	if(numberOfPriceReductions++ > 0) {return 1;}
+	if(numberOfPriceReductions++ >= configurator->getNumberOfPriceAdaptations()) {return 1;}
 	if(status == FORSALE) {
 		price = (1 - configurator->getSellerPriceReduceShare())  * price;
 	} else {
