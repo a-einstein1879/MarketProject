@@ -232,20 +232,22 @@ void DataBase::viewDataBaseInfo() {
 		printf("\n");
 	}
 #ifndef SILENTMODE
-	if(objectsForSale.getNumberOfObjects() != 0) {
-		printf("The lowest selling price is %.2f\n", lowestSellingPrice);
-		printf("Number of objects for sale is %d:\n", objectsForSale.getNumberOfObjects());
-		objectsForSale.viewTimers();
-	} else {
-		printf("Noone is selling anything\n");
-	}
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		if(objectsForSale[i].getNumberOfObjects() != 0) {
+			printf("The lowest selling price is %.2f\n", lowestSellingPrice[i]);
+			printf("Number of objects for sale is %d:\n", objectsForSale[i].getNumberOfObjects());
+			objectsForSale[i].viewTimers();
+		} else {
+			printf("Noone is selling anything\n");
+		}
 	
-	if(objectsBought.getNumberOfObjects() != 0) {
-		printf("The highest buying price is %.2f\n", highestBuyingPrice);
-		printf("Number of objects bought is %d:\n", objectsBought.getNumberOfObjects());
-		objectsBought.viewTimers();
-	} else {
-		printf("Noone is buying anything\n");
+		if(objectsBought[i].getNumberOfObjects() != 0) {
+			printf("The highest buying price is %.2f\n", highestBuyingPrice[i]);
+			printf("Number of objects bought is %d:\n", objectsBought[i].getNumberOfObjects());
+			objectsBought[i].viewTimers();
+		} else {
+			printf("Noone is buying anything\n");
+		}
 	}
 
 	printf("End of database\n\n");
