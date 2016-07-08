@@ -75,10 +75,13 @@ void DataBase::checkTimers() {
 		bool ret = true;
 		if(objectsForSale[i].getNumberOfObjects() != 0) {
 			object = objectsForSale[i].timerPop(1);
+	if(object.getPrice() == 0) {
+		system("pause");
+	}
 			if(object.getAge() > configurator->getSellerPriceReduceAge()) {
 				if(object.adaptPrice()) {ret = false;}
 			}
-			if(ret) {objectsForSale[i].push(object);}
+			if(ret) {pushToDataBase(object);}
 		}
 	
 		ret = true;
@@ -87,7 +90,7 @@ void DataBase::checkTimers() {
 			if(object.getAge() > configurator->getBuyerPriceIncreaseAge()) {
 				if(object.adaptPrice()) {ret = false;}
 			}
-			if(ret) {objectsBought[i].push(object);}
+			if(ret) {pushToDataBase(object);}
 		}
 
 		refreshPrices();
@@ -277,15 +280,23 @@ void DataBase::refreshPicture() {
 		maxArgument = configurator->getMaximumHistogramArgument();
 	} else {
 		for(int i = 0; i < numberOfObjectTypes; i++) {
-			Object object = objectsForSale[i].pricePop(objectsForSale[i].getNumberOfObjects());
-			maxArgument = (object.getPrice() > maxArgument) ? object.getPrice() : maxArgument;
-			objectsForSale[i].push(object);
-			object = objectsBought[i].pricePop(1);
-			minArgument = (object.getPrice() < minArgument) ? object.getPrice() : minArgument;
-			objectsBought[i].push(object);
+			Object object;
+			if(objectsForSale[i].getNumberOfObjects() != 0) {
+				object = objectsForSale[i].pricePop(objectsForSale[i].getNumberOfObjects());
+				maxArgument = (object.getPrice() > maxArgument) ? object.getPrice() : maxArgument;
+				objectsForSale[i].push(object);
+			}
+			if(objectsBought[i].getNumberOfObjects() != 0) {
+				object = objectsBought[i].pricePop(1);
+				minArgument = (object.getPrice() < minArgument) ? object.getPrice() : minArgument;
+				objectsBought[i].push(object);
+			}
 			refreshPrices();
 		}
 	}
+	if(maxArgument == -100) {maxArgument = configurator->getMaximumHistogramArgument();}
+	if(minArgument == 100)	{minArgument = configurator->getMinimumHistogramArgument();}
+
 	Histogram histogram(3, configurator->getNumberOfPockets(), minArgument, maxArgument);
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		/* Price histogram */
