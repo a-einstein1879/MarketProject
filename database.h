@@ -33,9 +33,21 @@ private:
 	void checkTimers();
 	void refreshPrices();
 
-	FILE *dealFile, *sellersFile, *buyersFile;
-	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
-	FILE *timeExpositionRelationFile;
+	FILE *outputFiles[8];
+	/*
+	0 - file where we store all deals prices
+	1 - file where we store timers of deals where sellers appeared on market first
+	2 - file where we store timers of deals where buyers appeared on market first
+
+	3 - At the end of the modeling all buyers prices are stored in the file
+	4 - At the end of the modeling all buyers timers are stored in the file
+	5 - At the end of the modeling all seller prices are stored in the file
+	6 - At the end of the modeling all seller timers are stored in the file
+
+	7 - file where we store "prices	and timers" of all deals. The price is always seller price.
+	Timer is timer when the seller appeared first and 0 when buyer appeared first.
+	Also all the seller`s that remained on market prices and timers go to the same file at the end of the modeling
+	*/
 	void openFiles();
 	void closeFiles();
 public:

@@ -55,7 +55,7 @@ void DataBase::closeDatabase() {
 		while(1) {
 			object = popLowestSeller(i);
 			if(object.getAge() == -1)	{break;}
-			else						{object.printObjectToFinalFiles(); fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", object.getPrice(), object.getAge()); continue;}
+			else						{object.printObjectToFinalFiles(); fprintf(outputFiles[7], "%.2f\t%.2f\n", object.getPrice(), object.getAge()); continue;}
 		}
 
 		while(1) {
@@ -75,9 +75,6 @@ void DataBase::checkTimers() {
 		bool ret = true;
 		if(objectsForSale[i].getNumberOfObjects() != 0) {
 			object = objectsForSale[i].timerPop(1);
-	if(object.getPrice() == 0) {
-		system("pause");
-	}
 			if(object.getAge() > configurator->getSellerPriceReduceAge()) {
 				if(object.adaptPrice()) {ret = false;}
 			}
@@ -98,7 +95,7 @@ void DataBase::checkTimers() {
 }
 
 int DataBase::pushToDataBase(Object newObject) {
-	newObject.setFiles(buyersFinalPricesFile, buyersFinalTimersFile, sellersFinalPricesFile, sellersFinalTimersFile);
+	newObject.setFiles(outputFiles[3], outputFiles[4], outputFiles[5], outputFiles[6]);
 	int type = newObject.getType();
 	if(newObject.getStatus() == FORSALE) {
 		objectsForSale[type].push(newObject);
@@ -152,15 +149,15 @@ void DataBase::runPossibleDeal(int typeId) {
 	}
 
 	/* Printing deal data to output files */
-	fprintf(dealFile, "%.2f\n", price);
+	fprintf(outputFiles[0], "%.2f\n", price);
 	if(time >= 0) {
-		fprintf(sellersFile, "%.2f\n", time);
-		fprintf(buyersFile,	 "%.2f\n", 0);
-		fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", seller.getPrice(), time);
+		fprintf(outputFiles[1], "%.2f\n", time);
+		fprintf(outputFiles[2],	 "%.2f\n", 0);
+		fprintf(outputFiles[7], "%.2f\t%.2f\n", seller.getPrice(), time);
 	} else {
-		fprintf(timeExpositionRelationFile, "%.2f\t%.2f\n", seller.getPrice(), 0);
-		fprintf(sellersFile, "%.2f\n", 0);
-		fprintf(buyersFile,	 "%.2f\n", - time);
+		fprintf(outputFiles[7], "%.2f\t%.2f\n", seller.getPrice(), 0);
+		fprintf(outputFiles[1], "%.2f\n", 0);
+		fprintf(outputFiles[2],	 "%.2f\n", - time);
 	}
 }
 
@@ -317,54 +314,49 @@ void DataBase::refreshPicture() {
 
 #include <stdio.h>
 void DataBase::openFiles() {
-	dealFile = fopen(DEALFILE, "w");
-	if(dealFile == NULL) {
+	outputFiles[0] = fopen(DEALFILE, "w");
+	if(outputFiles[0] == NULL) {
 		printf("File '%s' can`t be open ", DEALFILE);
 	}
 	
-	sellersFile = fopen(SELLERSFILE, "w");
-	if(sellersFile == NULL) {
+	outputFiles[1] = fopen(SELLERSFILE, "w");
+	if(outputFiles[1] == NULL) {
 		printf("File '%s' can`t be open ", SELLERSFILE);
 	}
 	
-	buyersFile = fopen(BUYERSFILE, "w");
-	if(buyersFile == NULL) {
+	outputFiles[2] = fopen(BUYERSFILE, "w");
+	if(outputFiles[2] == NULL) {
 		printf("File '%s' can`t be open ", BUYERSFILE);
 	}
 
-	buyersFinalPricesFile = fopen(BUYERSFINALPRICESFILE, "w");
-	if(buyersFinalPricesFile == NULL) {
+	outputFiles[3] = fopen(BUYERSFINALPRICESFILE, "w");
+	if(outputFiles[3] == NULL) {
 		printf("File '%s' can`t be open ", BUYERSFINALPRICESFILE);
 	}
 
-	buyersFinalTimersFile = fopen(BUYERSFINALTIMERSFILE, "w");
-	if(buyersFinalTimersFile == NULL) {
+	outputFiles[4] = fopen(BUYERSFINALTIMERSFILE, "w");
+	if(outputFiles[4] == NULL) {
 		printf("File '%s' can`t be open ", BUYERSFINALTIMERSFILE);
 	}
 
-	sellersFinalPricesFile = fopen(SELLERSFINALPRICESFILE, "w");
-	if(sellersFinalPricesFile == NULL) {
+	outputFiles[5] = fopen(SELLERSFINALPRICESFILE, "w");
+	if(outputFiles[5] == NULL) {
 		printf("File '%s' can`t be open ", SELLERSFINALPRICESFILE);
 	}
 
-	sellersFinalTimersFile = fopen(SELLERSFINALTIMERSFILE, "w");
-	if(sellersFinalTimersFile == NULL) {
+	outputFiles[6] = fopen(SELLERSFINALTIMERSFILE, "w");
+	if(outputFiles[6] == NULL) {
 		printf("File '%s' can`t be open ", SELLERSFINALTIMERSFILE);
 	}
 	
-	timeExpositionRelationFile = fopen(TIMEEXPOSITIONFILE, "w");
-	if(timeExpositionRelationFile == NULL) {
+	outputFiles[7] = fopen(TIMEEXPOSITIONFILE, "w");
+	if(outputFiles[7] == NULL) {
 		printf("File '%s' can`t be open ", TIMEEXPOSITIONFILE);
 	}
 }
 
 void DataBase::closeFiles() {
-	fclose(dealFile);
-	fclose(sellersFile);
-	fclose(buyersFile);
-	fclose(buyersFinalPricesFile);
-	fclose(buyersFinalTimersFile);
-	fclose(sellersFinalPricesFile);
-	fclose(sellersFinalTimersFile);
-	fclose(timeExpositionRelationFile);
+	for(int i = 0; i < 8; i++) {
+		fclose(outputFiles[i]);
+	}
 }
