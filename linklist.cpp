@@ -304,7 +304,7 @@ double LinkList::getMeanTimer() {
 	Node* newnode = firstPrice;
 	double meanTimer = 0;
 	do {
-		meanTimer += newnode->object.getAge() + newnode->object.getNumberOfPriceReductions() * configurator->getSellerPriceReduceAge();
+		meanTimer += newnode->object.getAge();
 		newnode = newnode->nextPrice;
 	} while(newnode != NULL);
 	return meanTimer / double(numberOfObjects);

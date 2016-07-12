@@ -10,18 +10,47 @@ Operators >= and <= are defined to find cheaper or more expensive objects not co
 Operators > and < are defined to find younger or older objects not comparing objects statuses.
 */
 
+struct ObjectGeneralProperties {
+	double price;
+	bool status;
+	int type;
+
+	ObjectGeneralProperties& operator=(const ObjectGeneralProperties& generalProperties);
+};
+
+struct Timers {
+	double age;
+	int timeAfterPriceReduction;
+	int timer;
+
+	Timers& operator=(const Timers& timers);
+};
+
+struct AgentIdProperties {
+	int agentId;
+	int objectId;
+};
+
+struct AgentStrategy {
+	int numberOfPossiblePriceAdaptations;
+	int numberOfPriceAdaptations;
+	double sellerPriceReduceShare;
+	double buyerPriceReduceShare;
+
+	AgentStrategy& operator=(const AgentStrategy& agentStrategy);
+};
+
 #define FORSALE 1
 #define BOUGHT  0
 
 class Object {
 private:
-	double price;
-	double age;
-	bool status;
-	int numberOfPriceReductions;
-	int timer;
-	int type;
+	ObjectGeneralProperties generalProperties;
+	AgentStrategy agentStrategy;
+	AgentIdProperties agentId;
+	Timers timers;
 	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
+
 	Configurator *configurator;
 public:
 	Object();
@@ -36,12 +65,17 @@ public:
 	bool adaptPrice();
 
 	/* Get */
-	double	getPrice()						{return price;}
-	double	getAge()						{return age;}
-	bool	getStatus()						{return status;}
-	int		getNumberOfPriceReductions()	{return numberOfPriceReductions;}
-	int		getTimer()						{return timer;}
-	int		getType()						{return type;}
+	double	getPrice()						{return generalProperties.price;}
+	bool	getStatus()						{return generalProperties.status;}
+	int		getType()						{return generalProperties.type;}
+	double	getAge()						{return timers.age;}
+	int		getTimeAfterPriceReduction()	{return timers.timeAfterPriceReduction;}
+	int		getTimer()						{return timers.timer;}
+	ObjectGeneralProperties getGeneralProperties()	{return generalProperties;}
+	AgentStrategy			getAgentStrategy()		{return agentStrategy;}
+	AgentIdProperties		getAgentIdProperties()	{return agentId;}
+	Timers					getTimers()				{return timers;}
+
 	FILE* getBuyersFinalPricesFile()		{return buyersFinalPricesFile;}
 	FILE* getBuyersFinalTimersFile()		{return buyersFinalTimersFile;}
 	FILE* getSellersFinalPricesFile()		{return sellersFinalPricesFile;}
