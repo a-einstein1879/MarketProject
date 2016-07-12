@@ -50,14 +50,20 @@ private:
 	AgentStrategy agentStrategy;
 	AgentIdProperties agentId;
 	Timers timers;
-	FILE *buyersFinalPricesFile, *buyersFinalTimersFile, *sellersFinalPricesFile, *sellersFinalTimersFile;
+	FILE *outputFiles[4];
+	/*
+	0 - At the end of the modeling all buyers prices are stored in the file
+	1 - At the end of the modeling all buyers timers are stored in the file
+	2 - At the end of the modeling all seller prices are stored in the file
+	3 - At the end of the modeling all seller timers are stored in the file
+	*/
 
 	Configurator *configurator;
 public:
 	Object();
 	Object(double Price, double CreationTime, bool Status, int Type);
 	void setObject(double Price, double Age, bool Status);
-	void setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile);
+	void setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, FILE *sellersFinalPricesFile, FILE *sellersFinalTimersFile);
 	void tick();
 	void printObject();
 	void printObjectToFinalFiles();
@@ -77,10 +83,7 @@ public:
 	AgentIdProperties		getAgentIdProperties()	{return agentId;}
 	Timers					getTimers()				{return timers;}
 
-	FILE* getBuyersFinalPricesFile()		{return buyersFinalPricesFile;}
-	FILE* getBuyersFinalTimersFile()		{return buyersFinalTimersFile;}
-	FILE* getSellersFinalPricesFile()		{return sellersFinalPricesFile;}
-	FILE* getSellersFinalTimersFile()		{return sellersFinalTimersFile;}
+	FILE* getOutputFile(int fileId)	{return outputFiles[fileId];}
 	/* End of get */
 
 	Object& operator=(Object &object);

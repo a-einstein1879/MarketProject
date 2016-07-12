@@ -29,11 +29,11 @@ void Object::setObject(double Price, double Age, bool Status) {
 	timers.timeAfterPriceReduction			= 0;
 }
 
-void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, FILE *SellersFinalPricesFile, FILE *SellersFinalTimersFile) {
-	buyersFinalPricesFile = BuyersFinalPricesFile;
-	buyersFinalTimersFile = BuyersFinalTimersFile;
-	sellersFinalPricesFile = SellersFinalPricesFile;
-	sellersFinalTimersFile = SellersFinalTimersFile;
+void Object::setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, FILE *sellersFinalPricesFile, FILE *sellersFinalTimersFile) {
+	outputFiles[0] = buyersFinalPricesFile;
+	outputFiles[1] = buyersFinalTimersFile;
+	outputFiles[2] = sellersFinalPricesFile;
+	outputFiles[3] = sellersFinalTimersFile;
 }
 
 void Object::tick() {
@@ -47,11 +47,11 @@ void Object::printObject() {
 /* TODO: there is a problem with timers files. We will have creation times there instead of time spent on market. Don`t want to add timer as an argument, because objects don`t need to know anything about timers */
 void Object::printObjectToFinalFiles() {
 	if(generalProperties.status == BOUGHT) {
-		fprintf(buyersFinalPricesFile, "%.2f\n", generalProperties.price);
-		fprintf(buyersFinalTimersFile, "%.2f\n", timers.age);
+		fprintf(outputFiles[0], "%.2f\n", generalProperties.price);
+		fprintf(outputFiles[1], "%.2f\n", timers.age);
 	} else {
-		fprintf(sellersFinalPricesFile, "%.2f\n", generalProperties.price);
-		fprintf(sellersFinalTimersFile, "%.2f\n", timers.age);
+		fprintf(outputFiles[2], "%.2f\n", generalProperties.price);
+		fprintf(outputFiles[3], "%.2f\n", timers.age);
 	}
 }
 
@@ -100,10 +100,9 @@ Object& Object::operator=(Object &object) {
 	agentStrategy		= object.getAgentStrategy();
 	timers				= object.getTimers();
 
-	buyersFinalPricesFile = object.getBuyersFinalPricesFile();
-	buyersFinalTimersFile = object.getBuyersFinalTimersFile();
-	sellersFinalPricesFile = object.getSellersFinalPricesFile();
-	sellersFinalTimersFile = object.getSellersFinalTimersFile();
+	for(int i = 0; i < 4; i++) {
+		outputFiles[i] = object.getOutputFile(i);
+	}
 	return *this;
 }
 
