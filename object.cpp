@@ -37,9 +37,7 @@ void Object::setFiles(FILE *BuyersFinalPricesFile, FILE *BuyersFinalTimersFile, 
 }
 
 void Object::tick() {
-	timers.timer++;
-	timers.age++;
-	timers.timeAfterPriceReduction++;
+	timers++;
 }
 
 void Object::printObject() {
@@ -87,6 +85,13 @@ Timers& Timers::operator=(const Timers& timers) {
 	age						= timers.age;
 	timeAfterPriceReduction	= timers.timeAfterPriceReduction;
 	timer					= timers.timer;
+	return *this;
+}
+
+Timers Timers::operator++(int) {
+	timer++;
+	age++;
+	timeAfterPriceReduction++;
 	return *this;
 }
 

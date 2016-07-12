@@ -24,6 +24,7 @@ struct Timers {
 	int timer;
 
 	Timers& operator=(const Timers& timers);
+	Timers operator++(int);
 };
 
 struct AgentIdProperties {
