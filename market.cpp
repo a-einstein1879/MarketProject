@@ -23,6 +23,7 @@ Market* Market::getMarket() {
 }
 
 int Market::tick() {
+	tickAgents();
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		while (dealPossible(i))	{dataBase->runPossibleDeal(i);}
 	}
@@ -30,7 +31,6 @@ int Market::tick() {
 	if(timeToRefreshPicture())	{refreshPicture();}
 	if(timeToFinish())		{dataBase->closeDatabase(); return 0;}
 	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda(0) * 1.05, 0);}
-	tickAgents();
 	dataBase->tick();
 	timer++;
 	return 1;

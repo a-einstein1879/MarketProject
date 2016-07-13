@@ -5,6 +5,11 @@
 #include "configurator.h"
 
 struct AgentInfo {
+	int agentId;
+	int numberOfObjects;
+};
+
+struct AgentMode {
 	int *buyerTimersMode;
 	int *sellerTimersMode;
 	int *buyerPricesMode;
@@ -17,6 +22,7 @@ protected:
 	int numberOfObjectTypes;
 
 	AgentInfo agentInfo;
+	AgentMode agentMode;
 
 	/* Timers */
 	int timer;
@@ -47,6 +53,7 @@ protected:
 	double getExponentiallyDistributedValue(double lambda);
 	/* End of statistics*/
 public:
+	static int agentCounter;
 	Agent();
 	~Agent();
 	void tick();

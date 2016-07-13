@@ -1,8 +1,12 @@
 #include "agent.h"
 
+int Agent::agentCounter = 0;
+
 Agent::Agent() {
 	configurator = configurator->getConfigurator();
 	timer = 1;
+	agentInfo.agentId = agentCounter++;
+	agentInfo.numberOfObjects = 0;
 
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
 	allocateMemory();
@@ -29,10 +33,12 @@ Object Agent::getObject() {
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		if(timeLeftBeforeNewObjectBought[i] == 0)	{
 			resetBuyingTimer(i);
+			agentInfo.numberOfObjects++;
 			return getBuyer();
 		}
 		if(timeLeftBeforeNewSellingObject[i] == 0)	{
 			resetSellingTimer(i);
+			agentInfo.numberOfObjects++;
 			return getSeller();
 		}
 	}
@@ -75,17 +81,17 @@ void Agent::freeTimersMemory() {
 }
 
 void Agent::allocateAgentInfoMemory() {
-	agentInfo.buyerTimersMode = new int[numberOfObjectTypes];
-	agentInfo.sellerTimersMode = new int[numberOfObjectTypes];
-	agentInfo.buyerPricesMode = new int[numberOfObjectTypes];
-	agentInfo.sellerPricesMode = new int[numberOfObjectTypes];
+	agentMode.buyerTimersMode = new int[numberOfObjectTypes];
+	agentMode.sellerTimersMode = new int[numberOfObjectTypes];
+	agentMode.buyerPricesMode = new int[numberOfObjectTypes];
+	agentMode.sellerPricesMode = new int[numberOfObjectTypes];
 }
 
 void Agent::freeAgentInfoMemory() {
-	delete [] agentInfo.buyerTimersMode;
-	delete [] agentInfo.sellerTimersMode;
-	delete [] agentInfo.buyerPricesMode;
-	delete [] agentInfo.sellerPricesMode;
+	delete [] agentMode.buyerTimersMode;
+	delete [] agentMode.sellerTimersMode;
+	delete [] agentMode.buyerPricesMode;
+	delete [] agentMode.sellerPricesMode;
 }
 
 /**********************************************************************
@@ -126,10 +132,10 @@ double Agent::getExponentiallyDistributedValue(double lambda) {
 
 OrdinaryAgent::OrdinaryAgent() {
 	for(int i = 0; i < numberOfObjectTypes; i++) {
-		agentInfo.buyerTimersMode[i] = configurator->getBuyerTimersMode(i);
-		agentInfo.sellerTimersMode[i] = configurator->getSellerTimersMode(i);
-		agentInfo.buyerPricesMode[i] = configurator->getBuyerPricesMode(i);
-		agentInfo.sellerPricesMode[i] = configurator->getSellerPricesMode(i);
+		agentMode.buyerTimersMode[i] = configurator->getBuyerTimersMode(i);
+		agentMode.sellerTimersMode[i] = configurator->getSellerTimersMode(i);
+		agentMode.buyerPricesMode[i] = configurator->getBuyerPricesMode(i);
+		agentMode.sellerPricesMode[i] = configurator->getSellerPricesMode(i);
 
 		resetSellingTimer(i);
 		resetBuyingTimer(i);
@@ -137,7 +143,7 @@ OrdinaryAgent::OrdinaryAgent() {
 }
 
 double OrdinaryAgent::formSellingPrice(int type) {
-	switch(agentInfo.sellerPricesMode[type]) {
+	switch(agentMode.sellerPricesMode[type]) {
 		case 1:
 			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation(type));
 		case 0:
@@ -147,7 +153,7 @@ double OrdinaryAgent::formSellingPrice(int type) {
 }
 
 double OrdinaryAgent::formBuyingPrice(int type) {
-	switch(agentInfo.buyerPricesMode[type]) {
+	switch(agentMode.buyerPricesMode[type]) {
 		case 1:
 			return getNormallyDistributedValue(configurator->getBuyersMean(type), configurator->getBuyersStandartDeviation(type));
 		case 0:
@@ -157,7 +163,7 @@ double OrdinaryAgent::formBuyingPrice(int type) {
 }
 
 void OrdinaryAgent::resetSellingTimer(int type) {
-	switch(agentInfo.sellerTimersMode[type]) {
+	switch(agentMode.sellerTimersMode[type]) {
 		case 1:
 			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type)));
 			return;
@@ -168,7 +174,7 @@ void OrdinaryAgent::resetSellingTimer(int type) {
 }
 
 void OrdinaryAgent::resetBuyingTimer(int type) {
-	switch(agentInfo.buyerTimersMode[type]) {
+	switch(agentMode.buyerTimersMode[type]) {
 		case 1:
 			timeLeftBeforeNewObjectBought[type] = int(getExponentiallyDistributedValue(configurator->getBuyersLambda(type)));
 			return;
