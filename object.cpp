@@ -3,7 +3,7 @@
 Object::Object() {
 	generalProperties.price		= 0;
 	generalProperties.status	= 0;
-	generalProperties.type		= 0;
+	generalProperties.type		= -1;
 
 	agentStrategy.numberOfPriceAdaptations = 0;
 	

@@ -48,6 +48,9 @@
     <ClCompile Include="statistics.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="agent.cpp">
+      <Filter>Заголовочные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="statistics.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="agent.h">
+      <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -51,12 +51,7 @@ private:
 	AgentIdProperties agentId;
 	Timers timers;
 	FILE *outputFiles[4];
-	/*
-	0 - At the end of the modeling all buyers prices are stored in the file
-	1 - At the end of the modeling all buyers timers are stored in the file
-	2 - At the end of the modeling all seller prices are stored in the file
-	3 - At the end of the modeling all seller timers are stored in the file
-	*/
+	/* Files description can be found in database */
 
 	Configurator *configurator;
 public:
