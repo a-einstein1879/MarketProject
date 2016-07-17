@@ -36,6 +36,10 @@ void Object::setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, 
 	outputFiles[3] = sellersFinalTimersFile;
 }
 
+void Object::setAgentId(int id) {
+	agentId.agentId = id;
+}
+
 void Object::tick() {
 	timers++;
 }
@@ -66,18 +70,13 @@ bool Object::adaptPrice() {
 	return 0;
 }
 
+/**********************************************************************
+							= and ++ operations
+**********************************************************************/
 ObjectGeneralProperties& ObjectGeneralProperties::operator=(const ObjectGeneralProperties& generalProperties) {
 	price	= generalProperties.price;
 	status	= generalProperties.status;
 	type	= generalProperties.type;
-	return *this;
-}
-
-AgentStrategy& AgentStrategy::operator=(const AgentStrategy& agentStrategy) {
-	numberOfPossiblePriceAdaptations	= agentStrategy.numberOfPossiblePriceAdaptations;
-	numberOfPriceAdaptations			= agentStrategy.numberOfPriceAdaptations;
-	sellerPriceReduceShare				= agentStrategy.sellerPriceReduceShare;
-	buyerPriceReduceShare				= agentStrategy.buyerPriceReduceShare;
 	return *this;
 }
 
@@ -95,6 +94,20 @@ Timers Timers::operator++(int) {
 	return *this;
 }
 
+AgentIdProperties& AgentIdProperties::operator=(const AgentIdProperties& agentIdProperties) {
+	agentId		= agentIdProperties.agentId;
+	objectId	= agentIdProperties.objectId;
+	return *this;
+}
+
+AgentStrategy& AgentStrategy::operator=(const AgentStrategy& agentStrategy) {
+	numberOfPossiblePriceAdaptations	= agentStrategy.numberOfPossiblePriceAdaptations;
+	numberOfPriceAdaptations			= agentStrategy.numberOfPriceAdaptations;
+	sellerPriceReduceShare				= agentStrategy.sellerPriceReduceShare;
+	buyerPriceReduceShare				= agentStrategy.buyerPriceReduceShare;
+	return *this;
+}
+
 Object& Object::operator=(Object &object) {
 	generalProperties	= object.getGeneralProperties();
 	agentStrategy		= object.getAgentStrategy();
@@ -105,7 +118,13 @@ Object& Object::operator=(Object &object) {
 	}
 	return *this;
 }
+/**********************************************************************
+						End of = and ++ operations
+**********************************************************************/
 
+/**********************************************************************
+						>, < and <=, >= operations
+**********************************************************************/
 bool Object::operator<=(Object &object) {
 	if(generalProperties.type != object.getType()) {
 		printf("Type mismatch\n");
@@ -153,6 +172,10 @@ bool Object::operator>(Object &object) {
 		return false;
 	}
 }
+
+/**********************************************************************
+					End of >, < and <=, >= operations
+**********************************************************************/
 
 void Object::pushPriceToHistogram(Histogram &histogram) {
 	histogram.addValueToTmpIndex(generalProperties.price);

@@ -30,6 +30,8 @@ struct Timers {
 struct AgentIdProperties {
 	int agentId;
 	int objectId;
+
+	AgentIdProperties& operator=(const AgentIdProperties& agentIdProperties);
 };
 
 struct AgentStrategy {
@@ -59,6 +61,7 @@ public:
 	Object(double Price, double CreationTime, bool Status, int Type);
 	void setObject(double Price, double Age, bool Status);
 	void setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, FILE *sellersFinalPricesFile, FILE *sellersFinalTimersFile);
+	void setAgentId(int id);
 	void tick();
 	void printObject();
 	void printObjectToFinalFiles();
@@ -73,6 +76,7 @@ public:
 	double	getAge()						{return timers.age;}
 	int		getTimeAfterPriceReduction()	{return timers.timeAfterPriceReduction;}
 	int		getTimer()						{return timers.timer;}
+	int		getAgentId()					{return agentId.agentId;}
 	ObjectGeneralProperties getGeneralProperties()	{return generalProperties;}
 	AgentStrategy			getAgentStrategy()		{return agentStrategy;}
 	AgentIdProperties		getAgentIdProperties()	{return agentId;}

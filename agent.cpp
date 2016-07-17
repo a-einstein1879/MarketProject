@@ -48,12 +48,14 @@ Object Agent::getObject() {
 Object Agent::getSeller() {
 	int rnd = rand()%numberOfObjectTypes;
 	Object object(formSellingPrice(rnd), timer, FORSALE, rnd);
+	object.setAgentId(agentInfo.agentId);
 	return object;
 }
 
 Object Agent::getBuyer() {
 	int rnd = rand()%numberOfObjectTypes;
 	Object object(formBuyingPrice(rnd), timer, BOUGHT, rnd);
+	object.setAgentId(agentInfo.agentId);
 	return object;
 }
 
