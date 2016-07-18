@@ -17,6 +17,7 @@ private:
 
 	int numberOfObjectTypes;
 	OrdinaryAgent agent;
+	Agent* getAgentById(int Id);
 	void tickAgents();
 	void handleDataBaseReturn(DataBaseReturn *returnedObjects);
 

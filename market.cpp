@@ -43,9 +43,15 @@ void Market::tickAgents() {
 	}
 }
 
+
+Agent* Market::getAgentById(int Id) {
+	return &agent;
+}
+
 void Market::handleDataBaseReturn(DataBaseReturn *returnedObjects) {
 	while(returnedObjects->linkList.getNumberOfObjects() != 0) {
-		agent.handleObjectAfterDeal(returnedObjects->linkList.pricePop());
+		Object obj = returnedObjects->linkList.pricePop();
+		getAgentById(obj.getAgentId())->handleObjectAfterDeal(obj);
 	}
 }
 
