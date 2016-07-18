@@ -16,7 +16,10 @@ private:
 	Configurator *configurator;
 
 	int numberOfObjectTypes;
-	OrdinaryAgent agent;
+	int numberOfAgents;
+	Agent* agents[2];
+	OrdinaryAgent agent1;
+	SoloObjectSellingAgent agent2;
 	Agent* getAgentById(int Id);
 	void tickAgents();
 	void handleDataBaseReturn(DataBaseReturn *returnedObjects);

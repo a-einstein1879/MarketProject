@@ -32,6 +32,7 @@ void Agent::switchTimers() {
 
 void Agent::tick() {
 	switchTimers();
+	additionalTickActions();
 }
 
 Object Agent::getObject() {
@@ -80,7 +81,7 @@ void Agent::printAgentInfo() {
 	printf("Agent id = %d\n", agentInfo.agentId);
 	printf("Number of objects owned = %d\n", agentInfo.numberOfObjects);
 	printf("Number of objects sold = %d\n", numberOfObjectsSold);
-	printf("Number of objects sold = %d\n", numberOfObjectsBought);
+	printf("Number of objects bought = %d\n", numberOfObjectsBought);
 	printf("\n");
 }
 
@@ -215,6 +216,54 @@ void OrdinaryAgent::printAgentType() {
 	printf("Ordinary agent\n");
 }
 
+void OrdinaryAgent::additionalTickActions() {}
+
 /**********************************************************************
 						End of ordinary agent
+**********************************************************************/
+
+
+/**********************************************************************
+					Solo object selling agent
+**********************************************************************/
+
+SoloObjectSellingAgent::SoloObjectSellingAgent() {
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		resetSellingTimer(i);
+		resetBuyingTimer(i);
+	}
+}
+
+double SoloObjectSellingAgent::formSellingPrice(int type) {
+	return getNormallyDistributedValue(configurator->getSellersMean(type), 0);
+}
+
+double SoloObjectSellingAgent::formBuyingPrice(int type) {
+	return -1;
+}
+
+void SoloObjectSellingAgent::resetSellingTimer(int type) {
+	switch(configurator->getSellerTimersMode(type)) {
+		case 1:
+			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type))) * 100;
+			return;
+		case 0:
+			timeLeftBeforeNewSellingObject[type] = configurator->getSellersFrequency(type) * 100;
+			return;
+	}
+}
+
+void SoloObjectSellingAgent::resetBuyingTimer(int type) {
+	timeLeftBeforeNewObjectBought[type] = -1;
+}
+
+void SoloObjectSellingAgent::printAgentType() {
+	printf("Solo object selling agent\n");
+}
+
+void SoloObjectSellingAgent::additionalTickActions() {
+}
+
+/**********************************************************************
+					End of solo object selling agent
 **********************************************************************/

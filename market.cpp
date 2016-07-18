@@ -10,6 +10,10 @@ Market::Market() {
 	configurator = configurator->getConfigurator();
 	configurator->printConfiguration();
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
+
+	numberOfAgents = 2;
+	agents[0] = &agent1;
+	agents[1] = &agent2;
 }
 
 Market::~Market() {
@@ -35,23 +39,32 @@ int Market::tick() {
 }
 
 void Market::tickAgents() {
-	agent.tick();
-	while(1) {
-		Object object = agent.getObject();
-		if(object.getType() == -1) {break;}
-		dataBase->pushToDataBase(object);
+	for(int i = 0; i < numberOfAgents; i++) {
+		agents[i]->tick();
+		while(1) {
+			Object object = agents[i]->getObject();
+			if(object.getType() == -1) {break;}
+			dataBase->pushToDataBase(object);
+		}
 	}
 }
 
 
 Agent* Market::getAgentById(int Id) {
-	return &agent;
+	if(Id >= 0 && Id < numberOfAgents) {
+		return agents[Id];
+	} else {
+		return NULL;
+	}
 }
 
 void Market::handleDataBaseReturn(DataBaseReturn *returnedObjects) {
 	while(returnedObjects->linkList.getNumberOfObjects() != 0) {
 		Object obj = returnedObjects->linkList.pricePop();
-		getAgentById(obj.getAgentId())->handleObjectAfterDeal(obj);
+		Agent *agent = getAgentById(obj.getAgentId());
+		if(agent != NULL) {
+			agent->handleObjectAfterDeal(obj);
+		}
 	}
 }
 
@@ -83,7 +96,9 @@ void Market::printTimer() {
 
 void Market::refreshPicture() {
 	dataBase->viewDataBaseInfo();
-	agent.printAgentInfo();
+	for(int i = 0; i < numberOfAgents; i++) {
+		agents[i]->printAgentInfo();
+	}
 	dataBase->gatherStatistics();
 	dataBase->refreshPicture();
 }

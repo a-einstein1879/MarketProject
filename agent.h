@@ -62,6 +62,7 @@ public:
 	Agent();
 	~Agent();
 	void tick();
+	virtual void additionalTickActions() = 0;
 	Object getObject();
 	void printAgentInfo();
 	virtual void printAgentType() = 0;
@@ -76,7 +77,20 @@ private:
 	void resetBuyingTimer(int type);
 public:
 	void printAgentType();
+	void additionalTickActions();
 	OrdinaryAgent();
+};
+
+class SoloObjectSellingAgent : public Agent {
+private:
+	double formSellingPrice(int type);
+	double formBuyingPrice(int type);
+	void resetSellingTimer(int type);
+	void resetBuyingTimer(int type);
+public:
+	void printAgentType();
+	void additionalTickActions();
+	SoloObjectSellingAgent();
 };
 
 #endif

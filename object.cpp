@@ -111,6 +111,7 @@ AgentStrategy& AgentStrategy::operator=(const AgentStrategy& agentStrategy) {
 Object& Object::operator=(Object &object) {
 	generalProperties	= object.getGeneralProperties();
 	agentStrategy		= object.getAgentStrategy();
+	agentId				= object.getAgentIdProperties();
 	timers				= object.getTimers();
 
 	for(int i = 0; i < 4; i++) {
