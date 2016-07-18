@@ -25,6 +25,8 @@ private:
 	double *highestBuyingPrice;
 	LinkList *objectsBought;
 
+	DataBaseReturn objectsForReturn;
+
 	LinkList dealsForSale, dealsBought;
 	
 	Object popLowestSeller(int typeId);
@@ -53,13 +55,16 @@ private:
 public:
 	static DataBase* getDataBase();
 	void start(int Timer);
-	void tick();
-	void closeDatabase();
 	int pushToDataBase(Object newObject);
-	void addDeal(Object newObject);
 
+	DataBaseReturn* getObjectsForHandling() {return &objectsForReturn;}
+	DataBaseReturn* tick();
+	DataBaseReturn* closeDatabase();
+
+	/* Deals */
 	bool dealPossible(int typeId);
 	void runPossibleDeal(int typeId);
+	void addDeal(Object newObject);
 
 	void viewDataBaseInfo();
 	void refreshPicture();

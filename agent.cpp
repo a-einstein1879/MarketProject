@@ -1,4 +1,5 @@
 #include "agent.h"
+#include <stdio.h>
 
 int Agent::agentCounter = 0;
 
@@ -6,7 +7,12 @@ Agent::Agent() {
 	configurator = configurator->getConfigurator();
 	timer = 1;
 	agentInfo.agentId = agentCounter++;
+
+	/* Agent info */
 	agentInfo.numberOfObjects = 0;
+	numberOfObjectsSold = 0;
+	numberOfObjectsBought = 0;
+	/* End of agent info */
 
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
 	allocateMemory();
@@ -57,6 +63,25 @@ Object Agent::getBuyer() {
 	Object object(formBuyingPrice(rnd), timer, BOUGHT, rnd);
 	object.setAgentId(agentInfo.agentId);
 	return object;
+}
+
+void Agent::handleObjectAfterDeal(Object newObject) {
+	if(newObject.getStatus() == FORSALE) {
+		numberOfObjectsSold++;
+	} else {
+		numberOfObjectsBought++;
+	}
+	agentInfo.numberOfObjects--;
+}
+
+void Agent::printAgentInfo() {
+	printf("Agent info:\n");
+	printAgentType();
+	printf("Agent id = %d\n", agentInfo.agentId);
+	printf("Number of objects owned = %d\n", agentInfo.numberOfObjects);
+	printf("Number of objects sold = %d\n", numberOfObjectsSold);
+	printf("Number of objects sold = %d\n", numberOfObjectsBought);
+	printf("\n");
 }
 
 /**********************************************************************
@@ -184,6 +209,10 @@ void OrdinaryAgent::resetBuyingTimer(int type) {
 			timeLeftBeforeNewObjectBought[type] = configurator->getBuyersFrequency(type);
 			return;
 	}
+}
+
+void OrdinaryAgent::printAgentType() {
+	printf("Ordinary agent\n");
 }
 
 /**********************************************************************

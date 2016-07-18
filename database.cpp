@@ -40,16 +40,17 @@ void DataBase::start(int Timer) {
 	timer = Timer;
 }
 
-void DataBase::tick() {
+DataBaseReturn* DataBase::tick() {
 	checkTimers();
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		objectsForSale[i].tick();
 		objectsBought[i].tick();
 	}
 	timer++;
+	return getObjectsForHandling();
 }
 
-void DataBase::closeDatabase() {
+DataBaseReturn* DataBase::closeDatabase() {
 	Object object;
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		while(1) {
@@ -64,6 +65,7 @@ void DataBase::closeDatabase() {
 			else						{object.printObjectToFinalFiles(); continue;}
 		}
 	}
+	return getObjectsForHandling();
 }
 
 /* TODO: maybe checkTimers should be refactored so that sales will be produced in objects themselves, but it is hard to do it without disabling sales for buyers and for deals
@@ -133,6 +135,9 @@ void DataBase::runPossibleDeal(int typeId) {
 	double price, time;
 	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
 	time = buyer.getAge() - seller.getAge();
+
+	objectsForReturn.linkList.push(seller);
+	objectsForReturn.linkList.push(buyer);
 
 	/* Adding new deal to deal database */
 	Object newDeal;

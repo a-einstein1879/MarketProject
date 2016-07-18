@@ -50,4 +50,8 @@ public:
 	void feelLineChart(LineChart &lineChart);
 };
 
+struct DataBaseReturn {
+	LinkList linkList;
+};
+
 #endif

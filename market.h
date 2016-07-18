@@ -18,13 +18,15 @@ private:
 	int numberOfObjectTypes;
 	OrdinaryAgent agent;
 	void tickAgents();
+	void handleDataBaseReturn(DataBaseReturn *returnedObjects);
+
+	void runDeals();
 
 	/* Timers */
 	int timer;
 	/* End of timers */
 
 	/* Timer checkers */
-	bool dealPossible(int typeId);
 	bool timeToPrintTimer();
 	bool timeToRefreshPicture();
 	bool timeToFinish();

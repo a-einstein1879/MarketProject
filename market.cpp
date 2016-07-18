@@ -24,14 +24,12 @@ Market* Market::getMarket() {
 
 int Market::tick() {
 	tickAgents();
-	for(int i = 0; i < numberOfObjectTypes; i++) {
-		while (dealPossible(i))	{dataBase->runPossibleDeal(i);}
-	}
+	runDeals();
 	if(timeToPrintTimer())	{printTimer();}
 	if(timeToRefreshPicture())	{refreshPicture();}
-	if(timeToFinish())		{dataBase->closeDatabase(); return 0;}
+	if(timeToFinish())		{handleDataBaseReturn(dataBase->closeDatabase()); return 0;}
 	//if(timer % 3000 == 0)	{configurator->setSellersLambda(configurator->getSellersLambda(0) * 1.05, 0);}
-	dataBase->tick();
+	handleDataBaseReturn(dataBase->tick());
 	timer++;
 	return 1;
 }
@@ -42,6 +40,18 @@ void Market::tickAgents() {
 		Object object = agent.getObject();
 		if(object.getType() == -1) {break;}
 		dataBase->pushToDataBase(object);
+	}
+}
+
+void Market::handleDataBaseReturn(DataBaseReturn *returnedObjects) {
+	while(returnedObjects->linkList.getNumberOfObjects() != 0) {
+		agent.handleObjectAfterDeal(returnedObjects->linkList.pricePop());
+	}
+}
+
+void Market::runDeals() {
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		while (dataBase->dealPossible(i))	{dataBase->runPossibleDeal(i);}
 	}
 }
 
@@ -57,10 +67,6 @@ bool Market::timeToFinish() {
 	return (timer < configurator->getModelingTime()) ? false : true;
 }
 
-bool Market::dealPossible(int typeId) {
-	return dataBase->dealPossible(typeId);
-}
-
 /**********************************************************************
 							Interface
 **********************************************************************/
@@ -71,6 +77,7 @@ void Market::printTimer() {
 
 void Market::refreshPicture() {
 	dataBase->viewDataBaseInfo();
+	agent.printAgentInfo();
 	dataBase->gatherStatistics();
 	dataBase->refreshPicture();
 }

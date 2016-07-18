@@ -21,8 +21,13 @@ protected:
 	Configurator *configurator;
 	int numberOfObjectTypes;
 
+	/* Agent info */
 	AgentInfo agentInfo;
 	AgentMode agentMode;
+
+	int numberOfObjectsSold;
+	int numberOfObjectsBought;
+	/* End of agent info */
 
 	/* Timers */
 	int timer;
@@ -58,6 +63,9 @@ public:
 	~Agent();
 	void tick();
 	Object getObject();
+	void printAgentInfo();
+	virtual void printAgentType() = 0;
+	void handleObjectAfterDeal(Object newObject);
 };
 
 class OrdinaryAgent : public Agent {
@@ -67,6 +75,7 @@ private:
 	void resetSellingTimer(int type);
 	void resetBuyingTimer(int type);
 public:
+	void printAgentType();
 	OrdinaryAgent();
 };
 
