@@ -16,6 +16,15 @@ struct AgentMode {
 	int *sellerPricesMode;
 };
 
+struct Status {
+	int numberOfObjects;
+	double averageWaitingTime;
+};
+
+struct AgentStatistics {
+	Status forsale, bought;
+};
+
 class Agent {
 protected:
 	Configurator *configurator;
@@ -24,9 +33,7 @@ protected:
 	/* Agent info */
 	AgentInfo agentInfo;
 	AgentMode agentMode;
-
-	int numberOfObjectsSold;
-	int numberOfObjectsBought;
+	AgentStatistics agentStatistics;
 	/* End of agent info */
 
 	/* Timers */

@@ -49,7 +49,7 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="agent.cpp">
-      <Filter>Заголовочные файлы</Filter>
+      <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +81,7 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="agent.h">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

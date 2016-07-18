@@ -10,8 +10,10 @@ Agent::Agent() {
 
 	/* Agent info */
 	agentInfo.numberOfObjects = 0;
-	numberOfObjectsSold = 0;
-	numberOfObjectsBought = 0;
+	agentStatistics.forsale.numberOfObjects = 0;
+	agentStatistics.forsale.averageWaitingTime = 0;
+	agentStatistics.bought.numberOfObjects = 0;
+	agentStatistics.bought.averageWaitingTime = 0;
 	/* End of agent info */
 
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
@@ -66,11 +68,15 @@ Object Agent::getBuyer() {
 	return object;
 }
 
+#define wt(arg) agentStatistics.arg.averageWaitingTime
+#define no(arg) agentStatistics.arg.numberOfObjects
 void Agent::handleObjectAfterDeal(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
-		numberOfObjectsSold++;
+		wt(forsale) = wt(forsale) * double(no(forsale)) / double (no(forsale) + 1) + double(newObject.getAge()) / double (no(forsale) + 1);
+		no(forsale)++;
 	} else {
-		numberOfObjectsBought++;
+		wt(bought) = wt(bought) * double(no(bought)) / double (no(bought) + 1) + double(newObject.getAge()) / double (no(bought) + 1);
+		no(bought)++;
 	}
 	agentInfo.numberOfObjects--;
 }
@@ -80,10 +86,15 @@ void Agent::printAgentInfo() {
 	printAgentType();
 	printf("Agent id = %d\n", agentInfo.agentId);
 	printf("Number of objects owned = %d\n", agentInfo.numberOfObjects);
-	printf("Number of objects sold = %d\n", numberOfObjectsSold);
-	printf("Number of objects bought = %d\n", numberOfObjectsBought);
+	printf("Number of objects sold = %d\n", no(forsale));
+	printf("Number of objects bought = %d\n", no(bought));
+	printf("Average waiting time sold = %.2f\n", wt(forsale));
+	printf("Average waiting time bought = %.2f\n", wt(bought));
 	printf("\n");
 }
+
+#undef wt
+#undef no
 
 /**********************************************************************
 							Memory allocation
@@ -245,10 +256,10 @@ double SoloObjectSellingAgent::formBuyingPrice(int type) {
 void SoloObjectSellingAgent::resetSellingTimer(int type) {
 	switch(configurator->getSellerTimersMode(type)) {
 		case 1:
-			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type))) * 100;
+			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type))) * 50;
 			return;
 		case 0:
-			timeLeftBeforeNewSellingObject[type] = configurator->getSellersFrequency(type) * 100;
+			timeLeftBeforeNewSellingObject[type] = configurator->getSellersFrequency(type) * 50;
 			return;
 	}
 }

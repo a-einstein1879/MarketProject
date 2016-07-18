@@ -81,6 +81,7 @@ void DataBase::checkTimers() {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}
+			else {objectsForReturn.linkList.push(object);}
 		}
 	
 		ret = true;
@@ -90,6 +91,7 @@ void DataBase::checkTimers() {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}
+			else {objectsForReturn.linkList.push(object);}
 		}
 
 		refreshPrices();
