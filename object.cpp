@@ -2,6 +2,7 @@
 
 Object::Object() {
 	generalProperties.price		= 0;
+	generalProperties.originalPrice	= 0;
 	generalProperties.status	= 0;
 	generalProperties.type		= -1;
 
@@ -22,6 +23,7 @@ Object::Object(double Price, double CreationTime, bool Status, int Type) {
 }
 
 void Object::setObject(double Price, double Age, bool Status) {
+	generalProperties.originalPrice			= Price;
 	generalProperties.price					= Price;
 	generalProperties.status				= Status;
 	agentStrategy.numberOfPriceAdaptations	= 0;
@@ -74,6 +76,7 @@ bool Object::adaptPrice() {
 							= and ++ operations
 **********************************************************************/
 ObjectGeneralProperties& ObjectGeneralProperties::operator=(const ObjectGeneralProperties& generalProperties) {
+	originalPrice = generalProperties.originalPrice;
 	price	= generalProperties.price;
 	status	= generalProperties.status;
 	type	= generalProperties.type;

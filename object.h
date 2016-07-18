@@ -11,6 +11,7 @@ Operators > and < are defined to find younger or older objects not comparing obj
 */
 
 struct ObjectGeneralProperties {
+	double originalPrice;
 	double price;
 	bool status;
 	int type;
@@ -70,6 +71,7 @@ public:
 	bool adaptPrice();
 
 	/* Get */
+	double	getOriginalPrice()				{return generalProperties.originalPrice;}
 	double	getPrice()						{return generalProperties.price;}
 	bool	getStatus()						{return generalProperties.status;}
 	int		getType()						{return generalProperties.type;}

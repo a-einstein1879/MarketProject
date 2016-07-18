@@ -59,11 +59,18 @@ Agent* Market::getAgentById(int Id) {
 }
 
 void Market::handleDataBaseReturn(DataBaseReturn *returnedObjects) {
-	while(returnedObjects->linkList.getNumberOfObjects() != 0) {
-		Object obj = returnedObjects->linkList.pricePop();
+	while(returnedObjects->dealtObjects.getNumberOfObjects() != 0) {
+		Object obj = returnedObjects->dealtObjects.pricePop();
 		Agent *agent = getAgentById(obj.getAgentId());
 		if(agent != NULL) {
 			agent->handleObjectAfterDeal(obj);
+		}
+	}
+	while(returnedObjects->timeoutObjects.getNumberOfObjects() != 0) {
+		Object obj = returnedObjects->timeoutObjects.pricePop();
+		Agent *agent = getAgentById(obj.getAgentId());
+		if(agent != NULL) {
+			agent->handleTimeoutObject(obj);
 		}
 	}
 }

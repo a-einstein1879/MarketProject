@@ -19,6 +19,7 @@ struct AgentMode {
 struct Status {
 	int numberOfObjects;
 	double averageWaitingTime;
+	double averagePrice;
 };
 
 struct AgentStatistics {
@@ -74,6 +75,7 @@ public:
 	void printAgentInfo();
 	virtual void printAgentType() = 0;
 	void handleObjectAfterDeal(Object newObject);
+	void handleTimeoutObject(Object newObject);
 };
 
 class OrdinaryAgent : public Agent {

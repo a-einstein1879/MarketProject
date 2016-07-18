@@ -81,7 +81,7 @@ void DataBase::checkTimers() {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}
-			else {objectsForReturn.linkList.push(object);}
+			else {objectsForReturn.timeoutObjects.push(object);}
 		}
 	
 		ret = true;
@@ -91,7 +91,7 @@ void DataBase::checkTimers() {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}
-			else {objectsForReturn.linkList.push(object);}
+			else {objectsForReturn.timeoutObjects.push(object);}
 		}
 
 		refreshPrices();
@@ -138,8 +138,8 @@ void DataBase::runPossibleDeal(int typeId) {
 	price = ( buyer.getPrice() + seller.getPrice() ) / 2;
 	time = buyer.getAge() - seller.getAge();
 
-	objectsForReturn.linkList.push(seller);
-	objectsForReturn.linkList.push(buyer);
+	objectsForReturn.dealtObjects.push(seller);
+	objectsForReturn.dealtObjects.push(buyer);
 
 	/* Adding new deal to deal database */
 	Object newDeal;

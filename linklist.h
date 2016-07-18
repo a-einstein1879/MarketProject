@@ -51,7 +51,8 @@ public:
 };
 
 struct DataBaseReturn {
-	LinkList linkList;
+	LinkList dealtObjects;
+	LinkList timeoutObjects;
 };
 
 #endif
