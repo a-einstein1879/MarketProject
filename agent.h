@@ -55,6 +55,8 @@ protected:
 	void freeTimersMemory();
 	/* End of memory */
 
+	virtual bool readyToGenerateSeller(int type) = 0;
+	virtual bool readyToGenerateBuyer(int type) = 0;
 	Object getSeller();
 	Object getBuyer();
 
@@ -82,6 +84,8 @@ public:
 
 class OrdinaryAgent : public Agent {
 private:
+	bool readyToGenerateSeller(int type);
+	bool readyToGenerateBuyer(int type);
 	double formSellingPrice(int type);
 	double formBuyingPrice(int type);
 	void resetSellingTimer(int type);
@@ -94,6 +98,8 @@ public:
 
 class SoloObjectSellingAgent : public Agent {
 private:
+	bool readyToGenerateSeller(int type);
+	bool readyToGenerateBuyer(int type);
 	double formSellingPrice(int type);
 	double formBuyingPrice(int type);
 	void resetSellingTimer(int type);

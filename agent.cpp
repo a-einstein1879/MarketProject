@@ -46,13 +46,13 @@ void Agent::tick() {
 Object Agent::getObject() {
 	Object object;
 	for(int i = 0; i < numberOfObjectTypes; i++) {
-		if(timeLeftBeforeNewObjectBought[i] == 0)	{
+		if(readyToGenerateBuyer(i)) {
 			resetBuyingTimer(i);
 			agentInfo.numberOfObjects++;
 			agentStatistics.bought.numberOfObjectsGenerated++;
 			return getBuyer();
 		}
-		if(timeLeftBeforeNewSellingObject[i] == 0)	{
+		if(readyToGenerateSeller(i))	{
 			resetSellingTimer(i);
 			agentInfo.numberOfObjects++;
 			agentStatistics.forsale.numberOfObjectsGenerated++;
@@ -210,6 +210,16 @@ OrdinaryAgent::OrdinaryAgent() {
 	}
 }
 
+bool OrdinaryAgent::readyToGenerateSeller(int type) {
+	if(timeLeftBeforeNewSellingObject[type] <= 0) {return true;}
+	else {return false;}
+}
+
+bool OrdinaryAgent::readyToGenerateBuyer(int type) {
+	if(timeLeftBeforeNewObjectBought[type] <= 0) {return true;}
+	else {return false;}
+}
+
 double OrdinaryAgent::formSellingPrice(int type) {
 	switch(agentMode.sellerPricesMode[type]) {
 		case 1:
@@ -274,6 +284,15 @@ SoloObjectSellingAgent::SoloObjectSellingAgent() {
 	}
 }
 
+bool SoloObjectSellingAgent::readyToGenerateSeller(int type) {
+	if(agentInfo.numberOfObjects == 0) {return true;}
+	else {return false;}
+}
+
+bool SoloObjectSellingAgent::readyToGenerateBuyer(int type) {
+	return false;
+}
+
 double SoloObjectSellingAgent::formSellingPrice(int type) {
 	return getNormallyDistributedValue(configurator->getSellersMean(type), 0);
 }
@@ -283,18 +302,11 @@ double SoloObjectSellingAgent::formBuyingPrice(int type) {
 }
 
 void SoloObjectSellingAgent::resetSellingTimer(int type) {
-	switch(configurator->getSellerTimersMode(type)) {
-		case 1:
-			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type))) * 50;
-			return;
-		case 0:
-			timeLeftBeforeNewSellingObject[type] = configurator->getSellersFrequency(type) * 50;
-			return;
-	}
+	return;
 }
 
 void SoloObjectSellingAgent::resetBuyingTimer(int type) {
-	timeLeftBeforeNewObjectBought[type] = -1;
+	return;
 }
 
 void SoloObjectSellingAgent::printAgentType() {
