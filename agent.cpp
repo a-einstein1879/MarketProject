@@ -40,7 +40,6 @@ void Agent::switchTimers() {
 
 void Agent::tick() {
 	switchTimers();
-	additionalTickActions();
 }
 
 Object Agent::getObject() {
@@ -149,17 +148,17 @@ void Agent::freeTimersMemory() {
 }
 
 void Agent::allocateAgentInfoMemory() {
-	agentMode.buyerTimersMode = new int[numberOfObjectTypes];
-	agentMode.sellerTimersMode = new int[numberOfObjectTypes];
-	agentMode.buyerPricesMode = new int[numberOfObjectTypes];
-	agentMode.sellerPricesMode = new int[numberOfObjectTypes];
+	agentConfiguration.buyers.timerMode = new int[numberOfObjectTypes];
+	agentConfiguration.buyers.priceMode = new int[numberOfObjectTypes];
+	agentConfiguration.sellers.timerMode = new int[numberOfObjectTypes];
+	agentConfiguration.sellers.priceMode = new int[numberOfObjectTypes];
 }
 
 void Agent::freeAgentInfoMemory() {
-	delete [] agentMode.buyerTimersMode;
-	delete [] agentMode.sellerTimersMode;
-	delete [] agentMode.buyerPricesMode;
-	delete [] agentMode.sellerPricesMode;
+	delete [] agentConfiguration.buyers.timerMode;
+	delete [] agentConfiguration.buyers.priceMode;
+	delete [] agentConfiguration.sellers.timerMode;
+	delete [] agentConfiguration.sellers.priceMode;
 }
 
 /**********************************************************************
@@ -199,12 +198,8 @@ double Agent::getExponentiallyDistributedValue(double lambda) {
 **********************************************************************/
 
 OrdinaryAgent::OrdinaryAgent() {
+	setAgentConfiguration();
 	for(int i = 0; i < numberOfObjectTypes; i++) {
-		agentMode.buyerTimersMode[i] = configurator->getBuyerTimersMode(i);
-		agentMode.sellerTimersMode[i] = configurator->getSellerTimersMode(i);
-		agentMode.buyerPricesMode[i] = configurator->getBuyerPricesMode(i);
-		agentMode.sellerPricesMode[i] = configurator->getSellerPricesMode(i);
-
 		resetSellingTimer(i);
 		resetBuyingTimer(i);
 	}
@@ -221,7 +216,7 @@ bool OrdinaryAgent::readyToGenerateBuyer(int type) {
 }
 
 double OrdinaryAgent::formSellingPrice(int type) {
-	switch(agentMode.sellerPricesMode[type]) {
+	switch(agentConfiguration.sellers.priceMode[type]) {
 		case 1:
 			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation(type));
 		case 0:
@@ -231,7 +226,7 @@ double OrdinaryAgent::formSellingPrice(int type) {
 }
 
 double OrdinaryAgent::formBuyingPrice(int type) {
-	switch(agentMode.buyerPricesMode[type]) {
+	switch(agentConfiguration.buyers.priceMode[type]) {
 		case 1:
 			return getNormallyDistributedValue(configurator->getBuyersMean(type), configurator->getBuyersStandartDeviation(type));
 		case 0:
@@ -241,7 +236,7 @@ double OrdinaryAgent::formBuyingPrice(int type) {
 }
 
 void OrdinaryAgent::resetSellingTimer(int type) {
-	switch(agentMode.sellerTimersMode[type]) {
+	switch(agentConfiguration.sellers.timerMode[type]) {
 		case 1:
 			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type)));
 			return;
@@ -252,7 +247,7 @@ void OrdinaryAgent::resetSellingTimer(int type) {
 }
 
 void OrdinaryAgent::resetBuyingTimer(int type) {
-	switch(agentMode.buyerTimersMode[type]) {
+	switch(agentConfiguration.buyers.timerMode[type]) {
 		case 1:
 			timeLeftBeforeNewObjectBought[type] = int(getExponentiallyDistributedValue(configurator->getBuyersLambda(type)));
 			return;
@@ -262,11 +257,34 @@ void OrdinaryAgent::resetBuyingTimer(int type) {
 	}
 }
 
+#define sellers		agentConfiguration.sellers
+#define buyers		agentConfiguration.buyers
+#define conf		agentConfiguration
+#define c			configurator->
+
+void OrdinaryAgent::setAgentConfiguration() {
+	for(int i = 0; i < numberOfObjectTypes; i++) {
+		buyers.timerMode[i]  = c getBuyerTimersMode(i);
+		buyers.priceMode[i]	 = c getBuyerPricesMode(i);
+		sellers.timerMode[i] = c getSellerTimersMode(i);
+		sellers.priceMode[i] = c getSellerPricesMode(i);
+	}
+
+	conf.numberOfPossiblePriceAdaptations = c getNumberOfPriceAdaptations();
+	conf.amountOfPriceReduction = c getSellerPriceReduceShare();
+	conf.timeOfPriceReduction = c getSellerPriceReduceAge();
+	conf.amountOfPriceMagnification = c getBuyerPriceIncreaseShare();
+	conf.timeOfPriceMagnification = c getBuyerPriceIncreaseAge();
+}
+
+#undef sellers
+#undef buyers
+#undef conf
+#undef c
+
 void OrdinaryAgent::printAgentType() {
 	printf("Ordinary agent\n");
 }
-
-void OrdinaryAgent::additionalTickActions() {}
 
 /**********************************************************************
 						End of ordinary agent
@@ -278,6 +296,7 @@ void OrdinaryAgent::additionalTickActions() {}
 **********************************************************************/
 
 SoloObjectSellingAgent::SoloObjectSellingAgent() {
+	setAgentConfiguration();
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		resetSellingTimer(i);
 		resetBuyingTimer(i);
@@ -309,11 +328,10 @@ void SoloObjectSellingAgent::resetBuyingTimer(int type) {
 	return;
 }
 
+void SoloObjectSellingAgent::setAgentConfiguration() {}
+
 void SoloObjectSellingAgent::printAgentType() {
 	printf("Solo object selling agent\n");
-}
-
-void SoloObjectSellingAgent::additionalTickActions() {
 }
 
 /**********************************************************************

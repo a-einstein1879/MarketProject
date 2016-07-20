@@ -9,11 +9,20 @@ struct AgentInfo {
 	int numberOfObjects;
 };
 
-struct AgentMode {
-	int *buyerTimersMode;
-	int *sellerTimersMode;
-	int *buyerPricesMode;
-	int *sellerPricesMode;
+struct GeneratorMode {
+	int *timerMode;
+
+	int *priceMode;
+};
+
+struct AgentConfiguration {
+	int numberOfPossiblePriceAdaptations;
+	double amountOfPriceReduction;
+	int timeOfPriceReduction;
+	double amountOfPriceMagnification;
+	int timeOfPriceMagnification;
+
+	GeneratorMode sellers, buyers;
 };
 
 struct Status {
@@ -35,7 +44,7 @@ protected:
 
 	/* Agent info */
 	AgentInfo agentInfo;
-	AgentMode agentMode;
+	AgentConfiguration agentConfiguration;
 	AgentStatistics agentStatistics;
 	/* End of agent info */
 
@@ -74,7 +83,6 @@ public:
 	Agent();
 	~Agent();
 	void tick();
-	virtual void additionalTickActions() = 0;
 	Object getObject();
 	void printAgentInfo();
 	virtual void printAgentType() = 0;
@@ -86,13 +94,15 @@ class OrdinaryAgent : public Agent {
 private:
 	bool readyToGenerateSeller(int type);
 	bool readyToGenerateBuyer(int type);
+	
 	double formSellingPrice(int type);
 	double formBuyingPrice(int type);
 	void resetSellingTimer(int type);
 	void resetBuyingTimer(int type);
+
+	void setAgentConfiguration();
 public:
 	void printAgentType();
-	void additionalTickActions();
 	OrdinaryAgent();
 };
 
@@ -100,13 +110,15 @@ class SoloObjectSellingAgent : public Agent {
 private:
 	bool readyToGenerateSeller(int type);
 	bool readyToGenerateBuyer(int type);
+	
 	double formSellingPrice(int type);
 	double formBuyingPrice(int type);
 	void resetSellingTimer(int type);
 	void resetBuyingTimer(int type);
+	
+	void setAgentConfiguration();
 public:
 	void printAgentType();
-	void additionalTickActions();
 	SoloObjectSellingAgent();
 };
 

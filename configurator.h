@@ -113,7 +113,7 @@ public:
 	int getBuyersFrequency(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersFrequency[type];}}
 	double getBuyersLambda(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersLambda[type];}}
 	
-	double getNumberOfPriceAdaptations()	{return numberOfPriceAdaptations;}
+	int getNumberOfPriceAdaptations()	{return numberOfPriceAdaptations;}
 	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
 	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
 	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
