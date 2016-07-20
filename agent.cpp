@@ -12,10 +12,14 @@ Agent::Agent() {
 	agentInfo.numberOfObjects = 0;
 	agentStatistics.forsale.numberOfObjects = 0;
 	agentStatistics.forsale.averageWaitingTime = 0;
-	agentStatistics.forsale.averagePrice = 0;
+	agentStatistics.forsale.averageStartPrice = 0;
+	agentStatistics.forsale.numberOfObjectsGenerated = 0;
+	agentStatistics.forsale.averagePriceAtMomentOfDeal = 0;
 	agentStatistics.bought.numberOfObjects = 0;
 	agentStatistics.bought.averageWaitingTime = 0;
-	agentStatistics.bought.averagePrice = 0;
+	agentStatistics.bought.averageStartPrice = 0;
+	agentStatistics.bought.numberOfObjectsGenerated = 0;
+	agentStatistics.bought.averagePriceAtMomentOfDeal = 0;
 	/* End of agent info */
 
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
@@ -45,11 +49,13 @@ Object Agent::getObject() {
 		if(timeLeftBeforeNewObjectBought[i] == 0)	{
 			resetBuyingTimer(i);
 			agentInfo.numberOfObjects++;
+			agentStatistics.bought.numberOfObjectsGenerated++;
 			return getBuyer();
 		}
 		if(timeLeftBeforeNewSellingObject[i] == 0)	{
 			resetSellingTimer(i);
 			agentInfo.numberOfObjects++;
+			agentStatistics.forsale.numberOfObjectsGenerated++;
 			return getSeller();
 		}
 	}
@@ -70,18 +76,23 @@ Object Agent::getBuyer() {
 	return object;
 }
 
-#define wt(arg) agentStatistics.arg.averageWaitingTime
-#define no(arg) agentStatistics.arg.numberOfObjects
-#define pr(arg) agentStatistics.arg.averagePrice
+#define wt(arg)	 agentStatistics.arg.averageWaitingTime
+#define no(arg)	 agentStatistics.arg.numberOfObjects
+#define pr(arg)	 agentStatistics.arg.averageStartPrice
+#define dpr(arg) agentStatistics.bought.averagePriceAtMomentOfDeal
 
 void Agent::handleObjectAfterDeal(Object newObject) {
 	if(newObject.getStatus() == FORSALE) {
 		wt(forsale) = wt(forsale) * double(no(forsale)) / double (no(forsale) + 1) + double(newObject.getAge()) / double (no(forsale) + 1);
+		wt(bought)	= wt(bought)  * double(no(bought))  / double (no(bought)  + 1) + double(0)                  / double (no(bought)  + 1);
 		pr(forsale) = pr(forsale) * double(no(forsale)) / double (no(forsale) + 1) + double(newObject.getOriginalPrice()) / double (no(forsale) + 1);
+		dpr(forsale) = dpr(forsale) * double(no(forsale)) / double (no(forsale) + 1) + double(newObject.getPrice()) / double (no(forsale) + 1);
 		no(forsale)++;
 	} else {
-		wt(bought) = wt(bought) * double(no(bought)) / double (no(bought) + 1) + double(newObject.getAge()) / double (no(bought) + 1);
+		wt(forsale) = wt(forsale) * double(no(forsale)) / double (no(forsale) + 1) + double(0)                  / double (no(forsale) + 1);
+		wt(bought)  = wt(bought)  * double(no(bought))  / double (no(bought)  + 1) + double(newObject.getAge()) / double (no(bought)  + 1);
 		pr(bought) = pr(bought) * double(no(bought)) / double (no(bought) + 1) + double(newObject.getOriginalPrice()) / double (no(bought) + 1);
+		dpr(bought) = dpr(bought) * double(no(bought)) / double (no(bought) + 1) + double(newObject.getPrice()) / double (no(bought) + 1);
 		no(bought)++;
 	}
 	agentInfo.numberOfObjects--;
@@ -101,12 +112,12 @@ void Agent::printAgentInfo() {
 	printAgentType();
 	printf("Agent id = %d\n", agentInfo.agentId);
 	printf("Number of objects owned = %d\n", agentInfo.numberOfObjects);
-	printf("Number of objects sold = %d\n", no(forsale));
-	printf("Number of objects bought = %d\n", no(bought));
+	printf("Number of objects sold  /generated = %d/%d (%.2f%%)\n", no(forsale), agentStatistics.forsale.numberOfObjectsGenerated, (agentStatistics.forsale.numberOfObjectsGenerated != 0)?100 * double(no(forsale)) / double(agentStatistics.forsale.numberOfObjectsGenerated):0);
+	printf("Number of objects bought/generated = %d/%d (%.2f%%)\n", no(bought),  agentStatistics.bought.numberOfObjectsGenerated,  (agentStatistics.bought.numberOfObjectsGenerated  != 0)?100 * double(no(bought))  / double(agentStatistics.bought.numberOfObjectsGenerated):0);
 	printf("Average waiting time sold = %.2f\n", wt(forsale));
 	printf("Average waiting time bought = %.2f\n", wt(bought));
-	printf("Average price sold = %.2f\n", pr(forsale));
-	printf("Average price bought = %.2f\n", pr(bought));
+	printf("Average start/sold   price = %.2f/%.2f\n", pr(forsale), dpr(forsale));
+	printf("Average start/bought price = %.2f/%.2f\n", pr(bought), dpr(bought));
 	printf("\n");
 }
 

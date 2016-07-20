@@ -18,8 +18,10 @@ struct AgentMode {
 
 struct Status {
 	int numberOfObjects;
+	int numberOfObjectsGenerated;
 	double averageWaitingTime;
-	double averagePrice;
+	double averageStartPrice;
+	double averagePriceAtMomentOfDeal;
 };
 
 struct AgentStatistics {
