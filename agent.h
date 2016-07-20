@@ -11,8 +11,14 @@ struct AgentInfo {
 
 struct GeneratorMode {
 	int *timerMode;
+	int *timerFrequency;
+	double *timerLambda;
 
 	int *priceMode;
+	double *minimumPrice;
+	double *maximumPrice;
+	double *mean;
+	double *standartDeviation;
 };
 
 struct AgentConfiguration {

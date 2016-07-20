@@ -147,19 +147,56 @@ void Agent::freeTimersMemory() {
 	delete [] timeLeftBeforeNewObjectBought;
 }
 
+
+#define sellers		agentConfiguration.sellers
+#define buyers		agentConfiguration.buyers
+
 void Agent::allocateAgentInfoMemory() {
-	agentConfiguration.buyers.timerMode = new int[numberOfObjectTypes];
-	agentConfiguration.buyers.priceMode = new int[numberOfObjectTypes];
-	agentConfiguration.sellers.timerMode = new int[numberOfObjectTypes];
-	agentConfiguration.sellers.priceMode = new int[numberOfObjectTypes];
+	buyers.timerMode = new int[numberOfObjectTypes];
+	buyers.timerFrequency = new int[numberOfObjectTypes];
+	buyers.timerLambda = new double[numberOfObjectTypes];
+	
+	buyers.priceMode = new int[numberOfObjectTypes];
+	buyers.minimumPrice = new double[numberOfObjectTypes];
+	buyers.maximumPrice = new double[numberOfObjectTypes];
+	buyers.mean = new double[numberOfObjectTypes];
+	buyers.standartDeviation = new double[numberOfObjectTypes];
+	
+	sellers.timerMode = new int[numberOfObjectTypes];
+	sellers.timerFrequency = new int[numberOfObjectTypes];
+	sellers.timerLambda = new double[numberOfObjectTypes];
+
+	sellers.priceMode = new int[numberOfObjectTypes];
+	sellers.minimumPrice = new double[numberOfObjectTypes];
+	sellers.maximumPrice = new double[numberOfObjectTypes];
+	sellers.mean = new double[numberOfObjectTypes];
+	sellers.standartDeviation = new double[numberOfObjectTypes];
 }
 
 void Agent::freeAgentInfoMemory() {
-	delete [] agentConfiguration.buyers.timerMode;
-	delete [] agentConfiguration.buyers.priceMode;
-	delete [] agentConfiguration.sellers.timerMode;
-	delete [] agentConfiguration.sellers.priceMode;
+	delete [] buyers.timerMode;
+	delete [] buyers.timerFrequency;
+	delete [] buyers.timerLambda;
+	
+	delete [] buyers.priceMode;
+	delete [] buyers.minimumPrice;
+	delete [] buyers.maximumPrice;
+	delete [] buyers.mean;
+	delete [] buyers.standartDeviation;
+	
+	delete [] sellers.timerMode;
+	delete [] sellers.timerFrequency;
+	delete [] sellers.timerLambda;
+
+	delete [] sellers.priceMode;
+	delete [] sellers.minimumPrice;
+	delete [] sellers.maximumPrice;
+	delete [] sellers.mean;
+	delete [] sellers.standartDeviation;
 }
+
+#undef sellers
+#undef buyers
 
 /**********************************************************************
 							End of memory allocation
@@ -215,59 +252,75 @@ bool OrdinaryAgent::readyToGenerateBuyer(int type) {
 	else {return false;}
 }
 
+#define sellers		agentConfiguration.sellers
+#define buyers		agentConfiguration.buyers
+
 double OrdinaryAgent::formSellingPrice(int type) {
-	switch(agentConfiguration.sellers.priceMode[type]) {
+	switch(sellers.priceMode[type]) {
 		case 1:
-			return getNormallyDistributedValue(configurator->getSellersMean(type), configurator->getSellersStandartDeviation(type));
+			return getNormallyDistributedValue(sellers.mean[type], sellers.standartDeviation[type]);
 		case 0:
-			return configurator->getMinimumSellersPrice(type) + rand()%int(configurator->getMaximumSellersPrice(type) - configurator->getMinimumSellersPrice(type) + 1);
+			return sellers.minimumPrice[type] + rand()%int(sellers.maximumPrice[type] - sellers.minimumPrice[type] + 1);
 	}
 	return -1;
 }
 
 double OrdinaryAgent::formBuyingPrice(int type) {
-	switch(agentConfiguration.buyers.priceMode[type]) {
+	switch(buyers.priceMode[type]) {
 		case 1:
-			return getNormallyDistributedValue(configurator->getBuyersMean(type), configurator->getBuyersStandartDeviation(type));
+			return getNormallyDistributedValue(buyers.mean[type], buyers.standartDeviation[type]);
 		case 0:
-			return configurator->getMinimumBuyersPrice(type) + rand()%int(configurator->getMaximumBuyersPrice(type) - configurator->getMinimumBuyersPrice(type) + 1);
+			return buyers.minimumPrice[type] + rand()%int(buyers.maximumPrice[type] - buyers.minimumPrice[type] + 1);
 	}
 	return -1;
 }
 
 void OrdinaryAgent::resetSellingTimer(int type) {
-	switch(agentConfiguration.sellers.timerMode[type]) {
+	switch(sellers.timerMode[type]) {
 		case 1:
-			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(configurator->getSellersLambda(type)));
+			timeLeftBeforeNewSellingObject[type] = int(getExponentiallyDistributedValue(sellers.timerLambda[type]));
 			return;
 		case 0:
-			timeLeftBeforeNewSellingObject[type] = configurator->getSellersFrequency(type);
+			timeLeftBeforeNewSellingObject[type] = sellers.timerFrequency[type];
 			return;
 	}
 }
 
 void OrdinaryAgent::resetBuyingTimer(int type) {
-	switch(agentConfiguration.buyers.timerMode[type]) {
+	switch(buyers.timerMode[type]) {
 		case 1:
-			timeLeftBeforeNewObjectBought[type] = int(getExponentiallyDistributedValue(configurator->getBuyersLambda(type)));
+			timeLeftBeforeNewObjectBought[type] = int(getExponentiallyDistributedValue(buyers.timerLambda[type]));
 			return;
 		case 0:
-			timeLeftBeforeNewObjectBought[type] = configurator->getBuyersFrequency(type);
+			timeLeftBeforeNewObjectBought[type] = buyers.timerFrequency[type];
 			return;
 	}
 }
 
-#define sellers		agentConfiguration.sellers
-#define buyers		agentConfiguration.buyers
 #define conf		agentConfiguration
 #define c			configurator->
 
 void OrdinaryAgent::setAgentConfiguration() {
 	for(int i = 0; i < numberOfObjectTypes; i++) {
-		buyers.timerMode[i]  = c getBuyerTimersMode(i);
-		buyers.priceMode[i]	 = c getBuyerPricesMode(i);
-		sellers.timerMode[i] = c getSellerTimersMode(i);
-		sellers.priceMode[i] = c getSellerPricesMode(i);
+		buyers.timerMode[i]			= c getBuyerTimersMode(i);
+		buyers.timerFrequency[i]	= c getBuyersFrequency(i);
+		buyers.timerLambda[i]		= c getBuyersLambda(i);
+
+		buyers.priceMode[i]			= c getBuyerPricesMode(i);
+		buyers.minimumPrice[i]		= c getMinimumBuyersPrice(i);
+		buyers.maximumPrice[i]		= c getMaximumBuyersPrice(i);
+		buyers.mean[i]				= c getBuyersMean(i);
+		buyers.standartDeviation[i] = c getBuyersStandartDeviation(i);
+
+		sellers.timerMode[i]		= c getSellerTimersMode(i);
+		sellers.timerFrequency[i]	= c getSellersFrequency(i);
+		sellers.timerLambda[i]		= c getSellersLambda(i);
+
+		sellers.priceMode[i]		= c getSellerPricesMode(i);
+		sellers.minimumPrice[i]		= c getMinimumSellersPrice(i);
+		sellers.maximumPrice[i]		= c getMaximumSellersPrice(i);
+		sellers.mean[i]				= c getSellersMean(i);
+		sellers.standartDeviation[i] = c getSellersStandartDeviation(i);
 	}
 
 	conf.numberOfPossiblePriceAdaptations = c getNumberOfPriceAdaptations();
