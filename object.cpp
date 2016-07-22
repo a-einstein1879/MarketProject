@@ -42,6 +42,10 @@ void Object::setAgentId(int id) {
 	agentId.agentId = id;
 }
 
+void Object::setDescription(int descr) {
+	generalProperties.description = descr;
+}
+
 void Object::tick() {
 	timers++;
 }

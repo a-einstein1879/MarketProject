@@ -13,8 +13,26 @@ Operators > and < are defined to find younger or older objects not comparing obj
 struct ObjectGeneralProperties {
 	double originalPrice;
 	double price;
+
 	bool status;
+	/*
+	0 - bought
+	1 - for sale
+	*/
+
 	int type;
+	/*
+	number of types is defined in configuration
+	*/
+
+	int description;
+	/*
+	0 - objects on market
+	1 - objects dealt
+	2 - objects timeout
+	3 - deals
+	4 - statistics
+	*/
 
 	ObjectGeneralProperties& operator=(const ObjectGeneralProperties& generalProperties);
 };
@@ -60,9 +78,12 @@ private:
 public:
 	Object();
 	Object(double Price, double CreationTime, bool Status, int Type);
+
 	void setObject(double Price, double Age, bool Status);
 	void setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, FILE *sellersFinalPricesFile, FILE *sellersFinalTimersFile);
 	void setAgentId(int id);
+	void setDescription(int descr);
+
 	void tick();
 	void printObject();
 	void printObjectToFinalFiles();
@@ -75,6 +96,7 @@ public:
 	double	getPrice()						{return generalProperties.price;}
 	bool	getStatus()						{return generalProperties.status;}
 	int		getType()						{return generalProperties.type;}
+	int		getDescription()				{return generalProperties.description;}
 	double	getAge()						{return timers.age;}
 	int		getTimeAfterPriceReduction()	{return timers.timeAfterPriceReduction;}
 	int		getTimer()						{return timers.timer;}
