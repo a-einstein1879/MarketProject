@@ -72,11 +72,16 @@ DataBaseReturn* DataBase::closeDatabase() {
 If new class for storing deals and other data will be created, saling can be enabled in objects */
 void DataBase::checkTimers() {
 	Object object;
-	
+	bool ret = true;
 	for(int i = 0; i < numberOfObjectTypes; i++) {
-		bool ret = true;
 		if(objectsForSale[i].getNumberOfObjects() != 0) {
 			object = objectsForSale[i].timerPop(1);
+			//if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object);}
+			//else {object.adaptPrice(); pushToDataBase(object);}
+
+			//object.adaptPrice();
+			//pushToDataBase(object);
+
 			if(object.getTimeBeforePriceReduction() <= 0) {
 				if(object.adaptPrice()) {ret = false;}
 			}
@@ -84,9 +89,15 @@ void DataBase::checkTimers() {
 			else {objectsForReturn.timeoutObjects.push(object);}
 		}
 	
-		ret = true;
 		if(objectsBought[i].getNumberOfObjects() != 0) {
 			object = objectsBought[i].timerPop(1);
+			//if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object);}
+			//else {object.adaptPrice(); pushToDataBase(object);}
+
+			//object.adaptPrice();
+			//pushToDataBase(object);
+
+			ret = true;
 			if(object.getTimeBeforePriceReduction() <= 0) {
 				if(object.adaptPrice()) {ret = false;}
 			}

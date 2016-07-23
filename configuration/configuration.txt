@@ -18,7 +18,9 @@ Maximum histogram argument	40
 
 /* Agent strategies */
 Number of possible price adaptations	1
-Seller price reduce age		1000000
+Seller price reduce age		3000
 Seller price reduce share	0.2
-Buyer price increase age	1000000
+Seller time on market		10000
+Buyer price increase age	3000
 Buyer price increase share	0.2
+Buyer time on market		10000

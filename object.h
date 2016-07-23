@@ -91,8 +91,9 @@ public:
 	void printObject();
 	void printObjectToFinalFiles();
 
-	/* Returns 1 if sale is not possible and 0 if it succeeded */
 	bool adaptPrice();
+	/* Returns 1 if object has to be removed and 0 if not */
+	bool timeToLeaveMarket();
 
 	/* Get */
 	double	getOriginalPrice()				{return generalProperties.originalPrice;}

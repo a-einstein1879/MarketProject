@@ -115,13 +115,13 @@ public:
 	int getBuyersFrequency(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersFrequency[type];}}
 	double getBuyersLambda(int type)				{if(numberOfObjectTypes <= 0) {return -1;} else {return buyersLambda[type];}}
 	
-	int getNumberOfPriceAdaptations()	{return numberOfPriceAdaptations;}
+	int getNumberOfPriceAdaptations()		{return numberOfPriceAdaptations;}
 	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
 	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
-	double getSellerTimeOnMarket()			{return sellerTimeOnMarket;}
+	int getSellerTimeOnMarket()				{return sellerTimeOnMarket;}
 	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
 	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
-	double getBuyerTimeOnMarket()			{return buyerTimeOnMarket;}
+	int getBuyerTimeOnMarket()				{return buyerTimeOnMarket;}
 	
 	int getGraphicalMode()					{return graphicalMode;}
 	int getPictureRefreshFrequency()		{return pictureRefreshFrequency;}

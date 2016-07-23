@@ -4,7 +4,7 @@ Seller prices mode		1
 Maximum seller price		25
 Minimum seller price		10
 Seller mean price		25
-Seller standart deviation	5
+Seller standart deviation	3
 
 /* 0 - uniform, 1 - exponencial */
 Seller timer mode		1

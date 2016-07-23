@@ -411,6 +411,7 @@ void SoloObjectSellingAgent::printAgentType() {
 AgentStrategy SoloObjectSellingAgent::getAgentStrategy(int status) {
 	AgentStrategy strategy;
 	strategy.priceAdaptationPossible = false;
+	strategy.possibleTimeOnMarket = configurator->getSellerTimeOnMarket();
 	return strategy;
 }
 
