@@ -70,7 +70,7 @@ void Object::printObjectToFinalFiles() {
 
 bool Object::adaptPrice() {
 	if(timers.age > agentStrategy.possibleTimeOnMarket) {return 1;}
-	if(agentStrategy.numberOfPriceAdaptations++ >= agentStrategy.numberOfPossiblePriceAdaptations || !agentStrategy.priceAdaptationPossible) {return 0;}
+	if(agentStrategy.numberOfPriceAdaptations++ >= agentStrategy.numberOfPossiblePriceAdaptations || !agentStrategy.priceAdaptationPossible || getTimeBeforePriceReduction() > 0) {return 0;}
 	generalProperties.price = (1 - (generalProperties.status * 2 - 1) * agentStrategy.priceAdaptationShare) * generalProperties.price;
 	timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer;
 	return 0;
