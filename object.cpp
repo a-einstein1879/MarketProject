@@ -8,7 +8,7 @@ Object::Object() {
 		
 	timers.timer					= 1;
 	timers.age						= -1;
-	timers.timeBeforePriceReduction	= -1;
+	timers.timeBeforePriceReduction	= -5;
 
 	configurator = configurator->getConfigurator();
 }
@@ -69,17 +69,19 @@ void Object::printObjectToFinalFiles() {
 }
 
 bool Object::adaptPrice() {
-	if(timeToLeaveMarket()) {return 1;}
-	if(getTimeBeforePriceReduction() > 0) {return 0;}
+	if(getTimeBeforePriceReduction() > 0) {return 1;}
 	if(!agentStrategy.priceAdaptationPossible) {return 0;}
-	if(agentStrategy.numberOfPriceAdaptations++ >= agentStrategy.numberOfPossiblePriceAdaptations) {return 0;}
+	if(agentStrategy.numberOfPriceAdaptations >= agentStrategy.numberOfPossiblePriceAdaptations) {timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer; return 0;}
+	agentStrategy.numberOfPriceAdaptations++;
 	generalProperties.price = (1 - (generalProperties.status * 2 - 1) * agentStrategy.priceAdaptationShare) * generalProperties.price;
 	timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer;
 	return 0;
 }
 
 bool Object::timeToLeaveMarket() {
-	if(timers.age > agentStrategy.possibleTimeOnMarket) {return 1;}
+	if(timers.age > agentStrategy.possibleTimeOnMarket) {
+		return 1;
+	}
 	return 0;
 }
 

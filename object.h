@@ -91,6 +91,7 @@ public:
 	void printObject();
 	void printObjectToFinalFiles();
 
+	/* Returns 1 if it is not time for adaptation */
 	bool adaptPrice();
 	/* Returns 1 if object has to be removed and 0 if not */
 	bool timeToLeaveMarket();

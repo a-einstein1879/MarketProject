@@ -344,7 +344,7 @@ AgentStrategy OrdinaryAgent::getAgentStrategy(int status) {
 	strategy.numberOfPossiblePriceAdaptations = conf.numberOfPossiblePriceAdaptations;
 	if(status == FORSALE) {
 		strategy.priceAdaptationShare = conf.amountOfPriceReduction;
-		strategy.priceAdaptationTimer = conf.timeOfPriceMagnification;
+		strategy.priceAdaptationTimer = conf.timeOfPriceReduction;
 		strategy.possibleTimeOnMarket = conf.sellerTimeOnMarket;
 	}
 	if(status == BOUGHT) {
@@ -411,7 +411,7 @@ void SoloObjectSellingAgent::printAgentType() {
 AgentStrategy SoloObjectSellingAgent::getAgentStrategy(int status) {
 	AgentStrategy strategy;
 	strategy.priceAdaptationPossible = false;
-	strategy.possibleTimeOnMarket = configurator->getSellerTimeOnMarket();
+	strategy.possibleTimeOnMarket = configurator->getModelingTime() / 20;
 	return strategy;
 }
 

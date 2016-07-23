@@ -11,7 +11,7 @@ Market::Market() {
 	configurator->printConfiguration();
 	numberOfObjectTypes = configurator->getNumberOfObjectTypes();
 
-	numberOfAgents = 1;
+	numberOfAgents = 2;
 	agents[0] = &agent1;
 	agents[1] = &agent2;
 }

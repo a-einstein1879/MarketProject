@@ -72,37 +72,31 @@ DataBaseReturn* DataBase::closeDatabase() {
 If new class for storing deals and other data will be created, saling can be enabled in objects */
 void DataBase::checkTimers() {
 	Object object;
-	bool ret = true;
+	bool end = false;
 	for(int i = 0; i < numberOfObjectTypes; i++) {
 		if(objectsForSale[i].getNumberOfObjects() != 0) {
-			object = objectsForSale[i].timerPop(1);
-			//if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object);}
-			//else {object.adaptPrice(); pushToDataBase(object);}
-
-			//object.adaptPrice();
-			//pushToDataBase(object);
-
-			if(object.getTimeBeforePriceReduction() <= 0) {
-				if(object.adaptPrice()) {ret = false;}
+			while(1) {
+				object = objectsForSale[i].timerPop(1);
+				if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object); continue;}
+				else {
+					if(object.adaptPrice()) {end = true;}
+					pushToDataBase(object);
+					if(end == true) {break;}
+				}
 			}
-			if(ret) {pushToDataBase(object);}
-			else {objectsForReturn.timeoutObjects.push(object);}
 		}
 	
+		end = false;
 		if(objectsBought[i].getNumberOfObjects() != 0) {
-			object = objectsBought[i].timerPop(1);
-			//if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object);}
-			//else {object.adaptPrice(); pushToDataBase(object);}
-
-			//object.adaptPrice();
-			//pushToDataBase(object);
-
-			ret = true;
-			if(object.getTimeBeforePriceReduction() <= 0) {
-				if(object.adaptPrice()) {ret = false;}
+			while(1) {
+				object = objectsBought[i].timerPop(1);
+				if(object.timeToLeaveMarket()) {objectsForReturn.timeoutObjects.push(object); continue;}
+				else {
+					if(object.adaptPrice()) {end = true;}
+					pushToDataBase(object);
+					if(end == true) {break;}
+				}
 			}
-			if(ret) {pushToDataBase(object);}
-			else {objectsForReturn.timeoutObjects.push(object);}
 		}
 
 		refreshPrices();
