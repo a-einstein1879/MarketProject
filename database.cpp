@@ -77,7 +77,7 @@ void DataBase::checkTimers() {
 		bool ret = true;
 		if(objectsForSale[i].getNumberOfObjects() != 0) {
 			object = objectsForSale[i].timerPop(1);
-			if(object.getTimeAfterPriceReduction() > configurator->getSellerPriceReduceAge()) {
+			if(object.getTimeBeforePriceReduction() <= 0) {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}
@@ -87,7 +87,7 @@ void DataBase::checkTimers() {
 		ret = true;
 		if(objectsBought[i].getNumberOfObjects() != 0) {
 			object = objectsBought[i].timerPop(1);
-			if(object.getTimeAfterPriceReduction() > configurator->getBuyerPriceIncreaseAge()) {
+			if(object.getTimeBeforePriceReduction() <= 0) {
 				if(object.adaptPrice()) {ret = false;}
 			}
 			if(ret) {pushToDataBase(object);}

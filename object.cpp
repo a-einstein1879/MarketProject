@@ -5,12 +5,10 @@ Object::Object() {
 	generalProperties.originalPrice	= 0;
 	generalProperties.status	= 0;
 	generalProperties.type		= -1;
-
-	agentStrategy.numberOfPriceAdaptations = 0;
-	
+		
 	timers.timer					= 1;
 	timers.age						= -1;
-	timers.timeAfterPriceReduction	= -1;
+	timers.timeBeforePriceReduction	= -1;
 
 	configurator = configurator->getConfigurator();
 }
@@ -26,9 +24,8 @@ void Object::setObject(double Price, double Age, bool Status) {
 	generalProperties.originalPrice			= Price;
 	generalProperties.price					= Price;
 	generalProperties.status				= Status;
-	agentStrategy.numberOfPriceAdaptations	= 0;
 	timers.age								= Age;
-	timers.timeAfterPriceReduction			= 0;
+	timers.timeBeforePriceReduction			= 0;
 }
 
 void Object::setFiles(FILE *buyersFinalPricesFile, FILE *buyersFinalTimersFile, FILE *sellersFinalPricesFile, FILE *sellersFinalTimersFile) {
@@ -44,6 +41,12 @@ void Object::setAgentId(int id) {
 
 void Object::setDescription(int descr) {
 	generalProperties.description = descr;
+}
+
+void Object::setAgentStrategy(AgentStrategy strategy) {
+	agentStrategy = strategy;
+	agentStrategy.numberOfPriceAdaptations = 0;
+	timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer;
 }
 
 void Object::tick() {
@@ -66,13 +69,10 @@ void Object::printObjectToFinalFiles() {
 }
 
 bool Object::adaptPrice() {
-	if(agentStrategy.numberOfPriceAdaptations++ >= configurator->getNumberOfPriceAdaptations()) {return 1;}
-	if(generalProperties.status == FORSALE) {
-		generalProperties.price = (1 - configurator->getSellerPriceReduceShare())  * generalProperties.price;
-	} else {
-		generalProperties.price = (1 + configurator->getBuyerPriceIncreaseShare()) * generalProperties.price;
-	}
-	timers.timeAfterPriceReduction = 0;
+	if(timers.age > agentStrategy.possibleTimeOnMarket) {return 1;}
+	if(agentStrategy.numberOfPriceAdaptations++ >= agentStrategy.numberOfPossiblePriceAdaptations || !agentStrategy.priceAdaptationPossible) {return 0;}
+	generalProperties.price = (1 - (generalProperties.status * 2 - 1) * agentStrategy.priceAdaptationShare) * generalProperties.price;
+	timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer;
 	return 0;
 }
 
@@ -89,7 +89,7 @@ ObjectGeneralProperties& ObjectGeneralProperties::operator=(const ObjectGeneralP
 
 Timers& Timers::operator=(const Timers& timers) {
 	age						= timers.age;
-	timeAfterPriceReduction	= timers.timeAfterPriceReduction;
+	timeBeforePriceReduction= timers.timeBeforePriceReduction;
 	timer					= timers.timer;
 	return *this;
 }
@@ -97,7 +97,7 @@ Timers& Timers::operator=(const Timers& timers) {
 Timers Timers::operator++(int) {
 	timer++;
 	age++;
-	timeAfterPriceReduction++;
+	timeBeforePriceReduction--;
 	return *this;
 }
 
@@ -108,10 +108,12 @@ AgentIdProperties& AgentIdProperties::operator=(const AgentIdProperties& agentId
 }
 
 AgentStrategy& AgentStrategy::operator=(const AgentStrategy& agentStrategy) {
+	priceAdaptationPossible				= agentStrategy.priceAdaptationPossible;
+	possibleTimeOnMarket				= agentStrategy.possibleTimeOnMarket;
 	numberOfPossiblePriceAdaptations	= agentStrategy.numberOfPossiblePriceAdaptations;
 	numberOfPriceAdaptations			= agentStrategy.numberOfPriceAdaptations;
-	sellerPriceReduceShare				= agentStrategy.sellerPriceReduceShare;
-	buyerPriceReduceShare				= agentStrategy.buyerPriceReduceShare;
+	priceAdaptationShare				= agentStrategy.priceAdaptationShare;
+	priceAdaptationTimer				= agentStrategy.priceAdaptationTimer;
 	return *this;
 }
 
@@ -162,7 +164,7 @@ bool Object::operator<(Object &object) {
 		printf("Type mismatch\n");
 	//	system("pause");
 	}
-	if(timers.timeAfterPriceReduction <= object.getTimeAfterPriceReduction()) {
+	if(timers.timeBeforePriceReduction >= object.getTimeBeforePriceReduction()) {
 		return true;
 	} else {
 		return false;
@@ -174,7 +176,7 @@ bool Object::operator>(Object &object) {
 		printf("Type mismatch\n");
 	//	system("pause");
 	}
-	if(timers.timeAfterPriceReduction >= object.getTimeAfterPriceReduction()) {
+	if(timers.timeBeforePriceReduction <= object.getTimeBeforePriceReduction()) {
 		return true;
 	} else {
 		return false;

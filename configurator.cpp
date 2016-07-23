@@ -195,6 +195,12 @@ void Configurator::defineVariable(int index, double value, int type) {
 	case 32:
 		numberOfPriceAdaptations = int(value);
 		break;
+	case 33:
+		sellerTimeOnMarket = int(value);
+		break;
+	case 34:
+		buyerTimeOnMarket = int(value);
+		break;
 	default:
 		break;
 	}
@@ -303,8 +309,10 @@ void Configurator::printConfiguration() {
 	
 	std::cout << "Seller price reduce age\t\t"	<< sellerPriceReduceAge << std::endl;
 	std::cout << "Seller price reduce share\t"	<< sellerPriceReduceShare << std::endl;
+	std::cout << "Seller time on market\t\t"	<< sellerTimeOnMarket << std::endl;
 	std::cout << "Buyer price increase age\t"	<< buyerPriceIncreaseAge << std::endl;
 	std::cout << "Buyer price increase share\t" << buyerPriceIncreaseShare << std::endl;
+	std::cout << "Buyer time on market\t\t"		<< buyerTimeOnMarket << std::endl;
 	
 	std::cout << std::endl;
 

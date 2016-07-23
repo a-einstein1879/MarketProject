@@ -25,8 +25,10 @@ struct AgentConfiguration {
 	int numberOfPossiblePriceAdaptations;
 	double amountOfPriceReduction;
 	int timeOfPriceReduction;
+	int sellerTimeOnMarket;
 	double amountOfPriceMagnification;
 	int timeOfPriceMagnification;
+	int buyerTimeOnMarket;
 
 	GeneratorMode sellers, buyers;
 };
@@ -74,6 +76,7 @@ protected:
 	virtual bool readyToGenerateBuyer(int type) = 0;
 	Object getSeller();
 	Object getBuyer();
+	virtual AgentStrategy getAgentStrategy(int status) = 0;
 
 	virtual double formSellingPrice(int type) = 0;
 	virtual double formBuyingPrice(int type) = 0;
@@ -107,6 +110,7 @@ private:
 	void resetBuyingTimer(int type);
 
 	void setAgentConfiguration();
+	AgentStrategy getAgentStrategy(int status);
 public:
 	void printAgentType();
 	OrdinaryAgent();
@@ -123,6 +127,7 @@ private:
 	void resetBuyingTimer(int type);
 	
 	void setAgentConfiguration();
+	AgentStrategy getAgentStrategy(int status);
 public:
 	void printAgentType();
 	SoloObjectSellingAgent();

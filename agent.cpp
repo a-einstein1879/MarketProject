@@ -65,6 +65,7 @@ Object Agent::getSeller() {
 	int rnd = rand()%numberOfObjectTypes;
 	Object object(formSellingPrice(rnd), timer, FORSALE, rnd);
 	object.setAgentId(agentInfo.agentId);
+	object.setAgentStrategy(getAgentStrategy(FORSALE));
 	return object;
 }
 
@@ -72,6 +73,7 @@ Object Agent::getBuyer() {
 	int rnd = rand()%numberOfObjectTypes;
 	Object object(formBuyingPrice(rnd), timer, BOUGHT, rnd);
 	object.setAgentId(agentInfo.agentId);
+	object.setAgentStrategy(getAgentStrategy(BOUGHT));
 	return object;
 }
 
@@ -323,21 +325,40 @@ void OrdinaryAgent::setAgentConfiguration() {
 		sellers.standartDeviation[i] = c getSellersStandartDeviation(i);
 	}
 
-	conf.numberOfPossiblePriceAdaptations = c getNumberOfPriceAdaptations();
-	conf.amountOfPriceReduction = c getSellerPriceReduceShare();
-	conf.timeOfPriceReduction = c getSellerPriceReduceAge();
-	conf.amountOfPriceMagnification = c getBuyerPriceIncreaseShare();
-	conf.timeOfPriceMagnification = c getBuyerPriceIncreaseAge();
+	conf.numberOfPossiblePriceAdaptations	= c getNumberOfPriceAdaptations();
+	conf.amountOfPriceReduction				= c getSellerPriceReduceShare();
+	conf.timeOfPriceReduction				= c getSellerPriceReduceAge();
+	conf.sellerTimeOnMarket					= c getSellerTimeOnMarket();
+	conf.amountOfPriceMagnification			= c getBuyerPriceIncreaseShare();
+	conf.timeOfPriceMagnification			= c getBuyerPriceIncreaseAge();
+	conf.buyerTimeOnMarket					= c getBuyerTimeOnMarket();
+}
+
+void OrdinaryAgent::printAgentType() {
+	printf("Ordinary agent\n");
+}
+
+AgentStrategy OrdinaryAgent::getAgentStrategy(int status) {
+	AgentStrategy strategy;
+	strategy.priceAdaptationPossible = true;
+	strategy.numberOfPossiblePriceAdaptations = conf.numberOfPossiblePriceAdaptations;
+	if(status == FORSALE) {
+		strategy.priceAdaptationShare = conf.amountOfPriceReduction;
+		strategy.priceAdaptationTimer = conf.timeOfPriceMagnification;
+		strategy.possibleTimeOnMarket = conf.sellerTimeOnMarket;
+	}
+	if(status == BOUGHT) {
+		strategy.priceAdaptationShare = conf.amountOfPriceMagnification;
+		strategy.priceAdaptationTimer = conf.timeOfPriceMagnification;
+		strategy.possibleTimeOnMarket = conf.buyerTimeOnMarket;
+	}
+	return strategy;
 }
 
 #undef sellers
 #undef buyers
 #undef conf
 #undef c
-
-void OrdinaryAgent::printAgentType() {
-	printf("Ordinary agent\n");
-}
 
 /**********************************************************************
 						End of ordinary agent
@@ -385,6 +406,12 @@ void SoloObjectSellingAgent::setAgentConfiguration() {}
 
 void SoloObjectSellingAgent::printAgentType() {
 	printf("Solo object selling agent\n");
+}
+
+AgentStrategy SoloObjectSellingAgent::getAgentStrategy(int status) {
+	AgentStrategy strategy;
+	strategy.priceAdaptationPossible = false;
+	return strategy;
 }
 
 /**********************************************************************

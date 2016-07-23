@@ -12,7 +12,7 @@
 "Buyer timer mode", "Buyer frequency", "Buyer lambda", "Modeling time", "Timer printing frequency", "Accuracy", "Picture refresh frequency", "Delay time", "Number of pockets", \
 "Graphical mode", "Constant boarders mode", "Minimum histogram argument", "Maximum histogram argument", "Histogram sidegap", \
 "Seller price reduce age", "Seller price reduce share", "Buyer price increase age", "Buyer price increase share", "Number of object types", \
-"Number of possible price adaptations"
+"Number of possible price adaptations", "Seller time on market", "Buyer time on market"
 
 class Configurator {
 private:
@@ -65,8 +65,10 @@ private:
 	int numberOfPriceAdaptations;
 	int sellerPriceReduceAge;
 	double sellerPriceReduceShare;
+	int sellerTimeOnMarket;
 	int buyerPriceIncreaseAge;
 	double buyerPriceIncreaseShare;
+	int buyerTimeOnMarket;
 
 	Configurator();
 	~Configurator();
@@ -116,8 +118,10 @@ public:
 	int getNumberOfPriceAdaptations()	{return numberOfPriceAdaptations;}
 	int getSellerPriceReduceAge()			{return sellerPriceReduceAge;}
 	double getSellerPriceReduceShare()		{return sellerPriceReduceShare;}
+	double getSellerTimeOnMarket()			{return sellerTimeOnMarket;}
 	int getBuyerPriceIncreaseAge()			{return buyerPriceIncreaseAge;}
 	double getBuyerPriceIncreaseShare()		{return buyerPriceIncreaseShare;}
+	double getBuyerTimeOnMarket()			{return buyerTimeOnMarket;}
 	
 	int getGraphicalMode()					{return graphicalMode;}
 	int getPictureRefreshFrequency()		{return pictureRefreshFrequency;}
