@@ -73,7 +73,7 @@ bool Object::adaptPrice() {
 	if(!agentStrategy.priceAdaptationPossible) {return 0;}
 	if(agentStrategy.numberOfPriceAdaptations >= agentStrategy.numberOfPossiblePriceAdaptations) {timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer; return 0;}
 	agentStrategy.numberOfPriceAdaptations++;
-	generalProperties.price = (1 - (generalProperties.status * 2 - 1) * agentStrategy.priceAdaptationShare) * generalProperties.price;
+	generalProperties.price = (1 - (generalProperties.status * 2 - 1) * agentStrategy.priceAdaptationShare * agentStrategy.numberOfPriceAdaptations) * generalProperties.originalPrice;
 	timers.timeBeforePriceReduction = agentStrategy.priceAdaptationTimer;
 	return 0;
 }
