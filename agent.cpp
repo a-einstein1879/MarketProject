@@ -387,7 +387,7 @@ bool SoloObjectSellingAgent::readyToGenerateBuyer(int type) {
 }
 
 double SoloObjectSellingAgent::formSellingPrice(int type) {
-	return getNormallyDistributedValue(configurator->getSellersMean(type), 0);
+	return getNormallyDistributedValue(configurator->getSoloSellingAgentPrice(), 0);
 }
 
 double SoloObjectSellingAgent::formBuyingPrice(int type) {

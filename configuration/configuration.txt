@@ -24,3 +24,5 @@ Seller time on market		10000
 Buyer price increase age	3000
 Buyer price increase share	0.2
 Buyer time on market		10000
+
+Solo selling agent price	20

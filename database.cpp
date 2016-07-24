@@ -165,11 +165,11 @@ void DataBase::runPossibleDeal(int typeId) {
 	if(time >= 0) {
 		fprintf(outputFiles[1], "%.2f\n", time);
 		fprintf(outputFiles[2],	 "%.2f\n", 0);
-		fprintf(outputFiles[7], "%.2f\t%.2f\n", seller.getPrice(), time);
+		fprintf(outputFiles[7], "%d\t%.2f\t%.2f\n", seller.getAgentId(), seller.getPrice(), time);
 	} else {
-		fprintf(outputFiles[7], "%.2f\t%.2f\n", seller.getPrice(), 0);
 		fprintf(outputFiles[1], "%.2f\n", 0);
 		fprintf(outputFiles[2],	 "%.2f\n", - time);
+		fprintf(outputFiles[7], "%d\t%.2f\t%.2f\n", seller.getAgentId(), seller.getPrice(), 0);
 	}
 }
 

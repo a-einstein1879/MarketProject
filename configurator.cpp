@@ -201,6 +201,9 @@ void Configurator::defineVariable(int index, double value, int type) {
 	case 34:
 		buyerTimeOnMarket = int(value);
 		break;
+	case 35:
+		soloSellingAgentPrice = value;
+		break;
 	default:
 		break;
 	}
