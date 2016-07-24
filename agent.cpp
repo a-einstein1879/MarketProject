@@ -375,11 +375,13 @@ SoloObjectSellingAgent::SoloObjectSellingAgent() {
 		resetSellingTimer(i);
 		resetBuyingTimer(i);
 	}
+	generationFrequency = configurator->getModelingTime() / 20;
+	lastObjectCreationTime = -INT_MAX;
 }
 
 bool SoloObjectSellingAgent::readyToGenerateSeller(int type) {
-	if(agentInfo.numberOfObjects == 0) {return true;}
-	else {return false;}
+	if(agentInfo.numberOfObjects == 0 && lastObjectCreationTime - generationFrequency >= 0) {lastObjectCreationTime = 0; return true;}
+	else {lastObjectCreationTime++; return false;}
 }
 
 bool SoloObjectSellingAgent::readyToGenerateBuyer(int type) {
@@ -411,7 +413,7 @@ void SoloObjectSellingAgent::printAgentType() {
 AgentStrategy SoloObjectSellingAgent::getAgentStrategy(int status) {
 	AgentStrategy strategy;
 	strategy.priceAdaptationPossible = false;
-	strategy.possibleTimeOnMarket = configurator->getModelingTime() / 20;
+	strategy.possibleTimeOnMarket = generationFrequency;
 	return strategy;
 }
 

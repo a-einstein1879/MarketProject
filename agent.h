@@ -118,6 +118,8 @@ public:
 
 class SoloObjectSellingAgent : public Agent {
 private:
+	int generationFrequency;
+	int lastObjectCreationTime;
 	bool readyToGenerateSeller(int type);
 	bool readyToGenerateBuyer(int type);
 	
